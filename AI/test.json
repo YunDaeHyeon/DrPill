@@ -1,0 +1,37 @@
+{
+  "inference_id": "b4400b90-32a6-41bb-93b3-7623d00300c0",
+  "time": 0.052188280999871495,
+  "image": { "width": 3024, "height": 3024 },
+  "predictions": [
+    {
+      "x": 1066.078125,
+      "y": 1801.40625,
+      "width": 620.15625,
+      "height": 425.25,
+      "confidence": 0.8760808110237122,
+      "class": "drug",
+      "class_id": 0,
+      "detection_id": "44cd74f5-685d-4811-a6ff-38bced9b69ec"
+    },
+    {
+      "x": 1454.4140625,
+      "y": 1241.7890625,
+      "width": 369.140625,
+      "height": 369.140625,
+      "confidence": 0.8711628913879395,
+      "class": "drug",
+      "class_id": 0,
+      "detection_id": "15d4846d-4c33-4e2f-9550-f70c3b9564e4"
+    },
+    {
+      "x": 1711.3359375,
+      "y": 1701.0,
+      "width": 280.546875,
+      "height": 602.4375,
+      "confidence": 0.816129207611084,
+      "class": "drug",
+      "class_id": 0,
+      "detection_id": "2987ca3b-ab97-464d-b62e-a4860aa66cd9"
+    }
+  ]
+}
