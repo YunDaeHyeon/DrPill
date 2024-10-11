@@ -50,8 +50,8 @@ const CameraCapture = () => {
         console.error('Camera reference not available.', camera);
         return;
       }
+
       const photo = await camera.current.takePhoto(); // 사진 촬영
-      console.log('test', photo);
       if (photo) {
         setCapturedPhoto(`file://${photo.path}`); // 사진의 경로를 상태에 저장
       } else {

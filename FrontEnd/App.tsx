@@ -22,6 +22,7 @@ import MyPage from './Screen/MyPage/MyPage.tsx'; // 마이페이지 화면
 import ProfileEdit from './Screen/MyPage/Profile_Edit.tsx'; //프로필 수정 화면
 
 import CameraCapture from './Screen/Camera/CameraCapture.tsx';
+import Gallery from './Screen/Camera/Gallery.tsx'; //갤러리
 
 const Stack = createNativeStackNavigator();
 
@@ -116,6 +117,12 @@ const App = () => {
         <Stack.Screen
           name="CameraCapture"
           component={CameraCapture}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="Gallery"
+          component={Gallery}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

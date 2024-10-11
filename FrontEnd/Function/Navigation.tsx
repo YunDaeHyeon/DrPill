@@ -72,3 +72,8 @@ export const editSave = (navigation: NavigationProp<any>) => {
     ToastAndroid.BOTTOM,
   );
 };
+
+//갤러리
+export const handleGAllery = (navigation: NavigationProp<any>) => {
+  navigation.dispatch(CommonActions.navigate('Gallery'));
+};
