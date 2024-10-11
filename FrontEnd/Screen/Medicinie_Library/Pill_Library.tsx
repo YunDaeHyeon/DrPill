@@ -1,8 +1,11 @@
 //약 도서관 화면입니다.
-import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
+import React from 'react';
+import {StyleSheet, Image, View, Text} from 'react-native';
+import {PillBox} from '../../Function/Like';
 
-const PillLibrary = () => {
-  const [text, setText] = useState('');
+import {NavigationBar} from '../Commonness/NavigationBar';
+
+const PillLibrary = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
@@ -10,48 +13,56 @@ const PillLibrary = () => {
 
         <View style={Styles.library_contain_view}>
           <View style={Styles.libraryview_1}>
-            <View style={Styles.libary_contain} />
-            <View style={Styles.library_contain3} />
-            <View style={Styles.library_contain3} />
+            <View style={Styles.libary_contain}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </View>
+            <View style={Styles.library_contain3}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </View>
+            <View style={Styles.library_contain3}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </View>
           </View>
 
           <View style={Styles.libraryview_2}>
-            <View style={Styles.library_contain2} />
-            <View style={Styles.library_contain4} />
-            <View style={Styles.library_contain4} />
+            <View style={Styles.library_contain2}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </View>
+            <View style={Styles.library_contain4}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </View>
+            <View style={Styles.library_contain4}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </View>
           </View>
         </View>
       </View>
 
-      <View style={Styles.navigation_bar}>
-        <TouchableOpacity activeOpacity={0.7}>
-          <Image
-            source={require('../../Image/메뉴바_홈.png')}
-            style={Styles.home_icon}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Image
-            source={require('../../Image/메뉴바_카메라.png')}
-            style={Styles.camera_icon}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Image
-            source={require('../../Image/메뉴바_도서관.png')}
-            style={Styles.library_icon}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Image
-            source={require('../../Image/메뉴바_계정.png')}
-            style={Styles.account_icon}
-          />
-        </TouchableOpacity>
-      </View>
+      <NavigationBar navigation={navigation} />
     </>
   );
 };
@@ -63,56 +74,18 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  navigation_bar: {
-    //메뉴바
-    bottom: 0,
-    right: 0,
-    flexDirection: 'row',
-    verticalAlign: 'bottom',
-    backgroundColor: 'white',
-    borderColor: '#EAEAEA',
-    borderWidth: 1,
-    height: 95,
-    width: '100%',
-    alignItems: 'center',
-  },
-
-  home_icon: {
-    // 메뉴바 홈 아이콘
-    marginTop: 10,
-    marginLeft: 40,
-  },
-
-  camera_icon: {
-    //  메뉴바 카메라 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  library_icon: {
-    //   메뉴바 도서관 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  account_icon: {
-    //메뉴바 계정 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
   library_contain_view: {
     // 박스 뷰
-    width: 331,
-    height: 509,
-    marginTop: 105,
+    width: 328,
+    height: 500,
+    marginTop: 130,
     flexDirection: 'row',
     backgroundColor: 'white',
   },
 
   libraryview_1: {
     // 왼쪽 박스 뷰
-    width: 188,
+    width: 185,
   },
 
   libraryview_2: {
@@ -129,6 +102,8 @@ const Styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D9D9D9',
     borderRadius: 20,
+    elevation: 2,
+    shadowColor: 'grey',
   },
 
   library_contain2: {
@@ -139,37 +114,58 @@ const Styles = StyleSheet.create({
     borderColor: '#D9D9D9',
     borderWidth: 1,
     borderRadius: 20,
+    elevation: 2,
+    shadowColor: 'grey',
   },
 
   library_contain3: {
     width: 143,
     height: 143,
-    marginTop: 40,
+    marginTop: 35,
     borderColor: '#D9D9D9',
     backgroundColor: 'white',
     justifyContent: 'center',
     borderWidth: 1,
     borderRadius: 20,
+    elevation: 2,
+    shadowColor: 'grey',
   },
 
   library_contain4: {
     width: 143,
     height: 143,
-    marginTop: 40,
+    marginTop: 35,
     borderColor: '#D9D9D9',
     backgroundColor: 'white',
     justifyContent: 'center',
     borderWidth: 1,
     borderRadius: 20,
+    elevation: 2,
+    shadowColor: 'grey',
+  },
+
+  like_medicine_image: {
+    //찜한 약 사진
+    width: 140,
+    height: 140,
+    position: 'absolute',
+    borderRadius: 20,
+  },
+
+  heart_icon_touch_view: {
+    //하트 아이콘 터치뷰
+    marginLeft: 105,
+    marginBottom: 90,
   },
 
   pilllibrary_font: {
     //약 도서관 글씨
     position: 'absolute',
-    marginTop: 25,
+    marginTop: 50,
     left: 30,
     fontSize: 30,
     fontWeight: 'bold',
+    color: 'black',
   },
 });
 
