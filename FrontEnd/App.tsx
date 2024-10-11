@@ -1,240 +1,126 @@
-//알레르기 목록 화면입니다.
-import {useState} from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Text,
-} from 'react-native';
+//네비게이션
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-const AllergyInfo = () => {
-  const [text, setText] = useState('');
+import Login from './Screen/LoginScreen/Login.tsx'; //로그인 화면
 
+import Main from './Screen/MainScreen/Main.tsx'; // 어플 메인 화면
+import AllergyInfo from './Screen/MainScreen/Allergy_List.tsx'; // 알레르기 약 상세정보 화면
+import AntiInfo from './Screen/MainScreen/Anti_List.tsx'; // 소염제 약 상세정보 화면
+import ColdInfo from './Screen/MainScreen/Cold_List.tsx'; // 감기약 상세정보 화면
+import DigestInfo from './Screen/MainScreen/Digest_List.tsx'; // 소화제 상세정보 화면
+import PainkillInfo from './Screen/MainScreen/Painkill_List.tsx'; // 진통제 상세정보 화면
+import VitaminInfo from './Screen/MainScreen/Vitamin_List.tsx'; // 비타민 상세정보 화면
+
+import CameraMain from './Screen/Camera/Camera_Main.tsx'; // 카메라 메인화면
+import FindMedicine from './Screen/Camera/Find_Medicine.tsx'; // 찾은 약 정보화면
+
+import PillLibrary from './Screen/Medicinie_Library/Pill_Library.tsx'; // 약 도서관 화면
+
+import MyPage from './Screen/MyPage/MyPage.tsx'; // 마이페이지 화면
+import ProfileEdit from './Screen/MyPage/Profile_Edit.tsx'; //프로필 수정 화면
+
+import CameraCapture from './Screen/Camera/CameraCapture.tsx';
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   return (
-    <>
-      <View style={Styles.container}>
-        <View style={Styles.searchbox}>
-          <Image
-            source={require('./Image/돋보기.png')}
-            style={Styles.search_icon}
-          />
-          <TextInput
-            style={Styles.search_text}
-            onChangeText={newText => setText(newText)}
-            placeholder="               알레르기"
-            placeholderTextColor={'#C0E3FD'}
-          />
-        </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
+          animation: 'slide_from_right', // 오른쪽에서 왼쪽으로 전환 설정
+        }}>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}
+        />
 
-        <View>
-          <Image
-            source={require('./Image/filter.png')}
-            style={Styles.sort_filter}
-          />
-        </View>
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{headerShown: false}}
+        />
 
-        <View style={Styles.allergycontain_view}>
-          <View style={Styles.allergyview_1}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain}
-            />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
+        <Stack.Screen
+          name="AllergyInfo"
+          component={AllergyInfo}
+          options={{headerShown: false}}
+        />
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain3}
-            />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
-          </View>
+        <Stack.Screen
+          name="AntiInfo"
+          component={AntiInfo}
+          options={{headerShown: false}}
+        />
 
-          <View style={Styles.allergyview_2}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain2}
-            />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
+        <Stack.Screen
+          name="ColdInfo"
+          component={ColdInfo}
+          options={{headerShown: false}}
+        />
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain4}
-            />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
-          </View>
-        </View>
-      </View>
+        <Stack.Screen
+          name="DigestInfo"
+          component={DigestInfo}
+          options={{headerShown: false}}
+        />
 
-      <View style={Styles.navigation_bar}>
-        <TouchableOpacity activeOpacity={0.7}>
-          <Image
-            source={require('./Image/메뉴바_홈.png')}
-            style={Styles.home_icon}
-          />
-        </TouchableOpacity>
+        <Stack.Screen
+          name="PainkillInfo"
+          component={PainkillInfo}
+          options={{headerShown: false}}
+        />
 
-        <TouchableOpacity>
-          <Image
-            source={require('./Image/메뉴바_카메라.png')}
-            style={Styles.camera_icon}
-          />
-        </TouchableOpacity>
+        <Stack.Screen
+          name="VitaminInfo"
+          component={VitaminInfo}
+          options={{headerShown: false}}
+        />
 
-        <TouchableOpacity>
-          <Image
-            source={require('./Image/메뉴바_도서관.png')}
-            style={Styles.library_icon}
-          />
-        </TouchableOpacity>
+        <Stack.Screen
+          name="CameraMain"
+          component={CameraMain}
+          options={{headerShown: false}}
+        />
 
-        <TouchableOpacity>
-          <Image
-            source={require('./Image/메뉴바_계정.png')}
-            style={Styles.account_icon}
-          />
-        </TouchableOpacity>
-      </View>
-    </>
+        <Stack.Screen
+          name="FindMedicine"
+          component={FindMedicine}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="PillLibrary"
+          component={PillLibrary}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="MyPage"
+          component={MyPage}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ProfileEdit"
+          component={ProfileEdit}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="CameraCapture"
+          component={CameraCapture}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-const Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-  },
-
-  searchbox: {
-    //검색창 박스
-    borderColor: '#EAEAEA',
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 317,
-    height: 57,
-    backgroundColor: 'white',
-    marginTop: 50,
-    elevation: 10,
-    shadowColor: 'grey',
-    justifyContent: 'center',
-  },
-
-  navigation_bar: {
-    //메뉴바
-    bottom: 0,
-    right: 0,
-    flexDirection: 'row',
-    verticalAlign: 'bottom',
-    backgroundColor: 'white',
-    borderColor: '#EAEAEA',
-    borderWidth: 1,
-    height: 95,
-    width: '100%',
-    alignItems: 'center',
-  },
-
-  home_icon: {
-    //메뉴바 홈 아이콘
-    marginTop: 10,
-    marginLeft: 40,
-  },
-
-  camera_icon: {
-    //메뉴바 카메라 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  library_icon: {
-    //메뉴바 도서관 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  account_icon: {
-    //메뉴바 계정 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  search_icon: {
-    //검색 돋보기 아이콘
-    position: 'absolute',
-    marginLeft: 35,
-  },
-
-  search_text: {
-    //검색창 글씨
-    marginLeft: 70,
-    fontSize: 18,
-    color: 'black',
-  },
-
-  allergycontain_view: {
-    //알레르기 박스 뷰
-    width: 330,
-    height: 400,
-    marginTop: 25,
-    marginLeft: 5,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-
-  allergyview_1: {
-    //알레르기 왼쪽 뷰
-    width: 180,
-  },
-
-  allergyview_2: {
-    //알레르기 오른쪽 뷰
-    width: 145,
-  },
-
-  allergy_contain: {
-    //알레르기 박스
-    width: 143,
-    height: 145,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergy_contain2: {
-    width: 143,
-    height: 145,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergy_contain3: {
-    width: 145,
-    height: 145,
-    marginTop: 15,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergy_contain4: {
-    width: 145,
-    height: 145,
-    marginTop: 15,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergycontain_text: {
-    //알레르기 텍스트
-    marginTop: 12,
-    fontSize: 20,
-    fontFamily: 'Jua',
-    fontWeight: 'bold',
-  },
-
-  sort_filter: {
-    //필터 아이콘
-    left: '38%',
-    marginTop: 16,
-  },
-});
-
-export default AllergyInfo;
+export default App;

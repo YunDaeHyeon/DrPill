@@ -1,163 +1,141 @@
 //소염제 목록 화면입니다.
-import { useState } from "react";
-import { StyleSheet, Image, View, TouchableOpacity, TextInput, Text } from "react-native";
+import {useState} from 'react';
+import {
+  StyleSheet,
+  Image,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Text,
+} from 'react-native';
+import {NavigationBar} from '../Commonness/NavigationBar';
 
-const AntiInfo = () => {
+const AntiInfo = ({navigation}) => {
   const [text, setText] = useState('');
 
-    return (
-        <>
-            <View style={Styles.container}>
+  return (
+    <>
+      <View style={Styles.container}>
+        <View style={Styles.searchbox}>
+          <Image
+            source={require('../../Image/돋보기.png')}
+            style={Styles.search_icon}
+          />
+          <TextInput
+            style={Styles.search_text}
+            onChangeText={newText => setText(newText)}
+            placeholder="                소염제"
+            placeholderTextColor={'#C0E3FD'}
+          />
+        </View>
 
-              <View style={Styles.searchbox}>
-                <Image source={require('../../Image/돋보기.png')} style={Styles.search_icon}/>
-                <TextInput
-                  style={Styles.search_text}
-                  onChangeText={newText => setText(newText)}
-                  placeholder="                소염제"
-                  placeholderTextColor={'#C0E3FD'} />
-              </View>
-              
-              <View>
-                <Image source={require('../../Image/filter.png')} style={Styles.sort_filter}/>
-              </View>
+        <View>
+          <Image
+            source={require('../../Image/filter.png')}
+            style={Styles.sort_filter}
+          />
+        </View>
 
-              <View style={Styles.anticontain_view}>
+        <View style={Styles.anticontain_view}>
+          <View style={Styles.antiview_1}>
+            <TouchableOpacity activeOpacity={0.7} style={Styles.anti_contain} />
+            <Text style={Styles.anticontain_text}>베아제</Text>
 
-                  <View style={Styles.antiview_1}>
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.anti_contain}/>
-                    <Text style={Styles.anticontain_text}>베아제</Text>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={Styles.anti_contain3}
+            />
+            <Text style={Styles.anticontain_text}>베아제</Text>
+          </View>
 
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.anti_contain3}/>
-                    <Text style={Styles.anticontain_text}>베아제</Text>
-                  </View>
+          <View style={Styles.antiview_2}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={Styles.anti_contain2}
+            />
+            <Text style={Styles.anticontain_text}>베아제</Text>
 
-                  <View style={Styles.antiview_2}>
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.anti_contain2}/>
-                    <Text style={Styles.anticontain_text}>베아제</Text>
-                      
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.anti_contain4}/>
-                    <Text style={Styles.anticontain_text}>베아제</Text>
-                  </View>
-              </View>
-            </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={Styles.anti_contain4}
+            />
+            <Text style={Styles.anticontain_text}>베아제</Text>
+          </View>
+        </View>
+      </View>
 
-
-            <View style={Styles.navigation_bar}>
-             <TouchableOpacity activeOpacity={0.7}>
-                <Image source={require('../../Image/메뉴바_홈.png')} style={Styles.home_icon}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-              <Image source={require('../../Image/메뉴바_카메라.png')} style={Styles.camera_icon}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-              <Image source={require('../../Image/메뉴바_도서관.png')} style={Styles.library_icon}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-              <Image source={require('../../Image/메뉴바_계정.png')} style={Styles.account_icon}/>
-              </TouchableOpacity>
-            </View>
-        </>
-    )
-}
+      <NavigationBar navigation={navigation} />
+    </>
+  );
+};
 
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
-  searchbox: {                              //검색창 박스
+  searchbox: {
+    //검색창 박스
     borderColor: '#EAEAEA',
     borderWidth: 1,
     borderRadius: 30,
-    width : 317,
-    height : 57,
+    width: 317,
+    height: 57,
     backgroundColor: 'white',
     marginTop: 50,
     elevation: 10,
     shadowColor: 'grey',
-    justifyContent : 'center'
+    justifyContent: 'center',
   },
 
-  navigation_bar: {                          //메뉴바
-    bottom: 0,
-    right: 0,
-    flexDirection: 'row',
-    verticalAlign: 'bottom',
-    backgroundColor: 'white',
-    borderColor: '#EAEAEA',
-    borderWidth : 1,
-    height: 95,
-    width: '100%',
-    alignItems: 'center'
-  },
-
-  home_icon: {                          // 메뉴바 홈 아이콘
-    marginTop: 10,
-    marginLeft: 40
-  },
-
-  camera_icon: {                      //  메뉴바 카메라 아이콘
-    marginTop: 10,
-    marginLeft: 53
-  },
-
-  library_icon: {                     //   메뉴바 도서관 아이콘
-    marginTop: 10,
-    marginLeft: 53
-  },
-
-  account_icon: {                   //메뉴바 계정 아이콘
-    marginTop: 10,
-    marginLeft: 53
-  },
-
-  search_icon: {                //검색 돋보기 아이콘
+  search_icon: {
+    //검색 돋보기 아이콘
     position: 'absolute',
-    marginLeft: 35
+    marginLeft: 35,
   },
 
-  search_text: {                //검색창 글씨
+  search_text: {
+    //검색창 글씨
     marginLeft: 70,
     fontSize: 18,
-    color: 'black'
+    color: 'black',
   },
 
-  anticontain_view: {           //소염제 박스 뷰
+  anticontain_view: {
+    //소염제 박스 뷰
     width: 330,
     height: 400,
     marginTop: 25,
     marginLeft: 5,
     flexDirection: 'row',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
 
-  antiview_1: {             //소염제 왼쪽 뷰
-    width: 180
+  antiview_1: {
+    //소염제 왼쪽 뷰
+    width: 180,
   },
 
-  antiview_2: {            //소염제 오른쪽 뷰
-    width: 145
+  antiview_2: {
+    //소염제 오른쪽 뷰
+    width: 145,
   },
 
-
-  anti_contain: {           //소염제 박스
+  anti_contain: {
+    //소염제 박스
     width: 143,
     height: 145,
     backgroundColor: '#D9D9D9',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   anti_contain2: {
     width: 143,
     height: 145,
     backgroundColor: '#D9D9D9',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   anti_contain3: {
@@ -165,7 +143,7 @@ const Styles = StyleSheet.create({
     height: 145,
     marginTop: 15,
     backgroundColor: '#D9D9D9',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   anti_contain4: {
@@ -173,21 +151,22 @@ const Styles = StyleSheet.create({
     height: 145,
     marginTop: 15,
     backgroundColor: '#D9D9D9',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
-  anticontain_text:{            //소염제 텍스트 
+  anticontain_text: {
+    //소염제 텍스트
     marginTop: 12,
     fontSize: 20,
     fontFamily: 'Jua',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 
-  sort_filter: {              //필터 아이콘
+  sort_filter: {
+    //필터 아이콘
     left: '38%',
-    marginTop: 16
-  }
-
-})
+    marginTop: 16,
+  },
+});
 
 export default AntiInfo;
