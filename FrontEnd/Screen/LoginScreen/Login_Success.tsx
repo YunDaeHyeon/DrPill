@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Button, Alert,ToastAndroid } from 'react-native';
 import { login, getProfile } from '@react-native-seoul/kakao-login';
+import axios from 'axios';
 
 export const Google_PopUp = () => {
     ToastAndroid.showWithGravity(
@@ -43,6 +44,18 @@ export const Kakao_PopUp = async (): Promise<void> => {
       });
   
       Alert.alert('로그인 성공', `닉네임: ${nickname}, 이메일: ${email}`);
+
+      // 이메일과 닉네임을 백엔드로 보내기
+      const response = await axios.post('https://testurl/login-user', {
+      email: email,
+      nickname: nickname,
+      });
+  
+      if (response.status === 200) {
+          console.log('서버 응답 성공:', response.data);
+      } else {
+          console.log('서버 요청 실패:', response.status);
+      }      
   
     } catch (error: unknown) {
       console.error('로그인 실패:', error);
