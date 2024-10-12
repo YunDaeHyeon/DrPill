@@ -5,7 +5,7 @@ import {Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {handleGAllery} from '../../Function/Navigation';
 
-const CameraCapture = () => {
+const CameraCapture = ({navigation}) => {
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(
     null,
   );
@@ -93,11 +93,15 @@ const CameraCapture = () => {
             photo={true}
             video={true}
           />
-          <TouchableOpacity style={styles.back_touch_view}>
+          <TouchableOpacity
+            style={styles.back_touch_view}
+            onPress={() => navigation.goBack()}>
             <Image source={require('../../Image/back.png')} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.gallery_touch_view}>
+          <TouchableOpacity
+            style={styles.gallery_touch_view}
+            onPress={() => handleGAllery(navigation)}>
             <Image source={require('../../Image/gallery.png')} />
           </TouchableOpacity>
         </View>

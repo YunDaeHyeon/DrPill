@@ -1,12 +1,7 @@
 import {TouchableOpacity, Image, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import {
-  Google_PopUp,
-  Apple_PopUp,
-  Kakao_PopUp,
-  Guest_PopUp,
-} from './Login_Success';
+import {Kakao_PopUp, Guest_PopUp} from './Login_Success';
 
 const Login = () => {
   const navigation = useNavigation(); // navigation 객체를 가져옵니다.
@@ -28,34 +23,6 @@ const Login = () => {
         </View>
 
         <View style={Styles.button_view}>
-          <TouchableOpacity
-            style={Styles.googleButton}
-            activeOpacity={0.7}
-            onPress={() => {
-              handleLoginSuccess(); // 첫 번째 함수 호출
-              Google_PopUp(); // 두 번째 함수 호출
-            }}>
-            <Image
-              source={require('../../Image/googlelogo.png')}
-              style={Styles.login_logo}
-            />
-            <Text style={Styles.black_text}>구글 계정으로 로그인</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={Styles.appleButton}
-            activeOpacity={0.7}
-            onPress={() => {
-              handleLoginSuccess(); // 첫 번째 함수 호출
-              Apple_PopUp(); // 두 번째 함수 호출
-            }}>
-            <Image
-              source={require('../../Image/applelogo.png')}
-              style={Styles.login_logo}
-            />
-            <Text style={Styles.white_text}>애플 계정으로 로그인</Text>
-          </TouchableOpacity>
-
           <TouchableOpacity
             style={Styles.kakaoButton}
             activeOpacity={0.7}
@@ -103,7 +70,7 @@ const Styles = StyleSheet.create({
 
   appicon: {
     //앱로고
-    marginTop: '30%',
+    marginTop: '50%',
     alignItems: 'center',
     justifyContent: 'center',
     width: 128,
@@ -112,30 +79,7 @@ const Styles = StyleSheet.create({
 
   button_view: {
     //로그인 버튼 뷰
-    marginTop: 70,
-  },
-
-  googleButton: {
-    //구글 로그인 버튼
-    height: 47,
-    width: 324,
-    borderWidth: 1,
-    borderRadius: 21,
-    borderColor: 'black',
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  appleButton: {
-    //애플 로그인 버튼
-    marginTop: 25,
-    height: 47,
-    width: 324,
-    borderRadius: 21,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 80,
   },
 
   kakaoButton: {
