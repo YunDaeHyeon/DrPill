@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MedicineApp</string>
+
+    <string name="kakao_app_key">@string/KAKAO_APP_KEY</string>
 </resources>
