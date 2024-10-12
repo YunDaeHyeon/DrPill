@@ -13,16 +13,13 @@ import DigestInfo from './Screen/MainScreen/Digest_List.tsx'; // 소화제 상�
 import PainkillInfo from './Screen/MainScreen/Painkill_List.tsx'; // 진통제 상세정보 화면
 import VitaminInfo from './Screen/MainScreen/Vitamin_List.tsx'; // 비타민 상세정보 화면
 
-import CameraMain from './Screen/Camera/Camera_Main.tsx'; // 카메라 메인화면
+import CameraCapture from './Screen/Camera/CameraCapture.tsx'; // 카메라 메인화면
 import FindMedicine from './Screen/Camera/Find_Medicine.tsx'; // 찾은 약 정보화면
+import Gallery from './Screen/Camera/Gallery.tsx'; //갤러리
 
 import PillLibrary from './Screen/Medicinie_Library/Pill_Library.tsx'; // 약 도서관 화면
 
 import MyPage from './Screen/MyPage/MyPage.tsx'; // 마이페이지 화면
-import ProfileEdit from './Screen/MyPage/Profile_Edit.tsx'; //프로필 수정 화면
-
-import CameraCapture from './Screen/Camera/CameraCapture.tsx';
-import Gallery from './Screen/Camera/Gallery.tsx'; //갤러리
 
 const Stack = createNativeStackNavigator();
 
@@ -85,12 +82,6 @@ const App = () => {
         />
 
         <Stack.Screen
-          name="CameraMain"
-          component={CameraMain}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
           name="FindMedicine"
           component={FindMedicine}
           options={{headerShown: false}}
@@ -105,12 +96,6 @@ const App = () => {
         <Stack.Screen
           name="MyPage"
           component={MyPage}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="ProfileEdit"
-          component={ProfileEdit}
           options={{headerShown: false}}
         />
 

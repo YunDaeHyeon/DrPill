@@ -1,8 +1,6 @@
 //내 계정 화면입니다.
 import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 
-import {handleProfileEdit} from '../../Function/Navigation';
-
 import {NavigationBar} from '../Commonness/NavigationBar';
 
 const MyPage = ({navigation}) => {
@@ -20,11 +18,6 @@ const MyPage = ({navigation}) => {
               />
             </View>
             <Text style={Styles.user_name}>봉가은</Text>
-          </View>
-          <View style={Styles.profile_update_view}>
-            <TouchableOpacity onPress={() => handleProfileEdit(navigation)}>
-              <Text style={Styles.profile_update_text}>프로필 수정</Text>
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -119,21 +112,6 @@ const Styles = StyleSheet.create({
     fontSize: 30,
     color: 'black',
     fontWeight: 'bold',
-  },
-
-  profile_update_view: {
-    position: 'absolute',
-    width: 100,
-    height: 38,
-    marginTop: 240,
-    marginLeft: 295,
-    backgroundColor: 'white',
-  },
-
-  profile_update_text: {
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: 'black',
   },
 
   setting_text_view: {

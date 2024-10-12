@@ -13,7 +13,7 @@ export const goMain = (navigation: NavigationProp<any>) => {
 };
 
 export const goCamera = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('CameraMain'));
+  navigation.dispatch(CommonActions.navigate('CameraCapture'));
 };
 
 export const goLibrary = (navigation: NavigationProp<any>) => {
@@ -52,16 +52,6 @@ export const handleVitaminInfo = (navigation: NavigationProp<any>) => {
 //카메라에서 약 세부정보 화면 진입
 export const goFindMedicine = (navigation: NavigationProp<any>) => {
   navigation.dispatch(CommonActions.navigate('FindMedicine'));
-};
-
-//내 정보 수정
-export const handleProfileEdit = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('ProfileEdit'));
-};
-
-// 카메라 테스트
-export const CameraCapture = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('CameraCapture'));
 };
 
 export const editSave = (navigation: NavigationProp<any>) => {

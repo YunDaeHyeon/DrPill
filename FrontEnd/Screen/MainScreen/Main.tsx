@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
-  Button,
 } from 'react-native';
 
 import {
@@ -17,7 +16,6 @@ import {
   handleDigestInfo,
   handlePainkillInfo,
   handleVitaminInfo,
-  CameraCapture,
 } from '../../Function/Navigation.tsx';
 
 import {NavigationBar} from '../Commonness/NavigationBar';
@@ -44,7 +42,7 @@ const Main = ({navigation}) => {
         <View
           style={{
             position: 'absolute',
-            marginTop: 141,
+            marginTop: 151,
             left: 29,
           }}>
           <Text style={{fontSize: 20, fontFamily: 'Jua', fontWeight: 'bold'}}>
@@ -148,12 +146,6 @@ const Main = ({navigation}) => {
           </View>
         </View>
       </View>
-      <View>
-        <Button
-          onPress={() => CameraCapture(navigation)}
-          title="Go to Details"
-        />
-      </View>
       <NavigationBar navigation={navigation} />
     </>
   );
@@ -197,7 +189,7 @@ const Styles = StyleSheet.create({
     //메뉴상자 뷰
     width: 321,
     height: 306,
-    marginTop: 80,
+    marginTop: 90,
     flexDirection: 'row',
   },
 
