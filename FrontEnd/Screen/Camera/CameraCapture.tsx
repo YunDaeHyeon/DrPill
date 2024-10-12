@@ -4,6 +4,8 @@ import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {handleGAllery} from '../../Function/Navigation';
+// 파일 시스템 접근
+import RNFS from 'react-native-fs';
 
 const CameraCapture = ({navigation}) => {
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(
@@ -51,14 +53,43 @@ const CameraCapture = ({navigation}) => {
         return;
       }
       const photo = await camera.current.takePhoto(); // 사진 촬영
-      console.log('test', photo);
+      console.log('image', photo);
       if (photo) {
-        setCapturedPhoto(`file://${photo.path}`); // 사진의 경로를 상태에 저장
+        // 캡쳐된 이미지 경로 저장
+        const filePath = `file://${photo.path}`;
+        setCapturedPhoto(filePath); // 사진의 경로를 상태에 저장
+        // 서버 전송 (추후 서버로 전송할 것인지 물어보는 작업을 해야할 것 같음.)
+        await uploadPhoto(filePath);
       } else {
         console.error('Photo captured is undefined or empty.');
       }
     } catch (error) {
       console.error('Error capturing photo:', error);
+    }
+  };
+
+  // 서버로 이미지 전송
+  const uploadPhoto = async (filePath: string) => {
+    // 이미지를 전송하기 위해선 이미지의 uri과 관련된 메타데이터를 POST방식, Body에 전송해야함.
+    const payLoad = new FormData();
+    payLoad.append('photo', {
+      uri: filePath,
+      type: 'image/jpeg', // 이미지 타입
+      name: 'photo.jpg', // 서버로 보낼 이미지 이름
+    });
+    try {
+      const response = await fetch('http://flask-server/upload-image', {
+        method: 'POST',
+        body: payLoad,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const result = await response.json();
+      console.log('서버에서의 응답 : ', result);
+    } catch (error) {
+      console.error('서버로의 전송이 실패하였습니다. : ', error);
     }
   };
 
