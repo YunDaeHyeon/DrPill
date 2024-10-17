@@ -118,3 +118,11 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+// 환경 변수 추가 (react-native-config)
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+project.ext.envConfigFiles = [
+    developdebug: ".env",
+    developrelease: ".env"
+]
