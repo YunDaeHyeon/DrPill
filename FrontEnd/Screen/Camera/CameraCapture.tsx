@@ -1,9 +1,11 @@
-//카메라 화면입니다
+//카메라 화면입니다.
 
 import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {handleGAllery} from '../../Function/Navigation';
+import CameraModal from './CameraModal';
+import DetectedImages from './DetectedImage';
 // 파일 시스템 접근
 import RNFS from 'react-native-fs';
 
@@ -14,6 +16,10 @@ const CameraCapture = ({navigation}) => {
   const device = useCameraDevice('back'); // 초기 카메라 장치 설정
   const camera = useRef<Camera | null>(null); // 카메라 참조
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null); // 캡처된 사진의 URI 저장
+  const [modalVisible, setModalVisible] = useState(false); // 모달 상태 추가
+  const [photoPath, setPhotoPath] = useState<string | null>(null); // 사진 경로 상태 추가
+  // 검출된 사진(base64) 정보 저장
+  const [detectedImages, setDetectedImages] = useState([]); // 검출된 이미지 상태
 
   // 카메라 권한 확인 함수
   const checkCameraPermission = async () => {
@@ -35,36 +41,50 @@ const CameraCapture = ({navigation}) => {
 
   // 권한 상태에 따른 렌더링
   if (cameraPermission === null) {
-    return <Text>Checking camera permission...</Text>;
+    return <Text>카매라 권한 확인 중...</Text>;
   } else if (!cameraPermission) {
-    return <Text>Camera permission not granted.</Text>;
+    return <Text>카메라 권한이 부여되지 않았습니다.</Text>;
   }
 
   // 카메라 장치가 없는 경우
   if (!device) {
-    return <Text>No camera device available.</Text>;
+    return <Text>카메라 장치가 없습니다.</Text>;
   }
 
   // 사진 촬영 함수
   const takePhoto = async () => {
     try {
       if (!camera.current) {
-        console.error('Camera reference not available.', camera);
+        console.error('카메라가 유효하지 않습니다.', camera);
         return;
       }
       const photo = await camera.current.takePhoto(); // 사진 촬영
       console.log('image', photo);
+
       if (photo) {
         // 캡쳐된 이미지 경로 저장
         const filePath = `file://${photo.path}`;
         setCapturedPhoto(filePath); // 사진의 경로를 상태에 저장
-        // 서버 전송 (추후 서버로 전송할 것인지 물어보는 작업을 해야할 것 같음.)
-        await uploadPhoto(filePath);
+        setPhotoPath(filePath);
+        setModalVisible(true);
       } else {
-        console.error('Photo captured is undefined or empty.');
+        console.error('사진이 정의되지 않거나 비어있습니다');
       }
     } catch (error) {
-      console.error('Error capturing photo:', error);
+      console.error('사진 촬영 중 오류 발생', error);
+    }
+  };
+
+  const handleConfirm = async () => {
+    if (photoPath) {
+      try {
+        await uploadPhoto(photoPath);
+        setModalVisible(false); // 모달 닫기
+        setCapturedPhoto(null); // 캡처된 사진 초기화
+        setPhotoPath(null); // 사진 경로 초기화
+      } catch (error) {
+        console.error('사진 전송 중 오류가 발생하였습니다.', error);
+      }
     }
   };
 
@@ -77,25 +97,34 @@ const CameraCapture = ({navigation}) => {
       type: 'image/jpeg', // 이미지 타입
       name: 'photo.jpg', // 서버로 보낼 이미지 이름
     });
+
     try {
-      const response = await fetch('http://flask-server/upload-image', {
+      const response = await fetch('http://192.168.39.228:5001/upload-image', {
         method: 'POST',
         body: payLoad,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: {},
       });
 
-      const result = await response.json();
-      console.log('서버에서의 응답 : ', result);
+      // 응답이 JSON일 경우 처리
+      const contentType = response.headers.get('Content-Type');
+      if (contentType && contentType.includes('application/json')) {
+        const result = await response.json();
+        console.log('서버에서의 응답 : ', result);
+        const base64Images = result.images;
+        setDetectedImages(base64Images);
+      } else {
+        // JSON이 아닐 경우, 텍스트로 처리
+        const result = await response.text();
+        console.warn('서버에서 예상치 못한 응답을 받았습니다: ', result);
+      }
+
+      //상태 코드 체크
+      if (!response.ok) {
+        throw new Error('서버 오류: ${response.statusText}');
+      }
     } catch (error) {
       console.error('서버로의 전송이 실패하였습니다. : ', error);
     }
-  };
-
-  // 카메라 준비 완료 시 호출되는 함수
-  const onCameraReady = (ref: Camera) => {
-    camera.current = ref; // 카메라 컴포넌트에 대한 참조 설정
   };
 
   return (
@@ -118,9 +147,9 @@ const CameraCapture = ({navigation}) => {
               left: 0,
               right: 0,
             }}
+            ref={camera} // 카메라 참조 설정
             device={device}
             isActive={true}
-            ref={onCameraReady}
             photo={true}
             video={true}
           />
@@ -143,6 +172,14 @@ const CameraCapture = ({navigation}) => {
           <Image source={require('../../Image/shutter.png')} />
         </TouchableOpacity>
       </View>
+
+      <CameraModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onConfirm={handleConfirm}
+      />
+
+      <DetectedImages detectedImages={detectedImages} />
     </View>
   );
 };
