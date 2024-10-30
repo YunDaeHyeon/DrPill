@@ -21,7 +21,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-        return 'Hello World!'
+        return '기업연계 19조'
 
 @app.route('/upload-image', methods=['POST'])
 def detect_and_crop():
