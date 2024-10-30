@@ -74,5 +74,8 @@ yarn-error.log
 !.yarn/versions
 
 /AI/env
+/AI/bin
 /AI/.env
 /AI/__pycache__
+
+/FrontEnd/vendor
