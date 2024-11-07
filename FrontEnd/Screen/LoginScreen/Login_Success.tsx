@@ -2,6 +2,7 @@ import React from 'react';
 import {Alert, ToastAndroid} from 'react-native';
 import {login, getProfile} from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 import axios from 'axios';
 
 export const Guest_PopUp = async (): Promise<void> => {
@@ -34,7 +35,7 @@ export const Kakao_PopUp = async (navigation): Promise<void> => {
     // 서버에 사용자 정보 전송
     try {
       const response = await axios.post(
-        'http://192.168.37.235:3000/create-user',
+        Config.AUTH_SERVER_URL + '/create-user',
         {
           email: profile.email || '이메일 정보가 없습니다.',
           nickname,
@@ -45,7 +46,7 @@ export const Kakao_PopUp = async (navigation): Promise<void> => {
       if (response.status === 200 || response.status === 201) {
         // 로그인 성공 메시지 표시
         ToastAndroid.showWithGravity(
-          '로그인 성공! 메인 화면으로 이동해 주세요.',
+          '로그인 성공!',
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );
