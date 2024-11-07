@@ -99,11 +99,14 @@ const CameraCapture = ({navigation}) => {
     });
 
     try {
-      const response = await fetch('http://192.168.39.228:5001/upload-image', {
-        method: 'POST',
-        body: payLoad,
-        headers: {},
-      });
+      const response = await fetch(
+        'http://ec2-43-203-17-224.ap-northeast-2.compute.amazonaws.com:5000/upload-image',
+        {
+          method: 'POST',
+          body: payLoad,
+          headers: {},
+        },
+      );
 
       // 응답이 JSON일 경우 처리
       const contentType = response.headers.get('Content-Type');
