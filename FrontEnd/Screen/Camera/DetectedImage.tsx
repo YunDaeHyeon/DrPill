@@ -1,32 +1,46 @@
 import React from 'react';
-import {View, Image, Text, ScrollView} from 'react-native';
+import {View, Image, Text, StyleSheet, ScrollView} from 'react-native';
 
-const DetectedImages = ({detectedImages}) => {
-  if (!detectedImages || detectedImages.length === 0) {
-    return null; // 감지된 이미지가 없을 경우 렌더링하지 않음
-  }
+interface DetectedImagesProps {
+  detectedImages: {label: string; image: string}[]; // label과 image를 포함하는 배열
+}
 
+const DetectedImages: React.FC<DetectedImagesProps> = ({detectedImages}) => {
   return (
-    <ScrollView>
-      <View style={{padding: 16}}>
-        {detectedImages.map((item, index) => (
-          <View key={index} style={{marginBottom: 20}}>
-            <Text>{item.label}</Text>
-            <Image
-              source={{uri: `data:image/jpeg;base64,${item.image}`}} // Base64 이미지를 렌더링
-              style={{
-                width: 400,
-                height: 400,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              resizeMode="contain" // 이미지 비율 유지
-            />
-          </View>
-        ))}
-      </View>
+    <ScrollView style={styles.container}>
+      {detectedImages.map((detectedImage, index) => (
+        <View key={index} style={styles.imageContainer}>
+          <Image
+            source={{uri: `data:image/jpeg;base64,${detectedImage.image}`}}
+            style={styles.image}
+            resizeMode="contain"
+          />
+          <Text style={styles.label}>{detectedImage.label}</Text>
+        </View>
+      ))}
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    flex: 1,
+  },
+  imageContainer: {
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
+  label: {
+    marginTop: 5,
+    fontSize: 14,
+    color: '#333',
+  },
+});
 
 export default DetectedImages;
