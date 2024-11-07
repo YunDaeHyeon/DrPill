@@ -112,6 +112,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation project(':react-native-screens')
 
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
@@ -125,4 +126,5 @@ apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.grad
 project.ext.envConfigFiles = [
     developdebug: ".env",
     developrelease: ".env"
+
 ]

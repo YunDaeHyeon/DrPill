@@ -67,3 +67,8 @@ export const editSave = (navigation: NavigationProp<any>) => {
 export const handleGAllery = (navigation: NavigationProp<any>) => {
   navigation.dispatch(CommonActions.navigate('Gallery'));
 };
+
+//찍은 사진 감별
+export const handleDetectedImages = (navigation: NavigationProp<any>) => {
+  navigation.dispatch(CommonActions.navigate('DetectedImages'));
+};

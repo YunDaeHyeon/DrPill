@@ -16,6 +16,7 @@ import VitaminInfo from './Screen/MainScreen/Vitamin_List.tsx'; // 비타민 상
 import CameraCapture from './Screen/Camera/CameraCapture.tsx'; // 카메라 메인화면
 import FindMedicine from './Screen/Camera/Find_Medicine.tsx'; // 찾은 약 정보화면
 import Gallery from './Screen/Camera/Gallery.tsx'; //갤러리
+import DetectedImages from './Screen/Camera/DetectedImage.tsx'; //찍은 약 감지
 
 import PillLibrary from './Screen/Medicinie_Library/Pill_Library.tsx'; // 약 도서관 화면
 
@@ -108,6 +109,12 @@ const App = () => {
         <Stack.Screen
           name="Gallery"
           component={Gallery}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="DetectedImages"
+          component={DetectedImages}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
