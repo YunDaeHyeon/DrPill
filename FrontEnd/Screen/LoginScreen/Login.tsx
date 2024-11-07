@@ -28,7 +28,7 @@ const Login = () => {
             activeOpacity={0.7}
             onPress={() => {
               handleLoginSuccess(); // 첫 번째 함수 호출
-              Kakao_PopUp(navigation); // 두 번째 함수 호출
+              Kakao_PopUp(); // 두 번째 함수 호출
             }}>
             <Image
               source={require('../../Image/kakaologo.png')}
