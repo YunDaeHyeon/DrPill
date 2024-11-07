@@ -1,9 +1,31 @@
 //내 계정 화면입니다.
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 
 const MyPage = ({navigation}) => {
+  const [nickname, setNickname] = useState('로그인 실패');
+  const [profileImage, setProfileImage] = useState(
+    '../../Image/사람_프로필.png',
+  );
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const storedNickname = await AsyncStorage.getItem('nickname');
+        const storedProfileImage = await AsyncStorage.getItem('profileImage');
+
+        if (storedNickname) setNickname(storedNickname);
+        if (storedProfileImage) setProfileImage(storedProfileImage);
+      } catch (error) {
+        console.error('AsyncStorage에서 데이터 불러오기 실패:', error);
+      }
+    };
+
+    loadData();
+  }, []);
+
   return (
     <>
       <View style={Styles.container}>
@@ -13,11 +35,15 @@ const MyPage = ({navigation}) => {
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
-                source={require('../../Image/사람_프로필.png')}
+                source={
+                  profileImage.startsWith('http')
+                    ? {uri: profileImage}
+                    : require('../../Image/사람_프로필.png')
+                }
                 style={Styles.profile_image}
               />
             </View>
-            <Text style={Styles.user_name}>봉가은</Text>
+            <Text style={Styles.user_name}>{nickname}</Text>
           </View>
         </View>
 
