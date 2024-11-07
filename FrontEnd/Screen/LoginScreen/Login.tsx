@@ -6,7 +6,7 @@ import {Kakao_PopUp, Guest_PopUp} from './Login_Success';
 const Login = () => {
   const navigation = useNavigation(); // navigation 객체를 가져옵니다.
 
-  // 버튼 클릭 시 네비게이  션으로 Main으로 이동하는 함수
+  // 버튼 클릭 시 네비게이션으로 Main으로 이동하는 함수
   const handleLoginSuccess = () => {
     navigation.navigate('Main'); // Main 화면으로 이동
   };
