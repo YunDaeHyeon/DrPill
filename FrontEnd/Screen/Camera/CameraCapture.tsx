@@ -78,7 +78,7 @@ const CameraCapture = ({navigation}) => {
       name: 'photo.jpg', // 서버로 보낼 이미지 이름
     });
     try {
-      const response = await fetch('http://flask-server/upload-image', {
+      const response = await fetch('http://192.168.41.17:5000/upload-image', {
         method: 'POST',
         body: payLoad,
         headers: {
