@@ -21,7 +21,7 @@ import {
 import {NavigationBar} from '../Commonness/NavigationBar';
 
 const Main = ({navigation}) => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(''); //text지우면 안됨
 
   return (
     <>

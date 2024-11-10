@@ -1,38 +1,125 @@
+//약 구별 화면입니다
 import React from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
-import DetectedImages from './DetectedImage';
+import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {goMain} from '../../Function/Navigation.tsx';
 
-interface DetectedImageType {
-  label: string;
-  image: string;
-}
-
-interface MedicineCheckProps {
-  detectedImages: DetectedImageType[];
-}
-
-const MedicineCheck: React.FC<MedicineCheckProps> = ({detectedImages}) => {
-  if (!detectedImages || detectedImages.length === 0) return null; // 이미지가 없으면 아무것도 렌더링하지 않음
+const MedicineCheck = ({navigation, route}: any) => {
+  const {images} = route?.params || {images: []};
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.grid}>
-        {detectedImages.map((item, index) => (
-          <DetectedImages key={index} label={item.label} image={item.image} />
-        ))}
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.back} onPress={() => goMain(navigation)}>
+        <Image source={require('../../Image/홈.png')} />
+      </TouchableOpacity>
+      <View style={styles.row1}>
+        <TouchableOpacity>
+          <View style={styles.Medicine1}>
+            {images?.[0] && (
+              <Image
+                source={{uri: `data:image/jpeg;base64,${images[0].image}`}}
+                style={styles.image}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <View style={styles.Medicine2}>
+            {images?.[1] && (
+              <Image
+                source={{uri: `data:image/jpeg;base64,${images[1].image}`}}
+                style={styles.image}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+
+      <View style={styles.row2}>
+        <TouchableOpacity>
+          <View style={styles.Medicine3}>
+            {images?.[2] && (
+              <Image
+                source={{uri: `data:image/jpeg;base64,${images[2].image}`}}
+                style={styles.image}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <View style={styles.Medicine4}>
+            {images?.[3] && (
+              <Image
+                source={{uri: `data:image/jpeg;base64,${images[3].image}`}}
+                style={styles.image}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
+    backgroundColor: 'white',
   },
-  grid: {
+  row1: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
+    width: '90%',
+    marginLeft: 20,
+    marginTop: 220,
+    backgroundColor: 'white',
+  },
+  row2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginLeft: 20,
+    marginTop: 60,
+    backgroundColor: 'white',
+  },
+  Medicine1: {
+    width: 150,
+    height: 150,
+    backgroundColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  Medicine2: {
+    width: 150,
+    height: 150,
+    backgroundColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  Medicine3: {
+    width: 150,
+    height: 150,
+    backgroundColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  Medicine4: {
+    width: 150,
+    height: 150,
+    backgroundColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+  },
+  back: {
+    position: 'absolute',
+    left: 30,
+    marginTop: 70,
   },
 });
 
