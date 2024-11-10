@@ -15,10 +15,10 @@ import DetectedImages from './DetectedImage';
 // 파일 시스템 접근
 import RNFS from 'react-native-fs';
 
-const backhome = (navigation: any) => {
+const backHome = (navigation: any) => {
   navigation.reset({
     index: 2,
-    routes: [{name: 'Main'}], // 'CameraCapture' 화면으로 이동
+    routes: [{name: 'Main'}], // CameraCapture 화면으로 이동
   });
 };
 
@@ -175,7 +175,7 @@ const CameraCapture = ({navigation}) => {
           />
           <TouchableOpacity
             style={styles.back_touch_view}
-            onPress={() => backhome(navigation)}>
+            onPress={() => backHome(navigation)}>
             <Image source={require('../../Image/back.png')} />
           </TouchableOpacity>
 
