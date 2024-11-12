@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 
 const MyPage = ({navigation}) => {
-  const [nickname, setNickname] = useState('로그인 실패');
+  const [nickname, setNickname] = useState('');
   const [profileImage, setProfileImage] = useState(
     '../../Image/사람_프로필.png',
   );
