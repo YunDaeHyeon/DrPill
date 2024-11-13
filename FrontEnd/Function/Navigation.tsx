@@ -72,3 +72,8 @@ export const handleGAllery = (navigation: NavigationProp<any>) => {
 export const handleDetectedImages = (navigation: NavigationProp<any>) => {
   navigation.dispatch(CommonActions.navigate('DetectedImages'));
 };
+
+//찍은약
+export const handleMedicineCheck = (navigation: NavigationProp<any>) => {
+  navigation.dispatch(CommonActions.navigate('MedicineCheck'));
+};

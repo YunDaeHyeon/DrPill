@@ -1,46 +1,41 @@
-import React from 'react';
-import {View, Image, Text, StyleSheet, ScrollView} from 'react-native';
+import React, {useEffect} from 'react';
+import {Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-interface DetectedImagesProps {
-  detectedImages: {label: string; image: string}[]; // label과 image를 포함하는 배열
+interface DetectedImageProps {
+  detectedImages: Array<{image: string; label: string}> | null;
 }
 
-const DetectedImages: React.FC<DetectedImagesProps> = ({detectedImages}) => {
-  return (
-    <ScrollView style={styles.container}>
-      {detectedImages.map((detectedImage, index) => (
-        <View key={index} style={styles.imageContainer}>
-          <Image
-            source={{uri: `data:image/jpeg;base64,${detectedImage.image}`}}
-            style={styles.image}
-            resizeMode="contain"
-          />
-          <Text style={styles.label}>{detectedImage.label}</Text>
-        </View>
-      ))}
-    </ScrollView>
-  );
+const cameraOn = (navigation: any) => {
+  navigation.reset({
+    index: 12,
+    routes: [{name: 'CameraCapture'}], // 'CameraCapture' 화면으로 이동
+  });
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    flex: 1,
-  },
-  imageContainer: {
-    marginBottom: 15,
-    alignItems: 'center',
-  },
-  image: {
-    width: 150,
-    height: 150,
-    borderRadius: 10,
-  },
-  label: {
-    marginTop: 5,
-    fontSize: 14,
-    color: '#333',
-  },
-});
+const DetectedImages: React.FC<DetectedImageProps> = ({detectedImages}) => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (!detectedImages) {
+      Alert.alert('이미지 검출 실패', '이미지가 검출되지 않았습니다.', [
+        {
+          text: '다시 찍기',
+          onPress: () => cameraOn(navigation),
+        },
+      ]);
+    } else if (detectedImages.length > 4) {
+      Alert.alert('알림', '약은 최대 4개까지만 검출 가능합니다.', [
+        {
+          text: '확인',
+          onPress: () => cameraOn(navigation),
+        },
+      ]);
+    } else if (detectedImages.length > 0) {
+      //MedicineCheck로 이동
+      navigation.navigate('MedicineCheck', {images: detectedImages});
+    }
+  }, [detectedImages, navigation]);
+};
 
 export default DetectedImages;

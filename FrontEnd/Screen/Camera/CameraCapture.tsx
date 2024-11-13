@@ -1,12 +1,26 @@
 //카메라 화면입니다.
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Modal,
+} from 'react-native';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {handleGAllery} from '../../Function/Navigation';
 import CameraModal from './CameraModal';
 import DetectedImages from './DetectedImage';
 // 파일 시스템 접근
 import RNFS from 'react-native-fs';
+
+const backHome = (navigation: any) => {
+  navigation.reset({
+    index: 2,
+    routes: [{name: 'Main'}], // CameraCapture 화면으로 이동
+  });
+};
 
 const CameraCapture = ({navigation}) => {
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(
@@ -19,6 +33,8 @@ const CameraCapture = ({navigation}) => {
   const [photoPath, setPhotoPath] = useState<string | null>(null); // 사진 경로 상태 추가
   // 검출된 사진(base64) 정보 저장
   const [detectedImages, setDetectedImages] = useState([]); // 검출된 이미지 상태
+  const [loading, setLoading] = useState(false); // 로딩
+  const [showModal, setShowModal] = useState(true); // 팝업 표시 여부 상태 추가
 
   // 카메라 권한 확인 함수
   const checkCameraPermission = async () => {
@@ -40,7 +56,7 @@ const CameraCapture = ({navigation}) => {
 
   // 권한 상태에 따른 렌더링
   if (cameraPermission === null) {
-    return <Text>카매라 권한 확인 중...</Text>;
+    return <Text>카메라 권한 확인 중...</Text>;
   } else if (!cameraPermission) {
     return <Text>카메라 권한이 부여되지 않았습니다.</Text>;
   }
@@ -96,6 +112,7 @@ const CameraCapture = ({navigation}) => {
       type: 'image/jpeg', // 이미지 타입
       name: 'photo.jpg', // 서버로 보낼 이미지 이름
     });
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -124,6 +141,7 @@ const CameraCapture = ({navigation}) => {
       if (!response.ok) {
         throw new Error('서버 오류: ${response.statusText}');
       }
+      setLoading(false);
     } catch (error) {
       console.error('서버로의 전송이 실패하였습니다. : ', error);
     }
@@ -157,7 +175,7 @@ const CameraCapture = ({navigation}) => {
           />
           <TouchableOpacity
             style={styles.back_touch_view}
-            onPress={() => navigation.goBack()}>
+            onPress={() => backHome(navigation)}>
             <Image source={require('../../Image/back.png')} />
           </TouchableOpacity>
 
@@ -179,7 +197,32 @@ const CameraCapture = ({navigation}) => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onConfirm={handleConfirm}
+        loading={loading} // 로딩 상태 전달
       />
+
+      <Modal
+        visible={showModal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowModal(false)}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalText}>촬영 Tip</Text>
+            <Text style={styles.modalMessage}>
+              1. 밝은 곳에서 촬영해 주세요 {'\n'}
+              2. 초점을 잘 맞춰주세요 {'\n'}
+              3. 약의 글씨가 보이도록 촬영해 주세요{'\n'}
+              4. 약의 글씨가 거꾸로 되면 안 돼요!❌
+            </Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setShowModal(false)} // 버튼 클릭 시 모달 닫기
+            >
+              <Text style={styles.modalButtonText}>네, 이해했습니다.</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <DetectedImages detectedImages={detectedImages} />
     </View>
@@ -243,6 +286,50 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 530, // 고정된 높이
     position: 'absolute',
+  },
+
+  caution_message: {
+    position: 'absolute',
+    //textAlign: 'center',
+    width: '120%',
+    marginTop: '1%',
+    marginLeft: -30,
+    color: 'black',
+    fontSize: 20,
+  },
+
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalMessage: {
+    fontSize: 16,
+    textAlign: 'left',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#3499E2',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 
