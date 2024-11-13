@@ -7,7 +7,7 @@ import { UserEntity } from './entities/user.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),  // 환경 변수 설정
+    ConfigModule.forRoot({ isGlobal: true }), // 환경 변수 설정
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -18,7 +18,7 @@ import { UserEntity } from './entities/user.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        synchronize: true, 
+        synchronize: true,
         entities: [UserEntity], // Entity 추가
       }),
     }),
