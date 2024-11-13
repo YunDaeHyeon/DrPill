@@ -2,6 +2,7 @@ import cv2, os
 from flask import Flask, request, jsonify
 from io import BytesIO
 import base64
+import math
 # 배경제거
 from rembg import remove
 from PIL import Image
@@ -21,6 +22,43 @@ CLIENT = InferenceHTTPClient(
 
 app = Flask(__name__)
 
+# 색상 이름 및 RGB 값 매핑
+COLOR_NAMES = {
+    "빨강": (0, 0, 255),
+    "주황": (0, 165, 255),
+    "노랑": (0, 255, 255),
+    "연두": (0, 255, 0),
+    "초록": (0, 128, 0),
+    "청록": (0, 255, 255),
+    "파랑": (255, 0, 0),
+    "남색": (128, 0, 128),
+    "보라": (255, 0, 255),
+    "자주": (255, 0, 255),
+    "갈색": (42, 42, 165),
+    "회색": (128, 128, 128),
+    "검정": (0, 0, 0),
+    "흰색": (255, 255, 255),
+    "투명": (0, 0, 0)
+}
+
+# 색상 매핑
+def select_color(bgr_value):
+    min_distance = float('inf')  # 초기 최소 거리값 무한
+    select_color_name = None
+
+    for color_name, rgb_value in COLOR_NAMES.items():
+        distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(bgr_value, rgb_value)]))
+        if distance < min_distance:
+            min_distance = distance
+            select_color_name = color_name
+
+    return select_color_name
+
+# 평균 색상 산출
+def get_average_color(image, mask=None):
+    mean_color = cv2.mean(image, mask=mask)[:3]
+    return tuple(int(val) for val in mean_color)
+
 @app.route('/')
 def hello_world():
         return '기업연계 19조'
@@ -34,7 +72,7 @@ def detect_and_crop():
 
     # 모델 예측 호출
     result = CLIENT.infer(image, model_id="wku-drug-detection/3")
-    # result에 'predicitions' 필드가 있는지, 그 값이 존재하는지 확인한다.
+    # result에 'predictions' 필드가 있는지, 그 값이 존재하는지 확인한다.
     if 'predictions' in result and isinstance(result['predictions'], list):
         predictions = result['predictions']
 
@@ -67,22 +105,30 @@ def detect_and_crop():
             # 바운딩 박스 크기로 자른 이미지의 배경 제거
             background_crop_img = remove(cropped_img)
 
+            # RGBA 이미지를 BGR로 변환 (색상 추출을 위한 준비)
+            background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
+
+            # 평균 색상 계산
+            average_color = get_average_color(background_cropped_img_cv)
+
+            # BGR 값으로 색상 이름 탐색
+            color_name = select_color(average_color)
+
             # 잘라낸 이미지를 base64로 인코딩
             img_byte_io = BytesIO()
             background_crop_img.save(img_byte_io, format='JPEG')
             img_byte_io.seek(0)
 
-            # 잘라낸 이미지를 새로운 파일로 저장
-            # label = 객체의 클래스, idx = 검출된 각 객체에 대한 고유한 번호 (사진이 중복되지 않기 위함)
-            # cropped_img.save(f"./cropped_{label}_{idx}.jpg")
-
             # 전달을 위해 인코딩 변환
             img_base64 = base64.b64encode(img_byte_io.getvalue()).decode('utf-8')
 
-            # 이미지를 리스트에 추가
+            # 이미지를 리스트에 추가 (색상 정보도 함께 포함)
             base64_images.append({
                 "label": label,
                 "image": img_base64,
+                "color": color_name,  # 색상 이름 추가
+                "shape": "원형",
+                "descript": "WKU"
             })
     
         # 감지된 객체 출력
@@ -98,10 +144,7 @@ def detect_and_crop():
             print(detections)
     else:
         print("알 수 없는 오류 발생. (predictions 값이 존재하지 않습니다.)")
-        jsonify({"message": "이미지를 처리하는 중 오류가 발생하였습니다."}), 500
-
-
-
+        return jsonify({"message": "이미지를 처리하는 중 오류가 발생하였습니다."}), 500
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000, debug=True)
