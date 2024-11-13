@@ -1,11 +1,50 @@
 //약 도서관 화면입니다.
-import React from 'react';
-import {StyleSheet, Image, View, Text} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  ScrollView,
+} from 'react-native';
 import {PillBox} from '../../Function/Like';
-
 import {NavigationBar} from '../Commonness/NavigationBar';
 
 const PillLibrary = ({navigation}) => {
+  const [isOpen1, setOpen1] = useState(false);
+  const [isOpen2, setOpen2] = useState(false);
+  const [isOpen3, setOpen3] = useState(false);
+  const [isOpen4, setOpen4] = useState(false);
+  const [isOpen5, setOpen5] = useState(false);
+  const [isOpen6, setOpen6] = useState(false);
+
+  const libraryModal = modalNumber => {
+    switch (modalNumber) {
+      case 1:
+        setOpen1(!isOpen1);
+        break;
+      case 2:
+        setOpen2(!isOpen2);
+        break;
+      case 3:
+        setOpen3(!isOpen3);
+        break;
+      case 4:
+        setOpen4(!isOpen4);
+        break;
+      case 5:
+        setOpen5(!isOpen5);
+        break;
+      case 6:
+        setOpen6(!isOpen6);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <View style={Styles.container}>
@@ -13,56 +52,398 @@ const PillLibrary = ({navigation}) => {
 
         <View style={Styles.library_contain_view}>
           <View style={Styles.libraryview_1}>
-            <View style={Styles.libary_contain}>
+            <TouchableOpacity
+              style={Styles.library_contain}
+              onPress={() => libraryModal(1)}>
               <Image
                 source={require('../../Image/알약.png')}
                 style={Styles.like_medicine_image}
               />
               <PillBox />
-            </View>
-            <View style={Styles.library_contain3}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={Styles.library_contain3}
+              onPress={() => libraryModal(2)}>
               <Image
                 source={require('../../Image/알약.png')}
                 style={Styles.like_medicine_image}
               />
               <PillBox />
-            </View>
-            <View style={Styles.library_contain3}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={Styles.library_contain3}
+              onPress={() => libraryModal(3)}>
               <Image
                 source={require('../../Image/알약.png')}
                 style={Styles.like_medicine_image}
               />
               <PillBox />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <View style={Styles.libraryview_2}>
-            <View style={Styles.library_contain2}>
+            <TouchableOpacity
+              style={Styles.library_contain2}
+              onPress={() => libraryModal(4)}>
               <Image
                 source={require('../../Image/알약.png')}
                 style={Styles.like_medicine_image}
               />
               <PillBox />
-            </View>
-            <View style={Styles.library_contain4}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={Styles.library_contain4}
+              onPress={() => libraryModal(5)}>
               <Image
                 source={require('../../Image/알약.png')}
                 style={Styles.like_medicine_image}
               />
               <PillBox />
-            </View>
-            <View style={Styles.library_contain4}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={Styles.library_contain4}
+              onPress={() => libraryModal(6)}>
               <Image
                 source={require('../../Image/알약.png')}
                 style={Styles.like_medicine_image}
               />
               <PillBox />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
 
       <NavigationBar navigation={navigation} />
+
+      <Modal
+        transparent={true}
+        visible={isOpen1}
+        onRequestClose={() => libraryModal(1)}>
+        <View style={Styles.modalContainer}>
+          <View style={Styles.modalContent}>
+            <Text style={Styles.library_modalTitle}>약 정보1</Text>
+
+            <ScrollView style={Styles.scrollview_contain}>
+              <Text style={Styles.library_modalText}>제품명</Text>
+              <Image
+                source={require('../../Image/타이레놀_제품명.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>효능</Text>
+              <Image
+                source={require('../../Image/타이레놀_효능.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>사용법</Text>
+              <Image
+                source={require('../../Image/타이레놀_사용법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>주의사항</Text>
+              <Image
+                source={require('../../Image/타이레놀_주의사항.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>부작용</Text>
+              <Image
+                source={require('../../Image/타이레놀_부작용.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>보관법</Text>
+              <Image
+                source={require('../../Image/타이레놀_보관법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>이미지</Text>
+              <Image
+                source={require('../../Image/타이레놀.png')}
+                style={Styles.librarymodal_image}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => libraryModal(1)}
+              style={Styles.closeButton}>
+              <Text style={Styles.closeButtonText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        visible={isOpen2}
+        onRequestClose={() => libraryModal(2)}>
+        <View style={Styles.modalContainer}>
+          <View style={Styles.modalContent}>
+            <Text style={Styles.library_modalTitle}>약 정보2 </Text>
+
+            <ScrollView style={Styles.scrollview_contain}>
+              <Text style={Styles.library_modalText}>제품명</Text>
+              <Image
+                source={require('../../Image/타이레놀_제품명.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>효능</Text>
+              <Image
+                source={require('../../Image/타이레놀_효능.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>사용법</Text>
+              <Image
+                source={require('../../Image/타이레놀_사용법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>주의사항</Text>
+              <Image
+                source={require('../../Image/타이레놀_주의사항.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>부작용</Text>
+              <Image
+                source={require('../../Image/타이레놀_부작용.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>보관법</Text>
+              <Image
+                source={require('../../Image/타이레놀_보관법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>이미지</Text>
+              <Image
+                source={require('../../Image/타이레놀.png')}
+                style={Styles.librarymodal_image}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => libraryModal(2)}
+              style={Styles.closeButton}>
+              <Text style={Styles.closeButtonText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        visible={isOpen3}
+        onRequestClose={() => libraryModal(3)}>
+        <View style={Styles.modalContainer}>
+          <View style={Styles.modalContent}>
+            <Text style={Styles.library_modalTitle}>약 정보3</Text>
+
+            <ScrollView style={Styles.scrollview_contain}>
+              <Text style={Styles.library_modalText}>제품명</Text>
+              <Image
+                source={require('../../Image/타이레놀_제품명.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>효능</Text>
+              <Image
+                source={require('../../Image/타이레놀_효능.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>사용법</Text>
+              <Image
+                source={require('../../Image/타이레놀_사용법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>주의사항</Text>
+              <Image
+                source={require('../../Image/타이레놀_주의사항.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>부작용</Text>
+              <Image
+                source={require('../../Image/타이레놀_부작용.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>보관법</Text>
+              <Image
+                source={require('../../Image/타이레놀_보관법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>이미지</Text>
+              <Image
+                source={require('../../Image/타이레놀.png')}
+                style={Styles.librarymodal_image}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => libraryModal(3)}
+              style={Styles.closeButton}>
+              <Text style={Styles.closeButtonText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        visible={isOpen4}
+        onRequestClose={() => libraryModal(4)}>
+        <View style={Styles.modalContainer}>
+          <View style={Styles.modalContent}>
+            <Text style={Styles.library_modalTitle}>약 정보4 </Text>
+
+            <ScrollView style={Styles.scrollview_contain}>
+              <Text style={Styles.library_modalText}>제품명</Text>
+              <Image
+                source={require('../../Image/타이레놀_제품명.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>효능</Text>
+              <Image
+                source={require('../../Image/타이레놀_효능.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>사용법</Text>
+              <Image
+                source={require('../../Image/타이레놀_사용법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>주의사항</Text>
+              <Image
+                source={require('../../Image/타이레놀_주의사항.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>부작용</Text>
+              <Image
+                source={require('../../Image/타이레놀_부작용.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>보관법</Text>
+              <Image
+                source={require('../../Image/타이레놀_보관법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>이미지</Text>
+              <Image
+                source={require('../../Image/타이레놀.png')}
+                style={Styles.librarymodal_image}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => libraryModal(4)}
+              style={Styles.closeButton}>
+              <Text style={Styles.closeButtonText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        visible={isOpen5}
+        onRequestClose={() => libraryModal(5)}>
+        <View style={Styles.modalContainer}>
+          <View style={Styles.modalContent}>
+            <Text style={Styles.library_modalTitle}>약 정보5 </Text>
+
+            <ScrollView style={Styles.scrollview_contain}>
+              <Text style={Styles.library_modalText}>제품명</Text>
+              <Image
+                source={require('../../Image/타이레놀_제품명.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>효능</Text>
+              <Image
+                source={require('../../Image/타이레놀_효능.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>사용법</Text>
+              <Image
+                source={require('../../Image/타이레놀_사용법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>주의사항</Text>
+              <Image
+                source={require('../../Image/타이레놀_주의사항.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>부작용</Text>
+              <Image
+                source={require('../../Image/타이레놀_부작용.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>보관법</Text>
+              <Image
+                source={require('../../Image/타이레놀_보관법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>이미지</Text>
+              <Image
+                source={require('../../Image/타이레놀.png')}
+                style={Styles.librarymodal_image}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => libraryModal(5)}
+              style={Styles.closeButton}>
+              <Text style={Styles.closeButtonText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        visible={isOpen6}
+        onRequestClose={() => libraryModal(6)}>
+        <View style={Styles.modalContainer}>
+          <View style={Styles.modalContent}>
+            <Text style={Styles.library_modalTitle}>약 정보6 </Text>
+
+            <ScrollView style={Styles.scrollview_contain}>
+              <Text style={Styles.library_modalText}>제품명</Text>
+              <Image
+                source={require('../../Image/타이레놀_제품명.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>효능</Text>
+              <Image
+                source={require('../../Image/타이레놀_효능.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>사용법</Text>
+              <Image
+                source={require('../../Image/타이레놀_사용법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>주의사항</Text>
+              <Image
+                source={require('../../Image/타이레놀_주의사항.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>부작용</Text>
+              <Image
+                source={require('../../Image/타이레놀_부작용.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>보관법</Text>
+              <Image
+                source={require('../../Image/타이레놀_보관법.png')}
+                style={Styles.librarymodal_image}
+              />
+              <Text style={Styles.library_modalText}>이미지</Text>
+              <Image
+                source={require('../../Image/타이레놀.png')}
+                style={Styles.librarymodal_image}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              onPress={() => libraryModal(6)}
+              style={Styles.closeButton}>
+              <Text style={Styles.closeButtonText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -93,7 +474,7 @@ const Styles = StyleSheet.create({
     width: 145,
   },
 
-  libary_contain: {
+  library_contain: {
     //약도서관 박스
     width: 143,
     height: 143,
@@ -166,6 +547,64 @@ const Styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
+  },
+  modalContainer: {
+    //모달 컨테이너
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+
+  modalContent: {
+    //모달
+    width: '90%',
+    height: '90%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  library_modalTitle: {
+    //모달 제목
+    color: 'black',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  closeButton: {
+    //닫는 버튼
+    marginTop: '188%',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#3f88bf',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    //닫는 버튼 텍스트
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  library_modalText: {
+    //모달 텍스트
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+
+  scrollview_contain: {
+    //스크롤뷰 컨테인
+    position: 'absolute',
+    marginTop: '25%',
+    backgroundColor: 'white',
+    width: '105%',
+    height: '84%',
+  },
+
+  librarymodal_image: {
+    //사진
+    marginLeft: 10,
+    width: '95%',
   },
 });
 
