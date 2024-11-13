@@ -38,7 +38,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
               style={{transform: [{scale: 1.5}]}}
             />
             <Text style={{color: 'white', fontWeight: 'bold', marginTop: 17}}>
-              로딩 중...
+              1분 정도 기다려주세요...
             </Text>
           </View>
         ) : (
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     position: 'absolute',
     marginTop: '98%',
-    marginLeft: '44%',
+    marginLeft: '33%',
   },
 
   camera_modalcontain: {
