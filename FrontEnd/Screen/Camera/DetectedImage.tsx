@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Alert, ToastAndroid} from 'react-native';
+import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 interface DetectedImageProps {

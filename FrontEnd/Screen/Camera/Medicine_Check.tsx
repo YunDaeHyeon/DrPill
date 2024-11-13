@@ -1,6 +1,6 @@
 //약 구별 화면입니다
 import React from 'react';
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {goMain} from '../../Function/Navigation.tsx';
 
 const MedicineCheck = ({navigation, route}: any) => {
@@ -11,6 +11,7 @@ const MedicineCheck = ({navigation, route}: any) => {
       <TouchableOpacity style={styles.back} onPress={() => goMain(navigation)}>
         <Image source={require('../../Image/홈.png')} />
       </TouchableOpacity>
+
       <View style={styles.row1}>
         <TouchableOpacity>
           <View style={styles.Medicine1}>
@@ -58,6 +59,7 @@ const MedicineCheck = ({navigation, route}: any) => {
           </View>
         </TouchableOpacity>
       </View>
+      <Text>상세정보를 확인을 위해 이미지를 선택해주세요</Text>
     </View>
   );
 };
