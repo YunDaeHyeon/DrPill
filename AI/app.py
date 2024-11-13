@@ -1,5 +1,6 @@
 import cv2, os
 from flask import Flask, request, jsonify
+import numpy as np
 from io import BytesIO
 import base64
 import math
@@ -102,21 +103,30 @@ def detect_and_crop():
             # 이미지를 바운딩 박스 크기로 자르기
             cropped_img = image.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
 
-            # 바운딩 박스 크기로 자른 이미지의 배경 제거
-            background_crop_img = remove(cropped_img)
+            # 잘라낸 이미지를 새로운 파일로 저장 (이때 저장되는 이미지 형식은 'RGBA'이다.)
+            background_crop_img = remove(np.array(cropped_img))
+            background_crop_img = Image.fromarray(background_crop_img)
 
-            # RGBA 이미지를 BGR로 변환 (색상 추출을 위한 준비)
+            # RGBA 이미지에서 알파 채널 추출 (배경을 제외한 부분만)
+            rgba_image = np.array(background_crop_img)
+            alpha_channel = rgba_image[:, :, 3]  # 알파 채널 추출
+
+            # 투명도가 있는 영역을 제외하는 마스크 생성 (투명도가 0인 영역만 제외)
+            mask = alpha_channel > 0
+
+            # BGR 이미지로 변환 (RGBA에서 BGR로)
             background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
 
-            # 평균 색상 계산
-            average_color = get_average_color(background_cropped_img_cv)
+            # 평균 색상 계산 (배경 제외)
+            average_color = get_average_color(background_cropped_img_cv, mask.astype(np.uint8) * 255)
 
             # BGR 값으로 색상 이름 탐색
             color_name = select_color(average_color)
 
+
             # 잘라낸 이미지를 base64로 인코딩
             img_byte_io = BytesIO()
-            background_crop_img.save(img_byte_io, format='JPEG')
+            cropped_img.save(img_byte_io, format='PNG')
             img_byte_io.seek(0)
 
             # 전달을 위해 인코딩 변환
@@ -147,4 +157,4 @@ def detect_and_crop():
         return jsonify({"message": "이미지를 처리하는 중 오류가 발생하였습니다."}), 500
 
 if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5000, debug=True)
+        app.run(host='0.0.0.0', port=5001, debug=True)
