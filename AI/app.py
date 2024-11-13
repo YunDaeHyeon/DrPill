@@ -2,6 +2,8 @@ import cv2, os
 from flask import Flask, request, jsonify
 from io import BytesIO
 import base64
+# 배경제거
+from rembg import remove
 from PIL import Image
 # 환경변수
 from dotenv import load_dotenv
@@ -62,9 +64,12 @@ def detect_and_crop():
             # 이미지를 바운딩 박스 크기로 자르기
             cropped_img = image.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
 
+            # 바운딩 박스 크기로 자른 이미지의 배경 제거
+            background_crop_img = remove(cropped_img)
+
             # 잘라낸 이미지를 base64로 인코딩
             img_byte_io = BytesIO()
-            cropped_img.save(img_byte_io, format='JPEG')
+            background_crop_img.save(img_byte_io, format='JPEG')
             img_byte_io.seek(0)
 
             # 잘라낸 이미지를 새로운 파일로 저장
