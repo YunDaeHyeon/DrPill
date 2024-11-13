@@ -2,7 +2,7 @@ import os
 import numpy as np
 import cv2
 import math
-# 배경제거
+# 배경 제거
 from rembg import remove
 
 # 객체 검출 모델
@@ -60,6 +60,64 @@ def get_average_color(image, mask=None):
     mean_color = cv2.mean(image, mask=mask)[:3]
     return tuple(int(val) for val in mean_color)
 
+def detect_shape(image):
+    # 이미지 복사본 생성
+    image_copy = image.copy()
+
+    # 그레이스케일 변환
+    imgray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # 가우시안 블러 적용 (노이즈 제거 목적)
+    blur = cv2.GaussianBlur(imgray, (5, 5), 0)
+
+    # 스레시홀드 적용하여 이진화 이미지 생성
+    _, thr = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY_INV)
+
+    # 컨투어 찾기 (이미지 내 객체 기준)
+    contours, _ = cv2.findContours(thr, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for cont in contours:
+        # 작은 노이즈나 불필요한 작은 컨투어 무시
+        if cv2.contourArea(cont) < 100:
+            continue
+
+        # 근사화된 컨투어 구하기
+        epsilon = 0.02 * cv2.arcLength(cont, True)
+        approx = cv2.approxPolyDP(cont, epsilon, True)
+
+        # 컨투어 그리기
+        cv2.drawContours(image_copy, [approx], -1, (0, 255, 0), 3)
+
+        # 꼭지점 수에 따라 모양 판단
+        vertex_count = len(approx)
+        shape_label = "Unknown"
+        if vertex_count == 3:
+            shape_label = "Triangle"
+        elif vertex_count == 4:
+            # 사각형 판단 (정사각형 또는 직사각형)
+            x, y, w, h = cv2.boundingRect(approx)
+            aspect_ratio = w / float(h)
+            shape_label = "Square" if 0.95 <= aspect_ratio <= 1.05 else "Rectangle"
+        elif vertex_count == 5:
+            shape_label = "Pentagon"
+        elif vertex_count == 6:
+            shape_label = "Hexagon"
+        elif vertex_count > 6:
+            shape_label = "Circle"
+
+        # 컨투어의 중심점 찾기
+        mmt = cv2.moments(cont)
+        if mmt['m00'] != 0:
+            cx = int(mmt['m10'] / mmt['m00'])
+            cy = int(mmt['m01'] / mmt['m00'])
+            # 중심점에 도형 이름 출력
+            cv2.putText(image_copy, shape_label, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
+    # 결과 표시
+    cv2.imshow('Detected Shapes', image_copy)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
 # result에 'predictions' 필드가 있는지, 그 값이 존재하는지 확인한다.
 if 'predictions' in result and isinstance(result['predictions'], list):
     predictions = result['predictions']
@@ -98,22 +156,26 @@ if 'predictions' in result and isinstance(result['predictions'], list):
         # RGBA 모드인 이미지를 유지하여 저장
         background_crop_img.save(f"./cropped_{label}_{idx}.png")
 
-        # 배경제거된 이미지 색상 분석 (RGBA -> BGR로 변환)
-        background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img), cv2.COLOR_RGBA2BGR)
-
-        # 투명한 부분을 마스킹하기 위해 알파 채널을 사용
+        # RGBA 이미지에서 알파 채널 추출 (배경을 제외한 부분만)
         rgba_image = np.array(background_crop_img)
-        alpha_channel = rgba_image[:, :, 3]  # 알파 채널 추출 (투명도)
+        alpha_channel = rgba_image[:, :, 3]  # 알파 채널 추출
 
-        # 투명한 부분을 배제하는 마스크 생성 (투명도가 0인 영역은 검은색)
-        mask = alpha_channel > 0  # 투명도가 0보다 큰 영역만 유지 (True)
+        # 투명도가 있는 영역을 제외하는 마스크 생성 (투명도가 0인 영역만 제외)
+        mask = alpha_channel > 0
+
+        # BGR 이미지로 변환 (RGBA에서 BGR로)
+        background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
 
         # 평균 색상 계산 (배경 제외)
-        average_color = get_average_color(background_cropped_img_cv, mask=mask.astype(np.uint8) * 255)
+        average_color = get_average_color(background_cropped_img_cv, mask.astype(np.uint8) * 255)
 
         # BGR 값으로 색상 이름 탐색
         color_name = select_color(average_color)
         print(f"약 {label}의 평균 색상: {color_name}")
+
+        # 약 모양 분석 결과
+        shape = detect_shape(background_cropped_img_cv)
+        print(f"약 {label}의 모양: {shape}")
 
     # 감지된 객체 출력
     if not detections:
