@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   TouchableOpacity,
   Image,
@@ -7,141 +7,241 @@ import {
   View,
   ToastAndroid,
   ActivityIndicator,
+  Modal,
+  TextInput,
+  ScrollView,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {Kakao_PopUp, Guest_PopUp} from './Login_Success';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Kakao_PopUp, Guest_PopUp } from './Login_Success';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Login = () => {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
-  const [errorMessage, setErrorMessage] = useState(''); // 오류 메시지 상태 추가
 
-  // 카카오 로그인 버튼 클릭 시 함수
+  // 상태 관리
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const [modalVisible, setModalVisible] = useState(false); // 모달 표시 상태
+  const [nickname, setNickname] = useState(''); // 닉네임
+  const [email, setEmail] = useState(''); // 이메일
+  const [gender, setGender] = useState(''); // 성별
+  const [birthdate, setBirthdate] = useState(''); // 생년월일
+  const [showDatePicker, setShowDatePicker] = useState(false); // 날짜 선택기
+
+  // Toast 메시지 표시 함수
+  const showToast = (message) => {
+    ToastAndroid.showWithGravity(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  };
+
+  // 카카오 로그인
   const handleKakaoLogin = async () => {
-    setLoading(true); // 로딩 시작
-    setErrorMessage(''); // 이전 오류 메시지 초기화
-
-    const isSuccess = await Kakao_PopUp();
-    setLoading(false); // 로딩 종료
-
-    if (isSuccess) {
-      navigation.navigate('Main'); // 로그인 성공 시 Main 화면으로 이동
-    } else {
-      setErrorMessage('서버 접속에 문제가 발생했습니다. 다시 시도해주세요.');
-      ToastAndroid.showWithGravity(
-        '카카오 로그인 실패. 다시 시도해주세요.',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-      );
+    setLoading(true);
+    try {
+      const isSuccess = await Kakao_PopUp();
+      if (isSuccess) {
+        const storedData = await AsyncStorage.getItem('userProfile');
+        if (storedData) {
+          const { nickname, email } = JSON.parse(storedData);
+          setNickname(nickname);
+          setEmail(email);
+          setModalVisible(true); // 모달 표시
+        }
+      } else {
+        showToast('카카오 로그인 실패. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('카카오 로그인 중 오류:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 게스트 로그인 버튼 클릭 시 함수
+  // 게스트 로그인
   const handleGuestLogin = async () => {
-    setLoading(true); // 로딩 시작
+    setLoading(true); 
+    try {
+      await Guest_PopUp(); 
+  
+      setTimeout(() => {
+        setLoading(false); 
+        navigation.navigate('Main'); 
+      }, 700); 
+    } catch (error) {
+      console.error('게스트 로그인 중 오류:', error);
+      setLoading(false); 
+    }
+  };
+  
 
-    await Guest_PopUp();
+  // 생년월일 선택 처리
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setBirthdate(selectedDate.toISOString().split('T')[0]); // YYYY-MM-DD 형식
+    }
+  };
 
-    setTimeout(() => {
-      setLoading(false); // 로딩 종료
-      navigation.navigate('Main'); // 게스트 로그인 시 Main 화면으로 이동
-    }, 500);
+  // 사용자 정보 저장 및 콘솔 출력
+  const handleSaveUserInfo = () => {
+    const userInfo = {
+      nickname,
+      email,
+      gender,
+      birthdate,
+    };
+    console.log('사용자 정보:', userInfo);
+    showToast('사용자 정보가 저장되었습니다.');
+    setModalVisible(false); // 모달 닫기
+    navigation.navigate('Main'); // 메인 화면으로 이동
   };
 
   return (
-    <View style={Styles.container}>
+    <View style={styles.container}>
       {loading ? (
-        // 로딩 화면 표시
-        <View style={Styles.loadingContainer}>
-          <ActivityIndicator
-            size="large"
-            color="#b4b4b4"
-            style={{transform: [{scale: 1.5}]}}
-          />
-          <Text style={{color: 'black', fontWeight: 'bold', marginTop: 17}}>
-            로딩 중...
-          </Text>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#b4b4b4" />
+          <Text style={styles.loadingText}>로딩 중...</Text>
         </View>
       ) : (
         <>
-          <View style={Styles.appicon}>
+          <View style={styles.appicon}>
             <Image source={require('../../Image/AppLogo.png')} />
             <Image
               source={require('../../Image/AppName.png')}
-              style={Styles.appname}
+              style={styles.appname}
             />
           </View>
 
-          <View style={Styles.button_view}>
+          <View style={styles.button_view}>
             <TouchableOpacity
-              style={Styles.kakaoButton}
+              style={styles.kakaoButton}
               activeOpacity={0.7}
-              onPress={handleKakaoLogin}>
+              onPress={handleKakaoLogin}
+            >
               <Image
                 source={require('../../Image/kakaologo.png')}
-                style={Styles.login_logo}
+                style={styles.login_logo}
               />
-              <Text style={Styles.black_text}>카카오 계정으로 로그인</Text>
+              <Text style={styles.black_text}>카카오 계정으로 로그인</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={Styles.guestButton}
+              style={styles.guestButton}
               activeOpacity={0.7}
-              onPress={handleGuestLogin}>
+              onPress={handleGuestLogin}
+            >
               <Image
                 source={require('../../Image/guestlogo.png')}
-                style={Styles.login_logo}
+                style={styles.login_logo}
               />
-              <Text style={Styles.white_text}>게스트 계정으로 로그인</Text>
+              <Text style={styles.white_text}>게스트 계정으로 로그인</Text>
             </TouchableOpacity>
           </View>
-
-          {/* 오류 메시지 표시 */}
-          {errorMessage ? (
-            <Text style={Styles.errorText}>{errorMessage}</Text>
-          ) : null}
         </>
       )}
+
+      {/* 사용자 정보 입력 모달 */}
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+  <View style={styles.modalBackground}>
+    <View style={styles.modalContainer}>
+      <Text style={styles.modalTitle}>사용자 초기 설정</Text>
+
+      {/* 닉네임 */}
+      <TextInput
+        value={nickname}
+        editable={false}
+        style={styles.input}
+        placeholder="닉네임"
+      />
+
+      {/* 이메일 */}
+      <TextInput
+        value={email}
+        editable={false}
+        style={styles.input}
+        placeholder="이메일"
+      />
+
+      {/* 성별 */}
+      <Picker
+        selectedValue={gender}
+        onValueChange={(itemValue) => setGender(itemValue)}
+        style={styles.picker}
+      >
+        <Picker.Item label="성별 선택" value="" />
+        <Picker.Item label="남성" value="남성" />
+        <Picker.Item label="여성" value="여성" />
+      </Picker>
+
+      {/* 생년월일 */}
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={styles.dateText}>
+          {birthdate ? `생년월일: ${birthdate}` : '생년월일 선택'}
+        </Text>
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          mode="date"
+          display="spinner"
+          value={birthdate ? new Date(birthdate) : new Date()}
+          onChange={handleDateChange}
+        />
+      )}
+
+      {/* 버튼 */}
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={handleSaveUserInfo}
+      >
+        <Text style={styles.saveButtonText}>저장</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
     </View>
   );
 };
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
+  // 기존 스타일 유지
   container: {
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
   },
-
   loadingContainer: {
-    // 로딩 화면 스타일
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
-
-  appname: {
-    //약선생
-    marginTop: 12,
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: 'black',
   },
-
   appicon: {
-    //앱로고
     marginTop: '50%',
     alignItems: 'center',
     justifyContent: 'center',
     width: 128,
     height: 180,
   },
-
+  appname: {
+    marginTop: 12,
+  },
   button_view: {
-    //로그인 버튼 뷰
     marginTop: 80,
   },
-
   kakaoButton: {
-    //카카오 로그인 버튼
     marginTop: 25,
     height: 47,
     width: 324,
@@ -150,9 +250,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   guestButton: {
-    //게스트 로그인 버튼
     marginTop: 25,
     height: 47,
     width: 324,
@@ -161,36 +259,100 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   black_text: {
-    //로그인 검은 글씨 설정
     fontSize: 15,
     color: 'black',
-    fontFamily: 'Jua',
     fontWeight: 'bold',
   },
-
   white_text: {
-    //로그인 하얀 글씨 설정
     fontSize: 15,
     color: 'white',
-    fontFamily: 'Jua',
     fontWeight: 'bold',
   },
-
   login_logo: {
-    //로그인 버튼 각각의 로고
     position: 'absolute',
     right: '80%',
   },
 
-  errorText: {
-    // 오류 메시지 스타일
-    color: 'red',
-    fontSize: 14,
-    marginTop: 10,
+  // 개선된 모달 스타일
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+  },
+  modalContainer: {
+    width: '90%',
+    padding: 25, 
+    backgroundColor: 'white',
+    borderRadius: 20,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24, 
+    fontWeight: 'bold',
+    marginBottom: 25,
+    color: '#333',
     textAlign: 'center',
   },
+  input: {
+    width: '100%',
+    height: 50,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 8,
+    marginBottom: 20, 
+    backgroundColor: '#f9f9f9',
+    fontSize: 16, 
+  },
+  picker: {
+    width: '100%',
+    height: 50,
+    marginBottom: 20,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+  },
+  dateButton: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 20,
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  saveButton: {
+    marginTop: 15,
+    width: '100%',
+    height: 55, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#87CEEB',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  saveButtonText: {
+    fontSize: 18, 
+    color: 'white',
+    fontWeight: 'bold',
+  },
 });
+
+
 
 export default Login;
