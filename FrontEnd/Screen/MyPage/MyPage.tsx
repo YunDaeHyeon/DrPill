@@ -51,27 +51,30 @@ const MyPage = ({navigation}) => {
           <Text style={Styles.setting_text}>설정</Text>
           <TouchableOpacity style={Styles.setting_touch}>
             <Image
-              source={require('../../Image/pencil.png')}
-              style={Styles.setting_button_icon}
-            />
-            <Text style={Styles.setting_button_text}>글씨 크기 조정</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={Styles.setting_touch}>
-            <Image
               source={require('../../Image/mic.png')}
               style={Styles.setting_button_icon}
             />
-            <Text style={Styles.setting_button_text}>오디오 기능</Text>
+            <Text style={Styles.setting_button_text}>  오디오 기능</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={Styles.setting_touch}>
+          <TouchableOpacity style ={Styles.setting_touch}>
             <Image
-              source={require('../../Image/light.png')}
-              style={Styles.setting_button_icon}
+            source={require('../../Image/cart.png')}
+            style={Styles.setting_button_icon}
             />
-            <Text style={Styles.setting_button_text}> 밝기 조절</Text>
+            <Text style = {Styles.setting_button_text}> 사용자 관심 질환</Text>
           </TouchableOpacity>
+
+
+          <TouchableOpacity style ={Styles.setting_touch}>
+            <Image
+            source={require('../../Image/cloud-01.png')}
+            style={Styles.setting_button_icon}
+            />
+            <Text style = {Styles.setting_button_text}> 사용자 관심 의약품</Text>
+          </TouchableOpacity>
+
+
         </View>
       </View>
 
@@ -158,6 +161,7 @@ const Styles = StyleSheet.create({
   },
 
   setting_button_text: {
+    
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
