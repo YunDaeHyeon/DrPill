@@ -49,8 +49,9 @@ const PillLibrary = ({navigation}) => {
     <>
       <View style={Styles.container}>
         <Text style={Styles.pilllibrary_font}>약 도서관</Text>
-
+        <ScrollView style={Styles.contain_controller}>
         <View style={Styles.library_contain_view}>
+          
           <View style={Styles.libraryview_1}>
             <TouchableOpacity
               style={Styles.library_contain}
@@ -111,6 +112,7 @@ const PillLibrary = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
       </View>
 
       <NavigationBar navigation={navigation} />
@@ -459,7 +461,7 @@ const Styles = StyleSheet.create({
     // 박스 뷰
     width: 328,
     height: 500,
-    marginTop: 130,
+    //marginTop: 130,
     flexDirection: 'row',
     backgroundColor: 'white',
   },
@@ -606,6 +608,10 @@ const Styles = StyleSheet.create({
     marginLeft: 10,
     width: '95%',
   },
+  contain_controller: {
+    marginTop: '30%',
+  }
+  
 });
 
 export default PillLibrary;
