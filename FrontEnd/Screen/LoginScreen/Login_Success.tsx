@@ -20,41 +20,63 @@ const showToast = message => {
 };
 
 export const Guest_PopUp = async (): Promise<void> => {
-  showToast(
-    '게스트 계정으로 로그인 되었습니다.\n게스트 계정 이용 시 저장이 제한됩니다.',
-  );
-  await AsyncStorage.setItem('nickname', 'GUEST');
-  await AsyncStorage.setItem('profileImage', '../../Image/사람_프로필.png');
+  const guestProfile = {
+    nickname: 'GUEST', // 게스트 기본 닉네임
+    email: '이메일 없음', // 이메일 없음 처리
+    profileImage: '../../Image/사람_프로필.png', // 기본 프로필 이미지
+  };
+
+  try {
+    // 데이터를 AsyncStorage에 저장
+    await AsyncStorage.setItem('userProfile', JSON.stringify(guestProfile));
+
+    ToastAndroid.showWithGravity(
+      '게스트 계정으로 로그인 되었습니다.\n게스트 계정 이용 시 저장이 제한됩니다.',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  } catch (error) {
+    console.error('게스트 로그인 데이터 저장 실패:', error);
+  }
 };
+
 
 export const Kakao_PopUp = async (): Promise<boolean> => {
   try {
     const result = await login();
     console.log('로그인 로그:', result);
-    const profile = await getProfile();
-    const nickname = profile.nickname;
-    const profileImage =
-      profile.profileImageUrl || '../../Image/사람_프로필.png';
 
+    const profile = await getProfile();
+    console.log('카카오 프로필 데이터:', profile);
+
+    const nickname = profile.nickname || '닉네임 없음';
+    const email = profile.email || '이메일 없음';
+    const profileImage = profile.profileImageUrl || '../../Image/사람_프로필.png';
+
+    // 데이터를 AsyncStorage에 저장
+    await AsyncStorage.setItem(
+      'userProfile',
+      JSON.stringify({ nickname, email, profileImage }),
+    );
+
+    // 서버로 데이터 전송
     const response = await axios.post(`${Config.AUTH_SERVER_URL}/create-user`, {
-      email: profile.email || '이메일 정보가 없습니다.',
+      email,
       nickname,
     });
 
     if (response.status === 200 || response.status === 201) {
       showToast('카카오 로그인 성공');
-      await AsyncStorage.setItem('nickname', nickname);
-      await AsyncStorage.setItem('profileImage', profileImage);
       return true; // 성공 시 true 반환
     } else {
-      Alert.alert('서버 응답 오류', `서버 응답 실패: ${response.status}`);
-      await resetUserData(); // 초기화 후 false 반환
-      return false;
+      console.error(`서버 응답 실패: ${response.status}`);
+      showToast('서버와의 통신에 문제가 발생했습니다.');
+      return false; // 실패 시 false 반환
     }
   } catch (error) {
     console.error('로그인 실패 또는 네트워크 오류:', error);
-    Alert.alert('오류 발생', '로그인에 실패했습니다.');
-    await resetUserData(); // 초기화 후 false 반환
-    return false;
+    showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+    return false; // 실패 시 false 반환
   }
 };
+

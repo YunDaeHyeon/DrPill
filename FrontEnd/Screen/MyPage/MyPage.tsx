@@ -15,19 +15,23 @@ const MyPage = ({navigation}) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const storedNickname = await AsyncStorage.getItem('nickname');
-        const storedProfileImage = await AsyncStorage.getItem('profileImage');
-
-        if (storedNickname) setNickname(storedNickname);
-        if (storedProfileImage) setProfileImage(storedProfileImage);
+        const storedUserProfile = await AsyncStorage.getItem('userProfile');
+  
+        if (storedUserProfile) {
+          const { nickname, profileImage } = JSON.parse(storedUserProfile); // JSON 파싱
+          setNickname(nickname || '닉네임 없음');
+          setProfileImage(profileImage || '../../Image/사람_프로필.png');
+        } else {
+          console.log('저장된 사용자 정보가 없습니다.');
+        }
       } catch (error) {
         console.error('AsyncStorage에서 데이터 불러오기 실패:', error);
       }
     };
-
-    loadData(); // kakao 프로필 불러오기
-    initializeTtsListeners(); // TTS 최초 설정
+  
+    loadData();
   }, []);
+  
 
   return (
     <>
