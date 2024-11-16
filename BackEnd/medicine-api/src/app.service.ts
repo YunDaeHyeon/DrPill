@@ -8,7 +8,7 @@ import { CreateUserDTO } from './dto/create-user.dto';
 export class AppService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly usersRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   getHello(): string {
@@ -19,9 +19,8 @@ export class AppService {
     return `${user}님이 로그인하셨습니다.`;
   }
 
-  async createUser(user: CreateUserDTO): Promise<UserEntity>{
-    const newUser = this.usersRepository.create(user);
-    return this.usersRepository.save(newUser);
+  async createUser(user: CreateUserDTO): Promise<UserEntity> {
+    const newUser = this.userRepository.create(user);
+    return this.userRepository.save(newUser);
   }
 }
-

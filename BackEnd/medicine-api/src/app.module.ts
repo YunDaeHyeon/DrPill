@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserEntity } from './entities/user.entity';
+import { DiseaseEntity } from './entities/disease.entity';
+import { MedicineEntity } from './entities/medicine.entity';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { UserEntity } from './entities/user.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         synchronize: true,
-        entities: [UserEntity], // Entity 추가
+        entities: [UserEntity, DiseaseEntity, MedicineEntity], // Entity 추가
       }),
     }),
     TypeOrmModule.forFeature([UserEntity]),
