@@ -69,10 +69,18 @@ print("CSV 파일 처리 완료")
 # 식약분류^주성분코드^제품코드^제품명^업체명^ATC코드
 # 396^"520500ATB"^641906990^"트루리나엠정2.5/1000mg(리나글립틴,메트포르민염산염)_(1정)"^"(주)보령"^"A10BD11"
 
-# LOAD DATA INFILE '/Users/yundaehyeon/Desktop/WKUProject/BackEnd/medicine-api/resource/atc_code_after.csv'
+# LOAD DATA LOCAL INFILE '/Users/yundaehyeon/Desktop/WKUProject/BackEnd/medicine-api/resource/atc_code_check.csv'
 # INTO TABLE Medicine
 # FIELDS TERMINATED BY '^' 
-# OPTIONALLY ENCLOSED BY '"' 
 # LINES TERMINATED BY '\n'
 # IGNORE 1 ROWS
 # (medicine_class, mc_code, mid, medicine_name, company_name, atc_code);
+
+# 파일은 반드시 secure-file-priv 옵션에 명시된 경로에 집어넣기...
+# LOAD DATA INFILE '{경로}/atc_code_check.csv'
+# INTO TABLE Medicine
+# FIELDS TERMINATED BY '^' 
+# LINES TERMINATED BY '\n'
+# IGNORE 1 ROWS
+# (medicine_class, mc_code, mid, medicine_name, company_name, atc_code);
+
