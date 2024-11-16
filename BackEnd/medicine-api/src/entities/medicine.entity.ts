@@ -9,6 +9,7 @@ export class MedicineEntity {
   readonly medicine_class: number;
 
   // 주성분코드
+  @Column()
   readonly mc_code: string;
 
   // 제품코드
