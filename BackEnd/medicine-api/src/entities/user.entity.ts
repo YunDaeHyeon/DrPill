@@ -2,7 +2,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { UserDisease } from './userDisease.entity';
-import { UserCategory } from './userCategory.entity';
+import { UserMedicineCategory } from './userMedicineCategory.entity';
 
 @Entity('User')
 export class User {
@@ -32,6 +32,9 @@ export class User {
   userDiseases: UserDisease[];
 
   // 한 명의 사용자는 여러 개의 식약분류(관심)을 가진다. (1:N)
-  @OneToMany(() => UserCategory, (userCategory) => userCategory.user)
-  userCategories: UserCategory[];
+  @OneToMany(
+    () => UserMedicineCategory,
+    (userMedicineCategory) => userMedicineCategory.user,
+  )
+  userCategories: UserMedicineCategory[];
 }

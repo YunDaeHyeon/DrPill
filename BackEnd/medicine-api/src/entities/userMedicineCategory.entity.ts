@@ -2,8 +2,8 @@ import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
 import { MedicineCategory } from './medicineCategory.entity';
 
-@Entity('UserCategory')
-export class UserCategory {
+@Entity('UserMedicineCategory')
+export class UserMedicineCategory {
   @PrimaryGeneratedColumn()
   ucid: number;
 
@@ -12,7 +12,7 @@ export class UserCategory {
 
   @ManyToOne(
     () => MedicineCategory,
-    (medicineCategory) => medicineCategory.category,
+    (medicineCategory) => medicineCategory.userMedicineCategories,
   )
-  category: MedicineCategory;
+  medicineCategory: MedicineCategory;
 }
