@@ -3,9 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserEntity } from './entities/user.entity';
-import { DiseaseEntity } from './entities/disease.entity';
-import { MedicineEntity } from './entities/medicine.entity';
+import { User } from './entities/user.entity';
+import { Disease } from './entities/disease.entity';
+import { Medicine } from './entities/medicine.entity';
+import { MedicineCategory } from './entities/medicineCategory.entity';
+import { UserDisease } from './entities/userDisease.entity';
+import { UserCategory } from './entities/userCategory.entity';
 
 @Module({
   imports: [
@@ -21,10 +24,24 @@ import { MedicineEntity } from './entities/medicine.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         synchronize: true,
-        entities: [UserEntity, DiseaseEntity, MedicineEntity], // Entity 추가
+        entities: [
+          User,
+          Disease,
+          Medicine,
+          MedicineCategory,
+          UserDisease,
+          UserCategory,
+        ], // 모든 엔티티 추가
       }),
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([
+      User,
+      Disease,
+      Medicine,
+      MedicineCategory,
+      UserDisease,
+      UserCategory,
+    ]), // TypeORM이 관리할 엔티티 추가
   ],
   controllers: [AppController],
   providers: [AppService],
