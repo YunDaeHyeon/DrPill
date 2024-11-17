@@ -1,12 +1,16 @@
 // 질환 엔티티 (테이블) 정의
 
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { UserDisease } from './userDisease.entity';
 
 @Entity('Disease')
-export class DiseaseEntity {
-  @PrimaryGeneratedColumn()
+export class Disease {
+  @PrimaryColumn()
   did: number;
 
   @Column()
-  readonly disease_name: string;
+  disease_name: string;
+
+  @OneToMany(() => UserDisease, (userDisease) => userDisease.disease)
+  userDiseases: UserDisease[];
 }
