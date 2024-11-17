@@ -77,10 +77,10 @@ print("CSV 파일 처리 완료")
 # (medicine_class, mc_code, mid, medicine_name, company_name, atc_code);
 
 # 파일은 반드시 secure-file-priv 옵션에 명시된 경로에 집어넣기...
-# LOAD DATA INFILE '{경로}/atc_code_check.csv'
+# LOAD DATA INFILE '/var/lib/mysql-files/atc_code_check.csv'
 # INTO TABLE Medicine
 # FIELDS TERMINATED BY '^' 
 # LINES TERMINATED BY '\n'
 # IGNORE 1 ROWS
-# (medicine_class, mc_code, mid, medicine_name, company_name, atc_code);
+# (category_name, medicine_class, mid, medicine_name, company_name, atc_code);
 
