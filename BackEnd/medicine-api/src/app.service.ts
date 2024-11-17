@@ -34,7 +34,13 @@ export class AppService {
     // 사용자의 관심질환(interest_disease) 파싱 후 배열 변환
     const interestDiseases = user.interest_disease
       .split(',')
-      .map((disease) => disease.trim());
+      .map((disease) => disease.trim())
+      .filter((disease) => disease !== ''); // 빈 값이 넘어온 경우 필터링 진행
+
+    // 만약, interest_disease(관심질환)이 비어있는 경우 UserDisease에 저장하지 않고 즉시 반환
+    if (interestDiseases.length === 0) {
+      return savedUser;
+    }
 
     // 질환(Disease) 테이블에서 해당 관심 질환 이름을 가진 데이터를 찾기
     const matchedDiseases = await this.diseaseRepository
