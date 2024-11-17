@@ -12,7 +12,7 @@ import { RelationMedicineCategory } from './relationMedicineCategory.entity';
 export class Medicine {
   // 식약분류
   @Column()
-  category_name: string;
+  category_name: number;
 
   // 주성분코드
   @Column()
