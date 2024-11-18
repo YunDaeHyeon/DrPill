@@ -1,8 +1,9 @@
 //내 계정 화면입니다.
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
+import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
   const [nickname, setNickname] = useState('로그인 실패');
@@ -63,14 +64,6 @@ const MyPage = ({navigation}) => {
               style={Styles.setting_button_icon}
             />
             <Text style={Styles.setting_button_text}>오디오 기능</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={Styles.setting_touch}>
-            <Image
-              source={require('../../Image/light.png')}
-              style={Styles.setting_button_icon}
-            />
-            <Text style={Styles.setting_button_text}> 밝기 조절</Text>
           </TouchableOpacity>
         </View>
       </View>

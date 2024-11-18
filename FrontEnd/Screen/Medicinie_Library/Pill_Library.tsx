@@ -11,8 +11,11 @@ import {
 } from 'react-native';
 import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
+import {MedicineListContext} from '../../Function/MainListContext';
 
 const PillLibrary = ({navigation}) => {
+  const {libraryImage} = MedicineListContext;
+
   const [isOpen1, setOpen1] = useState(false);
   const [isOpen2, setOpen2] = useState(false);
   const [isOpen3, setOpen3] = useState(false);
@@ -50,67 +53,69 @@ const PillLibrary = ({navigation}) => {
       <View style={Styles.container}>
         <Text style={Styles.pilllibrary_font}>약 도서관</Text>
 
-        <View style={Styles.library_contain_view}>
-          <View style={Styles.libraryview_1}>
-            <TouchableOpacity
-              style={Styles.library_contain}
-              onPress={() => libraryModal(1)}>
-              <Image
-                source={require('../../Image/알약.png')}
-                style={Styles.like_medicine_image}
-              />
-              <PillBox />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={Styles.library_contain3}
-              onPress={() => libraryModal(2)}>
-              <Image
-                source={require('../../Image/알약.png')}
-                style={Styles.like_medicine_image}
-              />
-              <PillBox />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={Styles.library_contain3}
-              onPress={() => libraryModal(3)}>
-              <Image
-                source={require('../../Image/알약.png')}
-                style={Styles.like_medicine_image}
-              />
-              <PillBox />
-            </TouchableOpacity>
-          </View>
+        <ScrollView>
+          <View style={Styles.library_contain_view}>
+            <View style={Styles.libraryview_1}>
+              <TouchableOpacity
+                style={Styles.library_contain}
+                onPress={() => libraryModal(1)}>
+                <Image
+                  source={{uri: libraryImage}}
+                  style={Styles.like_medicine_image}
+                />
+                <PillBox />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={Styles.library_contain3}
+                onPress={() => libraryModal(2)}>
+                <Image
+                  source={require('../../Image/알약.png')}
+                  style={Styles.like_medicine_image}
+                />
+                <PillBox />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={Styles.library_contain3}
+                onPress={() => libraryModal(3)}>
+                <Image
+                  source={require('../../Image/알약.png')}
+                  style={Styles.like_medicine_image}
+                />
+                <PillBox />
+              </TouchableOpacity>
+            </View>
 
-          <View style={Styles.libraryview_2}>
-            <TouchableOpacity
-              style={Styles.library_contain2}
-              onPress={() => libraryModal(4)}>
-              <Image
-                source={require('../../Image/알약.png')}
-                style={Styles.like_medicine_image}
-              />
-              <PillBox />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={Styles.library_contain4}
-              onPress={() => libraryModal(5)}>
-              <Image
-                source={require('../../Image/알약.png')}
-                style={Styles.like_medicine_image}
-              />
-              <PillBox />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={Styles.library_contain4}
-              onPress={() => libraryModal(6)}>
-              <Image
-                source={require('../../Image/알약.png')}
-                style={Styles.like_medicine_image}
-              />
-              <PillBox />
-            </TouchableOpacity>
+            <View style={Styles.libraryview_2}>
+              <TouchableOpacity
+                style={Styles.library_contain2}
+                onPress={() => libraryModal(4)}>
+                <Image
+                  source={require('../../Image/알약.png')}
+                  style={Styles.like_medicine_image}
+                />
+                <PillBox />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={Styles.library_contain4}
+                onPress={() => libraryModal(5)}>
+                <Image
+                  source={require('../../Image/알약.png')}
+                  style={Styles.like_medicine_image}
+                />
+                <PillBox />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={Styles.library_contain4}
+                onPress={() => libraryModal(6)}>
+                <Image
+                  source={require('../../Image/알약.png')}
+                  style={Styles.like_medicine_image}
+                />
+                <PillBox />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </View>
 
       <NavigationBar navigation={navigation} />
