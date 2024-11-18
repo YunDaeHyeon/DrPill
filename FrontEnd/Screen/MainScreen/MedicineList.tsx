@@ -61,7 +61,7 @@ const MedicineList = ({navigation, medicineName}) => {
       <View style={Styles.container}>
         <View style={Styles.searchbox}>
           <Image
-            source={require('../../Image/돋보기.png')}
+            source={require('../../Image/searchicon.png')}
             style={Styles.search_icon}
           />
           <TextInput
@@ -318,34 +318,34 @@ const MedicineList = ({navigation, medicineName}) => {
                   <Text style={Styles.library_modalText}>제품명</Text>
 
                   <Image
-                    source={require('../../Image/타이레놀_제품명.png')}
+                    source={require('../../Image/ty_name.png')}
                     style={Styles.librarymodal_image}
                   />
                   <Text style={Styles.library_modalText}>효능</Text>
                   <View style={Styles.effectmodal}>
                     <Image
-                      source={require('../../Image/타이레놀_효능.png')}
+                      source={require('../../Image/ty_effect.png')}
                       style={Styles.librarymodal_image}
                     />
                   </View>
                   <Text style={Styles.library_modalText}>사용법</Text>
                   <Image
-                    source={require('../../Image/타이레놀_사용법.png')}
+                    source={require('../../Image/ty_use.png')}
                     style={Styles.librarymodal_image}
                   />
                   <Text style={Styles.library_modalText}>주의사항</Text>
                   <Image
-                    source={require('../../Image/타이레놀_주의사항.png')}
+                    source={require('../../Image/ty_cau.png')}
                     style={Styles.librarymodal_image}
                   />
                   <Text style={Styles.library_modalText}>부작용</Text>
                   <Image
-                    source={require('../../Image/타이레놀_부작용.png')}
+                    source={require('../../Image/ty_err.png')}
                     style={Styles.librarymodal_image}
                   />
                   <Text style={Styles.library_modalText}>보관법</Text>
                   <Image
-                    source={require('../../Image/타이레놀_보관법.png')}
+                    source={require('../../Image/ty_in.png')}
                     style={Styles.librarymodal_image}
                   />
                 </View>

@@ -16,11 +16,11 @@ const FindMedicine = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.shot_image_view}>
           <Image
-            source={require('../../Image/감기약_손사진.png')}
+            source={require('../../Image/findmedicine.png')}
             style={Styles.find_picture}
           />
           <Image
-            source={require('../../Image/새로고침.png')}
+            source={require('../../Image/reload.png')}
             style={Styles.reload}
           />
         </View>
@@ -30,11 +30,11 @@ const FindMedicine = ({navigation}) => {
 
           <View style={Styles.find_image_info_view}>
             <Image
-              source={require('../../Image/찾은약국약국.png')}
+              source={require('../../Image/findpills.png')}
               style={Styles.find_image_edit}
             />
             <Image
-              source={require('../../Image/찾은약국약국표.png')}
+              source={require('../../Image/findinfo.png')}
               style={Styles.find_image_info_edit}
             />
             <TouchableOpacity style={Styles.heart_view} onPress={changeHeart}>
@@ -61,7 +61,7 @@ const FindMedicine = ({navigation}) => {
               <TouchableOpacity style={{alignItems: 'center'}}>
                 <View style={Styles.medicine_image_box1}>
                   <Image
-                    source={require('../../Image/탁센.png')}
+                    source={require('../../Image/taksen.png')}
                     style={Styles.medicine_image}
                   />
                 </View>
@@ -73,7 +73,7 @@ const FindMedicine = ({navigation}) => {
               <TouchableOpacity style={{alignItems: 'center'}}>
                 <View style={Styles.medicine_image_box2}>
                   <Image
-                    source={require('../../Image/탁센.png')}
+                    source={require('../../Image/taksen.png')}
                     style={Styles.medicine_image}
                   />
                 </View>
@@ -85,7 +85,7 @@ const FindMedicine = ({navigation}) => {
               <TouchableOpacity style={{alignItems: 'center'}}>
                 <View style={Styles.medicine_image_box3}>
                   <Image
-                    source={require('../../Image/탁센.png')}
+                    source={require('../../Image/taksen.png')}
                     style={Styles.medicine_image}
                   />
                 </View>

@@ -7,9 +7,7 @@ import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
   const [nickname, setNickname] = useState('');
-  const [profileImage, setProfileImage] = useState(
-    '../../Image/사람_프로필.png',
-  );
+  const [profileImage, setProfileImage] = useState('../../Image/profile.png');
 
   useEffect(() => {
     const loadData = async () => {
@@ -32,14 +30,14 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <Image source={require('../../Image/종.png')} style={Styles.bell} />
+          <Image source={require('../../Image/bell.png')} style={Styles.bell} />
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
                 source={
                   profileImage.startsWith('http')
                     ? {uri: profileImage}
-                    : require('../../Image/사람_프로필.png')
+                    : require('../../Image/profile.png')
                 }
                 style={Styles.profile_image}
               />
