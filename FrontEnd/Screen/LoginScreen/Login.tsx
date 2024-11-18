@@ -53,11 +53,35 @@ const Login = () => {
   const handleKakaoLogin = async () => {
     setLoading(true);
     try {
+      // AsyncStorage에서 기존 사용자 정보 가져오기
+      const existingUserProfile = await AsyncStorage.getItem('userProfile');
+      let parsedExistingUser = null;
+  
+      if (existingUserProfile) {
+        parsedExistingUser = JSON.parse(existingUserProfile);
+        console.log('저장된 사용자 정보:', parsedExistingUser);
+      }
+  
+      // 카카오 로그인 진행
       const isSuccess = await Kakao_PopUp();
       if (isSuccess) {
         const storedData = await AsyncStorage.getItem('userProfile');
         if (storedData) {
           const { nickname, email } = JSON.parse(storedData);
+          console.log('카카오에서 가져온 프로필:', { nickname, email });
+  
+          // 저장된 사용자 정보와 비교
+          if (
+            parsedExistingUser &&
+            parsedExistingUser.nickname === nickname &&
+            parsedExistingUser.email === email
+          ) {
+            console.log('프로필이 일치합니다. 메인 화면으로 이동합니다.');
+            navigation.navigate('Main'); // 메인 화면으로 바로 이동
+            return; // 로그인 절차 종료
+          }
+  
+          // 프로필이 일치하지 않을 경우 모달 표시
           setNickname(nickname);
           setEmail(email);
           setModalVisible(true); // 모달 표시
@@ -71,6 +95,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+  
 
   const handleGuestLogin = async () => {
     setLoading(true);
