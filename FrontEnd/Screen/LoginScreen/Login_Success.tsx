@@ -46,34 +46,31 @@ export const Kakao_PopUp = async (): Promise<boolean> => {
     const result = await login();
     console.log('로그인 로그:', result);
 
+    // 로그인 성공 후 프로필 가져오기
     const profile = await getProfile();
     console.log('카카오 프로필 데이터:', profile);
 
-    const nickname = profile.nickname || '닉네임 없음';
-    const email = profile.email || '이메일 없음';
-    const profileImage = profile.profileImageUrl || '../../Image/사람_프로필.png';
+    if (profile) {
+      const nickname = profile.nickname || '닉네임 없음';
+      const email = profile.email || '이메일 없음';
+      const profileImage = profile.profileImageUrl || '../../Image/사람_프로필.png';
 
-    // 데이터를 AsyncStorage에 저장
-    await AsyncStorage.setItem(
-      'userProfile',
-      JSON.stringify({ nickname, email, profileImage }),
-    );
+      // 프로필 데이터를 AsyncStorage에 저장
+      await AsyncStorage.setItem(
+        'userProfile',
+        JSON.stringify({ nickname, email, profileImage })
+      );
 
-    // 서버로 데이터 전송
-    const response = await axios.post(`${Config.AUTH_SERVER_URL}/create-user`, {
-      email,
-      nickname,
-    });
-
-    if (response.status === 200 || response.status === 201) {
       showToast('카카오 로그인 성공');
       return true; // 성공 시 true 반환
     } else {
-      console.error(`서버 응답 실패: ${response.status}`);
-      showToast('서버와의 통신에 문제가 발생했습니다.');
-      return false; // 실패 시 false 반환
+      // 프로필 데이터가 없으면 로그인 실패 처리
+      console.error('프로필 데이터를 가져오지 못했습니다.');
+      showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+      return false;
     }
   } catch (error) {
+    // 로그인 실패 또는 프로필 가져오기 실패
     console.error('로그인 실패 또는 네트워크 오류:', error);
     showToast('로그인에 실패했습니다. 다시 시도해주세요.');
     return false; // 실패 시 false 반환

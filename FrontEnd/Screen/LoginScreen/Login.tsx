@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity,
   Image,
@@ -9,28 +9,40 @@ import {
   ActivityIndicator,
   Modal,
   TextInput,
-  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Kakao_PopUp, Guest_PopUp } from './Login_Success';
+import { Kakao_PopUp } from './Login_Success';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Login = () => {
   const navigation = useNavigation();
 
-  // 상태 관리
-  const [loading, setLoading] = useState(false); // 로딩 상태
-  const [modalVisible, setModalVisible] = useState(false); // 모달 표시 상태
-  const [nickname, setNickname] = useState(''); // 닉네임
-  const [email, setEmail] = useState(''); // 이메일
-  const [gender, setGender] = useState(''); // 성별
-  const [birthdate, setBirthdate] = useState(''); // 생년월일
-  const [showDatePicker, setShowDatePicker] = useState(false); // 날짜 선택기
+  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // Toast 메시지 표시 함수
-  const showToast = (message) => {
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const userProfile = await AsyncStorage.getItem('userProfile');
+        if (userProfile) {
+          navigation.navigate('Main'); // 로그인 상태가 있으면 바로 메인으로 이동
+        }
+      } catch (error) {
+        console.error('로그인 상태 확인 중 오류:', error);
+      }
+    };
+
+    checkLoginStatus();
+  }, [navigation]);
+
+  const showToast = (message: string) => {
     ToastAndroid.showWithGravity(
       message,
       ToastAndroid.SHORT,
@@ -38,7 +50,6 @@ const Login = () => {
     );
   };
 
-  // 카카오 로그인
   const handleKakaoLogin = async () => {
     setLoading(true);
     try {
@@ -61,43 +72,34 @@ const Login = () => {
     }
   };
 
-  // 게스트 로그인
   const handleGuestLogin = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
-      await Guest_PopUp(); 
-  
-      setTimeout(() => {
-        setLoading(false); 
-        navigation.navigate('Main'); 
-      }, 700); 
+      showToast('게스트 계정으로 로그인되었습니다.');
+      navigation.navigate('Main'); // 메인으로 이동
     } catch (error) {
       console.error('게스트 로그인 중 오류:', error);
-      setLoading(false); 
-    }
-  };
-  
-
-  // 생년월일 선택 처리
-  const handleDateChange = (event, selectedDate) => {
-    setShowDatePicker(false);
-    if (selectedDate) {
-      setBirthdate(selectedDate.toISOString().split('T')[0]); // YYYY-MM-DD 형식
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 사용자 정보 저장 및 콘솔 출력
-  const handleSaveUserInfo = () => {
+  const handleSaveUserInfo = async () => {
     const userInfo = {
       nickname,
       email,
       gender,
       birthdate,
     };
-    console.log('사용자 정보:', userInfo);
-    showToast('사용자 정보가 저장되었습니다.');
-    setModalVisible(false); // 모달 닫기
-    navigation.navigate('Main'); // 메인 화면으로 이동
+
+    try {
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+      console.log('사용자 정보:', userInfo);
+      setModalVisible(false);
+      navigation.navigate('Disease_Data');
+    } catch (error) {
+      console.error('사용자 정보 저장 중 오류:', error);
+    }
   };
 
   return (
@@ -121,8 +123,7 @@ const Login = () => {
             <TouchableOpacity
               style={styles.kakaoButton}
               activeOpacity={0.7}
-              onPress={handleKakaoLogin}
-            >
+              onPress={handleKakaoLogin}>
               <Image
                 source={require('../../Image/kakaologo.png')}
                 style={styles.login_logo}
@@ -133,8 +134,7 @@ const Login = () => {
             <TouchableOpacity
               style={styles.guestButton}
               activeOpacity={0.7}
-              onPress={handleGuestLogin}
-            >
+              onPress={handleGuestLogin}>
               <Image
                 source={require('../../Image/guestlogo.png')}
                 style={styles.login_logo}
@@ -145,74 +145,66 @@ const Login = () => {
         </>
       )}
 
-      {/* 사용자 정보 입력 모달 */}
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-  <View style={styles.modalBackground}>
-    <View style={styles.modalContainer}>
-      <Text style={styles.modalTitle}>사용자 초기 설정</Text>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>사용자 초기 설정</Text>
 
-      {/* 닉네임 */}
-      <TextInput
-        value={nickname}
-        editable={false}
-        style={styles.input}
-        placeholder="닉네임"
-      />
+            <TextInput
+              value={nickname}
+              editable={false}
+              style={styles.input}
+              placeholder="닉네임"
+            />
 
-      {/* 이메일 */}
-      <TextInput
-        value={email}
-        editable={false}
-        style={styles.input}
-        placeholder="이메일"
-      />
+            <TextInput
+              value={email}
+              editable={false}
+              style={styles.input}
+              placeholder="이메일"
+            />
 
-      {/* 성별 */}
-      <Picker
-        selectedValue={gender}
-        onValueChange={(itemValue) => setGender(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="성별 선택" value="" />
-        <Picker.Item label="남성" value="남성" />
-        <Picker.Item label="여성" value="여성" />
-      </Picker>
+            <Picker
+              selectedValue={gender}
+              onValueChange={(itemValue) => setGender(itemValue)}
+              style={styles.picker}>
+              <Picker.Item label="성별 선택" value="" />
+              <Picker.Item label="남성" value="남성" />
+              <Picker.Item label="여성" value="여성" />
+            </Picker>
 
-      {/* 생년월일 */}
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text style={styles.dateText}>
-          {birthdate ? `생년월일: ${birthdate}` : '생년월일 선택'}
-        </Text>
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          mode="date"
-          display="spinner"
-          value={birthdate ? new Date(birthdate) : new Date()}
-          onChange={handleDateChange}
-        />
-      )}
+            <TouchableOpacity
+              style={styles.dateButton}
+              onPress={() => setShowDatePicker(true)}>
+              <Text style={styles.dateText}>
+                {birthdate ? `생년월일: ${birthdate}` : '생년월일 선택'}
+              </Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                mode="date"
+                display="spinner"
+                value={birthdate ? new Date(birthdate) : new Date()}
+                onChange={(event, selectedDate) => {
+                  setShowDatePicker(false);
+                  if (selectedDate) {
+                    setBirthdate(selectedDate.toISOString().split('T')[0]);
+                  }
+                }}
+              />
+            )}
 
-      {/* 버튼 */}
-      <TouchableOpacity
-        style={styles.saveButton}
-        onPress={handleSaveUserInfo}
-      >
-        <Text style={styles.saveButtonText}>저장</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-</Modal>
-
+            <TouchableOpacity style={styles.saveButton} onPress={handleSaveUserInfo}>
+              <Text style={styles.saveButtonText}>저장</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // 기존 스타일 유지
   container: {
     flex: 1,
     alignItems: 'center',
@@ -273,17 +265,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: '80%',
   },
-
-  // 개선된 모달 스타일
   modalBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
     width: '90%',
-    padding: 25, 
+    padding: 25,
     backgroundColor: 'white',
     borderRadius: 20,
     elevation: 10,
@@ -294,7 +284,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 24, 
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 25,
     color: '#333',
@@ -307,9 +297,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#cccccc',
     borderRadius: 8,
-    marginBottom: 20, 
+    marginBottom: 20,
     backgroundColor: '#f9f9f9',
-    fontSize: 16, 
+    fontSize: 16,
   },
   picker: {
     width: '100%',
@@ -336,7 +326,7 @@ const styles = StyleSheet.create({
   saveButton: {
     marginTop: 15,
     width: '100%',
-    height: 55, 
+    height: 55,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#87CEEB',
@@ -347,12 +337,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   saveButtonText: {
-    fontSize: 18, 
+    fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
   },
 });
-
-
 
 export default Login;
