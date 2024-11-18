@@ -90,16 +90,41 @@ export class AppService {
       await this.userDiseaseRepository.save(userDisease);
     }
 
-    // 관심의약품 저장 로직 *******************************
+    // 관심 의약품 저장 로직 추가 *******************************
 
-    // 사용자의 관심의약품(interest_medicine) 파싱 후 배열 반환
+    // 사용자의 관심 의약품(interest_medicine) 파싱 후 배열 변환
     const interestMedicines = user.interest_medicine
       .split(',')
       .map((medicine) => medicine.trim())
-      .filter((medicine) => medicine !== '');
+      .filter((medicine) => medicine !== ''); // 빈 값이 넘어온 경우 필터링 진행
 
-    if (interestMedicines.length === 0) {
-      return savedUser;
+    // MedicineCategory 테이블에서 해당 관심 의약품 이름을 가진 데이터를 찾기
+    const matchedMedicineCategories = await this.mcRepositody
+      .createQueryBuilder('medicineCategory')
+      .where(
+        new Brackets((qb) => {
+          interestMedicines.forEach((name, index) => {
+            if (index === 0) {
+              qb.where('medicineCategory.category_name LIKE :name' + index, {
+                [`name${index}`]: `%${name}%`,
+              });
+            } else {
+              qb.orWhere('medicineCategory.category_name LIKE :name' + index, {
+                [`name${index}`]: `%${name}%`,
+              });
+            }
+          });
+        }),
+      )
+      .getMany(); // 위 조건에 맞는 모든 의약품 카테고리 호출
+
+    // UserMedicineCategory 테이블에 매핑
+    for (const category of matchedMedicineCategories) {
+      const userMedicineCategory = this.umcCategory.create({
+        user: savedUser,
+        medicineCategory: category,
+      });
+      await this.umcCategory.save(userMedicineCategory);
     }
 
     return savedUser;
