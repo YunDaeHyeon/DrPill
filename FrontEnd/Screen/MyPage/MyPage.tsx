@@ -6,7 +6,7 @@ import {NavigationBar} from '../Commonness/NavigationBar';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
-  const [nickname, setNickname] = useState('로그인 실패');
+  const [nickname, setNickname] = useState('');
   const [profileImage, setProfileImage] = useState(
     '../../Image/사람_프로필.png',
   );
