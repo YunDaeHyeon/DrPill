@@ -25,28 +25,14 @@ export const goAccount = (navigation: NavigationProp<any>) => {
 };
 
 //메인에서 정보창으로
-export const handleAllergyInfo = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('AllergyInfo'));
-};
-
-export const handleAntiInfo = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('AntiInfo'));
-};
-
-export const handleColdInfo = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('ColdInfo'));
-};
-
-export const handleDigestInfo = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('DigestInfo'));
-};
-
-export const handlePainkillInfo = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('PainkillInfo'));
-};
-
-export const handleVitaminInfo = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('VitaminInfo'));
+export const handleMedicineInfo = (
+  navigation: NavigationProp<any>,
+  text: String,
+) => {
+  console.log(text);
+  navigation.dispatch(
+    CommonActions.navigate('MedicineInfo', {medicineName: text}),
+  );
 };
 
 //카메라에서 약 세부정보 화면 진입

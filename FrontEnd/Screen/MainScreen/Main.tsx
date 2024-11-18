@@ -1,5 +1,6 @@
+/* eslint-disable react/react-in-jsx-scope */
 //메인 화면입니다.
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Image,
@@ -8,29 +9,21 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-
-import {
-  handleAllergyInfo,
-  handleAntiInfo,
-  handleColdInfo,
-  handleDigestInfo,
-  handlePainkillInfo,
-  handleVitaminInfo,
-} from '../../Function/Navigation.tsx';
-
+import {handleMedicineInfo} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar';
 
 const Main = ({navigation}) => {
   const [text, setText] = useState(''); //text지우면 안됨
-
   return (
     <>
       <View style={Styles.container}>
         <View style={Styles.searchbox}>
-          <Image
-            source={require('../../Image/돋보기.png')}
-            style={Styles.search_icon}
-          />
+          <TouchableOpacity>
+            <Image
+              source={require('../../Image/돋보기.png')}
+              style={Styles.search_icon}
+            />
+          </TouchableOpacity>
           <TextInput
             style={Styles.search_text}
             onChangeText={newText => setText(newText)}
@@ -42,7 +35,7 @@ const Main = ({navigation}) => {
         <View
           style={{
             position: 'absolute',
-            marginTop: 151,
+            marginTop: 133,
             left: 29,
           }}>
           <Text style={{fontSize: 20, fontFamily: 'Jua', fontWeight: 'bold'}}>
@@ -65,34 +58,56 @@ const Main = ({navigation}) => {
                 backgroundColor: 'white',
                 justifyContent: 'center',
               }}
-              onPress={() => handleDigestInfo(navigation)}>
+              onPress={() =>
+                handleMedicineInfo(navigation, '해열·진통 소염제')
+              }>
               <Image
-                source={require('../../Image/소화제_아이콘.png')}
+                source={require('../../Image/진통제_아이콘.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>소화제</Text>
+              <Text
+                style={{marginLeft: '18%', fontSize: 20, fontWeight: 'bold'}}>
+                해열·진통{'\n'}소염제
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style}
-              onPress={() => handleColdInfo(navigation)}>
+              onPress={() => handleMedicineInfo(navigation, '발한제 지한제')}>
               <Image
-                source={require('../../Image/감기약_아이콘.png')}
+                source={require('../../Image/땀.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>감기약</Text>
+              <Text style={Styles.menu_text}>발한제 지한제</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style}
-              onPress={() => handleVitaminInfo(navigation)}>
+              onPress={() => handleMedicineInfo(navigation, '안과용제')}>
               <Image
-                source={require('../../Image/비타민_아이콘.png')}
+                source={require('../../Image/눈.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>비타민</Text>
+              <Text
+                style={{marginLeft: '20%', fontSize: 20, fontWeight: 'bold'}}>
+                안과용제
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={Styles.menubutton_style}
+              onPress={() => handleMedicineInfo(navigation, '구강용약')}>
+              <Image
+                source={require('../../Image/치아.png')}
+                style={Styles.menu_icon}
+              />
+              <Text
+                style={{marginLeft: '20%', fontSize: 20, fontWeight: 'bold'}}>
+                구강용약
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -111,18 +126,18 @@ const Main = ({navigation}) => {
                 backgroundColor: 'white',
                 justifyContent: 'center',
               }}
-              onPress={() => handlePainkillInfo(navigation)}>
+              onPress={() => handleMedicineInfo(navigation, '구충제')}>
               <Image
-                source={require('../../Image/진통제_아이콘.png')}
+                source={require('../../Image/벌레.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>진통제</Text>
+              <Text style={Styles.menu_text}>구충제</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style2}
-              onPress={() => handleAllergyInfo(navigation)}>
+              onPress={() => handleMedicineInfo(navigation, '알레르기')}>
               <Image
                 source={require('../../Image/알레르기_아이콘.png')}
                 style={Styles.menu_icon}
@@ -136,12 +151,26 @@ const Main = ({navigation}) => {
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style2}
-              onPress={() => handleAntiInfo(navigation)}>
+              onPress={() => handleMedicineInfo(navigation, '이비과용제')}>
               <Image
-                source={require('../../Image/소염제_아이콘.png')}
+                source={require('../../Image/이비.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>소염제</Text>
+              <Text
+                style={{marginLeft: '10%', fontSize: 20, fontWeight: 'bold'}}>
+                이비과용제
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={Styles.menubutton_style2}
+              onPress={() => handleMedicineInfo(navigation, '제산제')}>
+              <Image
+                source={require('../../Image/제산제.png')}
+                style={Styles.menu_icon}
+              />
+              <Text style={Styles.menu_text}>제산제</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -166,7 +195,7 @@ const Styles = StyleSheet.create({
     width: 317,
     height: 57,
     backgroundColor: 'white',
-    marginTop: 50,
+    marginTop: 35,
     elevation: 10,
     shadowColor: 'grey',
     justifyContent: 'center',
@@ -175,12 +204,14 @@ const Styles = StyleSheet.create({
   search_icon: {
     //검색 돋보기 아이콘
     position: 'absolute',
-    marginLeft: 35,
+    marginLeft: 272,
+    marginTop: 13,
   },
 
   search_text: {
     //검색창 글씨
-    marginLeft: 70,
+    marginLeft: 25,
+    width: 240,
     fontSize: 18,
     color: 'black',
   },
@@ -188,9 +219,10 @@ const Styles = StyleSheet.create({
   menubutton_view: {
     //메뉴상자 뷰
     width: 321,
-    height: 306,
-    marginTop: 90,
+    height: 414,
+    marginTop: 80,
     flexDirection: 'row',
+    backgroundColor: 'white',
   },
 
   menubutton_1: {
