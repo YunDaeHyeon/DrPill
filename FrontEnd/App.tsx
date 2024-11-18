@@ -24,6 +24,9 @@ import PillLibrary from './Screen/Medicinie_Library/Pill_Library.tsx'; // 약 �
 import MyPage from './Screen/MyPage/MyPage.tsx'; // 마이페이지 화면
 
 import TestComponent from './Screen/MyPage/TestComponent.tsx';
+import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
+import Medicine_Data from './Screen/LoginScreen/Medicine_Data.tsx';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -124,6 +127,18 @@ const App = () => {
         <Stack.Screen
           name="TestComponent"
           component={TestComponent}
+          options={{headerShown: false}}
+        />
+
+<Stack.Screen
+          name="Disease_Data"
+          component={Disease_Data}
+          options={{headerShown: false}}
+        />
+
+<Stack.Screen
+          name="Medicine_Data"
+          component={Medicine_Data}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
