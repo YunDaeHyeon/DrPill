@@ -5,16 +5,27 @@ import { User } from './entities/user.entity';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserDisease } from './entities/userDisease.entity';
 import { Disease } from './entities/disease.entity';
+import { MedicineCategory } from './entities/medicineCategory.entity';
+import { UserMedicineCategory } from './entities/userMedicineCategory.entity';
 
 @Injectable()
 export class AppService {
   constructor(
+    // User 엔티티(사용자 테이블)
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    // UserDisease 엔티티(사용자-질환 관계 테이블)
     @InjectRepository(UserDisease)
     private userDiseaseRepository: Repository<UserDisease>,
+    // Disease 엔티티 (질환 테이블)
     @InjectRepository(Disease)
     private diseaseRepository: Repository<Disease>,
+    // MedicineCategory 엔티티 (의약품 식별코드 분류 테이블)
+    @InjectRepository(MedicineCategory)
+    private mcRepositody: Repository<MedicineCategory>,
+    // UserMedicineCategory 엔티티 (사용자-의약품 식별코드 분류 테이블)
+    @InjectRepository(UserMedicineCategory)
+    private umcCategory: Repository<UserMedicineCategory>,
   ) {}
 
   getHello(): string {
@@ -46,22 +57,20 @@ export class AppService {
     const matchedDiseases = await this.diseaseRepository
       .createQueryBuilder('disease') // disease 쿼리 빌더 생성
       .where(
-        // 조건문 입력
         new Brackets((qb) => {
-          // 여러 조건 그룹화
+          // Brackets을 통한 조건 그룹화
           interestDiseases.forEach((name, index) => {
-            // 4. interestDiseases 배열을 순회하면서 각 항목에 대해 처리
             if (index === 0) {
-              // 5. 배열의 첫 번째 요소일 경우
+              // 배열의 첫 번째 요소
               qb.where('disease.disease_name LIKE :name' + index, {
-                // 6. 첫 번째 조건은 'WHERE' 절에 추가
-                [`name${index}`]: `%${name}%`, // 7. 'LIKE' 조건으로 부분적으로 일치하는 질환을 찾음 (예: '%name%')
+                // 첫 번째 조건
+                [`name${index}`]: `%${name}%`, // 'LIKE' 조건으로 부분적으로 일치하는 질환 찾기 (예: '%name%')
               });
             } else {
-              // 8. 배열의 두 번째 요소부터는
+              // 배열의 두 번째 요소부터
               qb.orWhere('disease.disease_name LIKE :name' + index, {
-                // 9. 'OR' 조건을 추가 (기존 조건에 추가적으로 적용)
-                [`name${index}`]: `%${name}%`, // 10. 'LIKE' 조건으로 부분적으로 일치하는 질환을 찾음
+                // 'OR' 조건을 추가 (기존 조건에 추가적으로 적용)
+                [`name${index}`]: `%${name}%`,
               });
             }
           });

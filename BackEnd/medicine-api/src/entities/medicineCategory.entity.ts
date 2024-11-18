@@ -5,7 +5,7 @@ import { RelationMedicineCategory } from './relationMedicineCategory.entity';
 
 @Entity('MedicineCategory')
 export class MedicineCategory {
-  @PrimaryColumn()
+  @PrimaryColumn() // cid = Medicine.category_name
   cid: number; // `cid`는 고유한 ID, 기본 키로 사용됩니다.
 
   @OneToMany(
