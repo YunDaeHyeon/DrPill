@@ -69,7 +69,7 @@ const PillLibrary = ({navigation}) => {
                 style={Styles.library_contain3}
                 onPress={() => libraryModal(2)}>
                 <Image
-                  source={require('../../Image/알약.png')}
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />
@@ -78,7 +78,7 @@ const PillLibrary = ({navigation}) => {
                 style={Styles.library_contain3}
                 onPress={() => libraryModal(3)}>
                 <Image
-                  source={require('../../Image/알약.png')}
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />
@@ -90,7 +90,7 @@ const PillLibrary = ({navigation}) => {
                 style={Styles.library_contain2}
                 onPress={() => libraryModal(4)}>
                 <Image
-                  source={require('../../Image/알약.png')}
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />
@@ -99,7 +99,7 @@ const PillLibrary = ({navigation}) => {
                 style={Styles.library_contain4}
                 onPress={() => libraryModal(5)}>
                 <Image
-                  source={require('../../Image/알약.png')}
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />
@@ -108,7 +108,7 @@ const PillLibrary = ({navigation}) => {
                 style={Styles.library_contain4}
                 onPress={() => libraryModal(6)}>
                 <Image
-                  source={require('../../Image/알약.png')}
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />
@@ -131,37 +131,32 @@ const PillLibrary = ({navigation}) => {
             <ScrollView style={Styles.scrollview_contain}>
               <Text style={Styles.library_modalText}>제품명</Text>
               <Image
-                source={require('../../Image/타이레놀_제품명.png')}
+                source={require('../../Image/ty_name.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>효능</Text>
               <Image
-                source={require('../../Image/타이레놀_효능.png')}
+                source={require('../../Image/ty_effect.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>사용법</Text>
               <Image
-                source={require('../../Image/타이레놀_사용법.png')}
+                source={require('../../Image/ty_use.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>주의사항</Text>
               <Image
-                source={require('../../Image/타이레놀_주의사항.png')}
+                source={require('../../Image/ty_cau.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>부작용</Text>
               <Image
-                source={require('../../Image/타이레놀_부작용.png')}
+                source={require('../../Image/ty_err.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>보관법</Text>
               <Image
-                source={require('../../Image/타이레놀_보관법.png')}
-                style={Styles.librarymodal_image}
-              />
-              <Text style={Styles.library_modalText}>이미지</Text>
-              <Image
-                source={require('../../Image/타이레놀.png')}
+                source={require('../../Image/ty_in.png')}
                 style={Styles.librarymodal_image}
               />
             </ScrollView>
@@ -186,37 +181,37 @@ const PillLibrary = ({navigation}) => {
             <ScrollView style={Styles.scrollview_contain}>
               <Text style={Styles.library_modalText}>제품명</Text>
               <Image
-                source={require('../../Image/타이레놀_제품명.png')}
+                source={require('../../Image/ty_name.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>효능</Text>
               <Image
-                source={require('../../Image/타이레놀_효능.png')}
+                source={require('../../Image/ty_effect.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>사용법</Text>
               <Image
-                source={require('../../Image/타이레놀_사용법.png')}
+                source={require('../../Image/ty_use.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>주의사항</Text>
               <Image
-                source={require('../../Image/타이레놀_주의사항.png')}
+                source={require('../../Image/ty_cau.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>부작용</Text>
               <Image
-                source={require('../../Image/타이레놀_부작용.png')}
+                source={require('../../Image/ty_err.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>보관법</Text>
               <Image
-                source={require('../../Image/타이레놀_보관법.png')}
+                source={require('../../Image/ty_in.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>이미지</Text>
               <Image
-                source={require('../../Image/타이레놀.png')}
+                source={require('../../Image/ty.png')}
                 style={Styles.librarymodal_image}
               />
             </ScrollView>
@@ -241,37 +236,37 @@ const PillLibrary = ({navigation}) => {
             <ScrollView style={Styles.scrollview_contain}>
               <Text style={Styles.library_modalText}>제품명</Text>
               <Image
-                source={require('../../Image/타이레놀_제품명.png')}
+                source={require('../../Image/ty_name.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>효능</Text>
               <Image
-                source={require('../../Image/타이레놀_효능.png')}
+                source={require('../../Image/ty_effect.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>사용법</Text>
               <Image
-                source={require('../../Image/타이레놀_사용법.png')}
+                source={require('../../Image/ty_use.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>주의사항</Text>
               <Image
-                source={require('../../Image/타이레놀_주의사항.png')}
+                source={require('../../Image/ty_cau.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>부작용</Text>
               <Image
-                source={require('../../Image/타이레놀_부작용.png')}
+                source={require('../../Image/ty_err.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>보관법</Text>
               <Image
-                source={require('../../Image/타이레놀_보관법.png')}
+                source={require('../../Image/ty_in.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>이미지</Text>
               <Image
-                source={require('../../Image/타이레놀.png')}
+                source={require('../../Image/ty.png')}
                 style={Styles.librarymodal_image}
               />
             </ScrollView>
@@ -296,37 +291,37 @@ const PillLibrary = ({navigation}) => {
             <ScrollView style={Styles.scrollview_contain}>
               <Text style={Styles.library_modalText}>제품명</Text>
               <Image
-                source={require('../../Image/타이레놀_제품명.png')}
+                source={require('../../Image/ty_name.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>효능</Text>
               <Image
-                source={require('../../Image/타이레놀_효능.png')}
+                source={require('../../Image/ty_effect.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>사용법</Text>
               <Image
-                source={require('../../Image/타이레놀_사용법.png')}
+                source={require('../../Image/ty_use.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>주의사항</Text>
               <Image
-                source={require('../../Image/타이레놀_주의사항.png')}
+                source={require('../../Image/ty_cau.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>부작용</Text>
               <Image
-                source={require('../../Image/타이레놀_부작용.png')}
+                source={require('../../Image/ty_err.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>보관법</Text>
               <Image
-                source={require('../../Image/타이레놀_보관법.png')}
+                source={require('../../Image/ty_in.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>이미지</Text>
               <Image
-                source={require('../../Image/타이레놀.png')}
+                source={require('../../Image/ty.png')}
                 style={Styles.librarymodal_image}
               />
             </ScrollView>
@@ -351,37 +346,37 @@ const PillLibrary = ({navigation}) => {
             <ScrollView style={Styles.scrollview_contain}>
               <Text style={Styles.library_modalText}>제품명</Text>
               <Image
-                source={require('../../Image/타이레놀_제품명.png')}
+                source={require('../../Image/ty_name.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>효능</Text>
               <Image
-                source={require('../../Image/타이레놀_효능.png')}
+                source={require('../../Image/ty_effect.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>사용법</Text>
               <Image
-                source={require('../../Image/타이레놀_사용법.png')}
+                source={require('../../Image/ty_use.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>주의사항</Text>
               <Image
-                source={require('../../Image/타이레놀_주의사항.png')}
+                source={require('../../Image/ty_cau.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>부작용</Text>
               <Image
-                source={require('../../Image/타이레놀_부작용.png')}
+                source={require('../../Image/ty_err.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>보관법</Text>
               <Image
-                source={require('../../Image/타이레놀_보관법.png')}
+                source={require('../../Image/ty_in.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>이미지</Text>
               <Image
-                source={require('../../Image/타이레놀.png')}
+                source={require('../../Image/ty.png')}
                 style={Styles.librarymodal_image}
               />
             </ScrollView>
@@ -406,37 +401,37 @@ const PillLibrary = ({navigation}) => {
             <ScrollView style={Styles.scrollview_contain}>
               <Text style={Styles.library_modalText}>제품명</Text>
               <Image
-                source={require('../../Image/타이레놀_제품명.png')}
+                source={require('../../Image/ty_name.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>효능</Text>
               <Image
-                source={require('../../Image/타이레놀_효능.png')}
+                source={require('../../Image/ty_effect.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>사용법</Text>
               <Image
-                source={require('../../Image/타이레놀_사용법.png')}
+                source={require('../../Image/ty_use.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>주의사항</Text>
               <Image
-                source={require('../../Image/타이레놀_주의사항.png')}
+                source={require('../../Image/ty_cau.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>부작용</Text>
               <Image
-                source={require('../../Image/타이레놀_부작용.png')}
+                source={require('../../Image/ty_err.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>보관법</Text>
               <Image
-                source={require('../../Image/타이레놀_보관법.png')}
+                source={require('../../Image/ty_in.png')}
                 style={Styles.librarymodal_image}
               />
               <Text style={Styles.library_modalText}>이미지</Text>
               <Image
-                source={require('../../Image/타이레놀.png')}
+                source={require('../../Image/ty.png')}
                 style={Styles.librarymodal_image}
               />
             </ScrollView>

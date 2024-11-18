@@ -13,7 +13,7 @@ export const NavigationBar = ({navigation}) => {
     <View style={Styles.navigation_bar}>
       <TouchableOpacity activeOpacity={0.7} onPress={() => goMain(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_홈.png')}
+          source={require('../../Image/menu_home.png')}
           style={Styles.home_icon}
         />
       </TouchableOpacity>
@@ -22,7 +22,7 @@ export const NavigationBar = ({navigation}) => {
         activeOpacity={0.7}
         onPress={() => goCamera(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_카메라.png')}
+          source={require('../../Image/menu_camera.png')}
           style={Styles.camera_icon}
         />
       </TouchableOpacity>
@@ -31,7 +31,7 @@ export const NavigationBar = ({navigation}) => {
         activeOpacity={0.7}
         onPress={() => goLibrary(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_도서관.png')}
+          source={require('../../Image/menu_library.png')}
           style={Styles.library_icon}
         />
       </TouchableOpacity>
@@ -40,7 +40,7 @@ export const NavigationBar = ({navigation}) => {
         activeOpacity={0.7}
         onPress={() => goAccount(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_계정.png')}
+          source={require('../../Image/menu_account.png')}
           style={Styles.account_icon}
         />
       </TouchableOpacity>

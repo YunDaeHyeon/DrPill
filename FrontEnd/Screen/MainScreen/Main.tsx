@@ -20,7 +20,7 @@ const Main = ({navigation}) => {
         <View style={Styles.searchbox}>
           <TouchableOpacity>
             <Image
-              source={require('../../Image/돋보기.png')}
+              source={require('../../Image/searchicon.png')}
               style={Styles.search_icon}
             />
           </TouchableOpacity>
@@ -62,7 +62,7 @@ const Main = ({navigation}) => {
                 handleMedicineInfo(navigation, '해열·진통 소염제')
               }>
               <Image
-                source={require('../../Image/진통제_아이콘.png')}
+                source={require('../../Image/headicon.png')}
                 style={Styles.menu_icon}
               />
               <Text
@@ -76,7 +76,7 @@ const Main = ({navigation}) => {
               style={Styles.menubutton_style}
               onPress={() => handleMedicineInfo(navigation, '발한제 지한제')}>
               <Image
-                source={require('../../Image/땀.png')}
+                source={require('../../Image/sweaticon.png')}
                 style={Styles.menu_icon}
               />
               <Text style={Styles.menu_text}>발한제 지한제</Text>
@@ -87,7 +87,7 @@ const Main = ({navigation}) => {
               style={Styles.menubutton_style}
               onPress={() => handleMedicineInfo(navigation, '안과용제')}>
               <Image
-                source={require('../../Image/눈.png')}
+                source={require('../../Image/eye.png')}
                 style={Styles.menu_icon}
               />
               <Text
@@ -101,7 +101,7 @@ const Main = ({navigation}) => {
               style={Styles.menubutton_style}
               onPress={() => handleMedicineInfo(navigation, '구강용약')}>
               <Image
-                source={require('../../Image/치아.png')}
+                source={require('../../Image/tooth.png')}
                 style={Styles.menu_icon}
               />
               <Text
@@ -128,7 +128,7 @@ const Main = ({navigation}) => {
               }}
               onPress={() => handleMedicineInfo(navigation, '구충제')}>
               <Image
-                source={require('../../Image/벌레.png')}
+                source={require('../../Image/wormicon.png')}
                 style={Styles.menu_icon}
               />
               <Text style={Styles.menu_text}>구충제</Text>
@@ -139,7 +139,7 @@ const Main = ({navigation}) => {
               style={Styles.menubutton_style2}
               onPress={() => handleMedicineInfo(navigation, '알레르기')}>
               <Image
-                source={require('../../Image/알레르기_아이콘.png')}
+                source={require('../../Image/allergyicon.png')}
                 style={Styles.menu_icon}
               />
               <Text
@@ -153,7 +153,7 @@ const Main = ({navigation}) => {
               style={Styles.menubutton_style2}
               onPress={() => handleMedicineInfo(navigation, '이비과용제')}>
               <Image
-                source={require('../../Image/이비.png')}
+                source={require('../../Image/noseicon.png')}
                 style={Styles.menu_icon}
               />
               <Text
@@ -167,7 +167,7 @@ const Main = ({navigation}) => {
               style={Styles.menubutton_style2}
               onPress={() => handleMedicineInfo(navigation, '제산제')}>
               <Image
-                source={require('../../Image/제산제.png')}
+                source={require('../../Image/pillicon.png')}
                 style={Styles.menu_icon}
               />
               <Text style={Styles.menu_text}>제산제</Text>
