@@ -6,8 +6,13 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  ToastAndroid,
+
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import Config from 'react-native-config';
+
 
 const { width: deviceWidth } = Dimensions.get('window');
 
@@ -56,31 +61,59 @@ const Medicine_Data = ({ navigation }: { navigation: any }) => {
 
   const handleSubmit = async () => {
     try {
+      // 약 데이터 저장
       await AsyncStorage.setItem(
         'medicineInterests',
         JSON.stringify(selectedInterests),
       );
       console.log('의약품 데이터 저장:', selectedInterests);
-
-      const userInfo = await AsyncStorage.getItem('userInfo');
+  
       const diseaseInterests = await AsyncStorage.getItem('diseaseInterests');
-      const medicineInterests = JSON.stringify(selectedInterests);
-
+      const medicineInterests = await AsyncStorage.getItem('medicineInterests');
+      const userInfo = await AsyncStorage.getItem('userInfo');
+  
       if (userInfo && diseaseInterests && medicineInterests) {
         const parsedUserInfo = JSON.parse(userInfo);
         const requestData = {
-          ...parsedUserInfo,
+          email: parsedUserInfo.email,
+          nickname: parsedUserInfo.nickname,
           interest_disease: JSON.parse(diseaseInterests).join(', '),
           interest_medicine: JSON.parse(medicineInterests).join(', '),
+          birthday: parsedUserInfo.birthdate,
+          gender: parsedUserInfo.gender,
         };
-
-        console.log('최종 전송 데이터:', requestData);
-        navigation.navigate('Main'); // 최종적으로 메인 화면으로 이동
+  
+        console.log('최종 데이터:', JSON.stringify(requestData, null, 2)); // 확인용
+  
+        const response = await axios.post(`${Config.AUTH_SERVER_URL}/create-user`, requestData);
+  
+        if (response.status === 200 || response.status === 201) {
+          console.log('서버 전송 성공:', response.data);
+          ToastAndroid.showWithGravity(
+            '회원가입 완료!',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+          navigation.navigate('Main');
+        } else {
+          console.error('서버 전송 실패:', response.status);
+          ToastAndroid.showWithGravity(
+            '서버 오류가 발생했습니다. 다시 시도해주세요.',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+        }
       }
     } catch (error) {
-      console.error('의약품 데이터 저장 중 오류:', error);
+      console.error('데이터 전송 중 오류:', error);
+      ToastAndroid.showWithGravity(
+        '오류가 발생했습니다. 다시 시도해주세요.',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
     }
   };
+  
 
   return (
     <View style={styles.container}>
