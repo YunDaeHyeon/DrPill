@@ -37,10 +37,13 @@ export class AppService {
   }
 
   // 회원가입 처리
+  // POST /create-user
   async createUser(user: CreateUserDTO): Promise<User> {
     // User 테이블에 사용자 정보 저장
     const newUser = this.userRepository.create(user);
     const savedUser = await this.userRepository.save(newUser);
+
+    // 관심질환 저장 로직 *******************************
 
     // 사용자의 관심질환(interest_disease) 파싱 후 배열 변환
     const interestDiseases = user.interest_disease
@@ -85,6 +88,18 @@ export class AppService {
         disease: disease,
       });
       await this.userDiseaseRepository.save(userDisease);
+    }
+
+    // 관심의약품 저장 로직 *******************************
+
+    // 사용자의 관심의약품(interest_medicine) 파싱 후 배열 반환
+    const interestMedicines = user.interest_medicine
+      .split(',')
+      .map((medicine) => medicine.trim())
+      .filter((medicine) => medicine !== '');
+
+    if (interestMedicines.length === 0) {
+      return savedUser;
     }
 
     return savedUser;
