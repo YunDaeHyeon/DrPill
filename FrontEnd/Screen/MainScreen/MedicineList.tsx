@@ -304,7 +304,7 @@ const MedicineList = ({navigation, medicineName}) => {
                     <Image
                       source={{
                         uri: `${selectedImage}` || undefined,
-                      }} // selectedImage가 null이면 undefined로 처리
+                      }}
                       style={{
                         objectFit: 'cover',
                         width: 300,
@@ -316,15 +316,18 @@ const MedicineList = ({navigation, medicineName}) => {
                 </View>
                 <View style={Styles.modalcontext}>
                   <Text style={Styles.library_modalText}>제품명</Text>
+
                   <Image
                     source={require('../../Image/타이레놀_제품명.png')}
                     style={Styles.librarymodal_image}
                   />
                   <Text style={Styles.library_modalText}>효능</Text>
-                  <Image
-                    source={require('../../Image/타이레놀_효능.png')}
-                    style={Styles.librarymodal_image}
-                  />
+                  <View style={Styles.effectmodal}>
+                    <Image
+                      source={require('../../Image/타이레놀_효능.png')}
+                      style={Styles.librarymodal_image}
+                    />
+                  </View>
                   <Text style={Styles.library_modalText}>사용법</Text>
                   <Image
                     source={require('../../Image/타이레놀_사용법.png')}
@@ -543,6 +546,7 @@ const Styles = StyleSheet.create({
     //사진
     marginLeft: 10,
     width: '95%',
+    objectFit: 'fill',
   },
 
   library_modalText: {
@@ -551,6 +555,12 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     marginTop: 5,
+  },
+
+  effectmodal: {
+    width: 320,
+    height: 150,
+    backgroundColor: 'white',
   },
 });
 
