@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
+import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
+import {handleTestComponent} from '../../Function/Navigation';
 
 const MyPage = ({navigation}) => {
   const [nickname, setNickname] = useState('');
@@ -23,7 +25,8 @@ const MyPage = ({navigation}) => {
       }
     };
 
-    loadData();
+    loadData(); // kakao 프로필 불러오기
+    initializeTtsListeners(); // TTS 최초 설정
   }, []);
 
   return (
@@ -71,7 +74,12 @@ const MyPage = ({navigation}) => {
             source={require('../../Image/cloud-01.png')}
             style={Styles.setting_button_icon}
             />
-            <Text style = {Styles.setting_button_text}> 사용자 관심 의약품</Text>
+
+            <Text
+              style={Styles.setting_button_text}
+              onPress={() => handleTestComponent(navigation)}>
+              테스트 페이지 이동
+            </Text>
           </TouchableOpacity>
 
 

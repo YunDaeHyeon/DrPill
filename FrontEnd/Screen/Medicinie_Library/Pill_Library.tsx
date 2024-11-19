@@ -112,7 +112,17 @@ const PillLibrary = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity
+              style={Styles.library_contain4}
+              onPress={() => libraryModal(6)}>
+              <Image
+                source={require('../../Image/알약.png')}
+                style={Styles.like_medicine_image}
+              />
+              <PillBox />
+            </TouchableOpacity>
         </ScrollView>
+
       </View>
 
       <NavigationBar navigation={navigation} />

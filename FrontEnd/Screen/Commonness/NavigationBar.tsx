@@ -1,89 +1,81 @@
 import React from 'react';
-import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity } from 'react-native'; // 필요한 React Native 컴포넌트 불러오기
 
+// 각각의 네비게이션 함수들을 불러옵니다
 import {
-  goAccount,
-  goCamera,
-  goLibrary,
-  goMain,
-} from '../../Function/Navigation.tsx';
+  goAccount, // 계정 화면으로 이동
+  goCamera, // 카메라 화면으로 이동
+  goLibrary, // 도서관 화면으로 이동
+  goMain, // 메인 화면으로 이동
+} from '../../Function/Navigation.tsx'; // 네비게이션 함수들을 지정된 파일에서 불러옵니다
 
-export const NavigationBar = ({navigation}) => {
+// 네비게이션 바 컴포넌트
+export const NavigationBar = ({ navigation }) => {
   return (
+    // 네비게이션 바를 감싸는 뷰 컴포넌트
     <View style={Styles.navigation_bar}>
+      
+      {/* 홈 아이콘, 눌렀을 때 메인 화면으로 이동 */}
       <TouchableOpacity activeOpacity={0.7} onPress={() => goMain(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_홈.png')}
-          style={Styles.home_icon}
+          source={require('../../Image/메뉴바_홈.png')} // 홈 아이콘 이미지
+          style={Styles.icon} // 아이콘 스타일 적용
+          resizeMode="contain"  // 이미지 비율에 맞게 조정
         />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => goCamera(navigation)}>
+      {/* 카메라 아이콘, 눌렀을 때 카메라 화면으로 이동 */}
+      <TouchableOpacity activeOpacity={0.7} onPress={() => goCamera(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_카메라.png')}
-          style={Styles.camera_icon}
+          source={require('../../Image/메뉴바_카메라.png')} // 카메라 아이콘 이미지
+          style={Styles.icon} // 아이콘 스타일 적용
+          resizeMode="contain"  // 이미지 비율에 맞게 조정
         />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => goLibrary(navigation)}>
+      {/* 도서관 아이콘, 눌렀을 때 도서관 화면으로 이동 */}
+      <TouchableOpacity activeOpacity={0.7} onPress={() => goLibrary(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_도서관.png')}
-          style={Styles.library_icon}
+          source={require('../../Image/메뉴바_도서관.png')} // 도서관 아이콘 이미지
+          style={Styles.icon} // 아이콘 스타일 적용
+          resizeMode="contain"  // 이미지 비율에 맞게 조정
         />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => goAccount(navigation)}>
+      {/* 계정 아이콘, 눌렀을 때 계정 화면으로 이동 */}
+      <TouchableOpacity activeOpacity={0.7} onPress={() => goAccount(navigation)}>
         <Image
-          source={require('../../Image/메뉴바_계정.png')}
-          style={Styles.account_icon}
+          source={require('../../Image/메뉴바_계정.png')} // 계정 아이콘 이미지
+          style={Styles.icon} // 아이콘 스타일 적용
+          resizeMode="contain"  // 이미지 비율에 맞게 조정
         />
       </TouchableOpacity>
     </View>
   );
 };
 
+// 스타일 정의
 const Styles = StyleSheet.create({
   navigation_bar: {
-    //메뉴바
-    bottom: 0,
-    right: 0,
-    flexDirection: 'row',
-    verticalAlign: 'bottom',
-    backgroundColor: 'white',
-    borderColor: '#EAEAEA',
-    borderWidth: 1,
-    height: 95,
-    width: '100%',
-    alignItems: 'center',
+    // 네비게이션 바 스타일 정의
+    bottom: 0,  // 화면 하단에 위치
+    right: 0,  // 화면 우측에 위치
+    flexDirection: 'row', // 아이콘들을 가로 방향으로 나열
+    justifyContent: 'space-between',  // 아이콘 간의 간격을 균등하게 분배
+    alignItems: 'center',  // 아이콘들을 수직 중앙 정렬
+    backgroundColor: 'white',  // 배경색을 흰색으로 설정
+    borderColor: '#EAEAEA',  // 바닥에 연한 회색 테두리 추가
+    borderWidth: 1,  // 테두리 두께 1로 설정
+    height: 95,  // 네비게이션 바의 높이 설정
+    width: '100%',  // 네비게이션 바의 너비는 화면 전체에 맞추기
+    paddingHorizontal: 20,  // 네비게이션 바 좌우에 여백을 주기
   },
 
-  home_icon: {
-    //메뉴바 홈 아이콘
-    marginTop: 10,
-    marginLeft: 40,
-  },
-
-  camera_icon: {
-    //메뉴바 카메라 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  library_icon: {
-    //메뉴바 도서관 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  account_icon: {
-    //메뉴바 계정 아이콘
-    marginTop: 10,
-    marginLeft: 53,
+  icon: {
+    // 아이콘 스타일 공통 정의
+    width: 65,  // 아이콘의 가로 크기
+    height: 65, // 아이콘의 세로 크기
+    marginTop: 20,  // 아이콘 위쪽 여백 추가
+    marginBottom: 10,  // 아이콘 아래쪽 여백 추가
   },
 });
