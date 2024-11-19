@@ -1,15 +1,7 @@
 import React from 'react';
-import {Alert, ToastAndroid} from 'react-native';
+import {ToastAndroid} from 'react-native';
 import {login, getProfile} from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Config from 'react-native-config';
-import axios from 'axios';
-
-// AsyncStorage 초기화 함수
-const resetUserData = async () => {
-  await AsyncStorage.removeItem('nickname');
-  await AsyncStorage.removeItem('profileImage');
-};
 
 const showToast = message => {
   ToastAndroid.showWithGravity(
@@ -19,27 +11,29 @@ const showToast = message => {
   );
 };
 
-export const Guest_PopUp = async (): Promise<void> => {
-  const guestProfile = {
-    nickname: 'GUEST', // 게스트 기본 닉네임
-    email: '이메일 없음', // 이메일 없음 처리
-    profileImage: '../../Image/사람_프로필.png', // 기본 프로필 이미지
-  };
-
+export const Guest_PopUp = async (navigation): Promise<void> => {
   try {
-    // 데이터를 AsyncStorage에 저장
-    await AsyncStorage.setItem('userProfile', JSON.stringify(guestProfile));
+    // 모든 사용자 관련 정보 삭제
+    await Promise.all([
+      AsyncStorage.removeItem('userProfile'),
+      AsyncStorage.removeItem('userInfo'),
+      AsyncStorage.removeItem('diseaseInterests'),
+      AsyncStorage.removeItem('medicineInterests'),
+    ]);
 
+    // Toast 메시지 출력
     ToastAndroid.showWithGravity(
-      '게스트 계정으로 로그인 되었습니다.\n게스트 계정 이용 시 저장이 제한됩니다.',
+      '게스트 계정으로 로그인되었습니다.',
       ToastAndroid.SHORT,
       ToastAndroid.BOTTOM,
     );
+
+    // 메인 화면으로 이동
+    navigation.navigate('Main'); // 비동기 작업 완료 후 이동
   } catch (error) {
-    console.error('게스트 로그인 데이터 저장 실패:', error);
+    console.error('스토리지 초기화 중 오류:', error);
   }
 };
-
 
 export const Kakao_PopUp = async (): Promise<boolean> => {
   try {
@@ -53,12 +47,13 @@ export const Kakao_PopUp = async (): Promise<boolean> => {
     if (profile) {
       const nickname = profile.nickname || '닉네임 없음';
       const email = profile.email || '이메일 없음';
-      const profileImage = profile.profileImageUrl || '../../Image/사람_프로필.png';
+      const profileImage =
+        profile.profileImageUrl || '../../Image/사람_프로필.png';
 
       // 프로필 데이터를 AsyncStorage에 저장
       await AsyncStorage.setItem(
         'userProfile',
-        JSON.stringify({ nickname, email, profileImage })
+        JSON.stringify({nickname, email, profileImage}),
       );
 
       showToast('카카오 로그인 성공');
@@ -76,4 +71,3 @@ export const Kakao_PopUp = async (): Promise<boolean> => {
     return false; // 실패 시 false 반환
   }
 };
-

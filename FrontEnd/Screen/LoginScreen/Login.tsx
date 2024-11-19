@@ -27,12 +27,13 @@ const Login = () => {
   const [birthdate, setBirthdate] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  // 로그인 상태 확인
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const userProfile = await AsyncStorage.getItem('userProfile');
         if (userProfile) {
-          navigation.navigate('Main'); // 로그인 상태가 있으면 바로 메인으로 이동
+          navigation.navigate('Main'); // 로그인 상태가 있으면 메인 화면으로 이동
         }
       } catch (error) {
         console.error('로그인 상태 확인 중 오류:', error);
@@ -42,6 +43,7 @@ const Login = () => {
     checkLoginStatus();
   }, [navigation]);
 
+  // Toast 메시지 표시
   const showToast = (message: string) => {
     ToastAndroid.showWithGravity(
       message,
@@ -50,41 +52,38 @@ const Login = () => {
     );
   };
 
+  // 카카오 로그인 처리
   const handleKakaoLogin = async () => {
     setLoading(true);
     try {
-      // AsyncStorage에서 기존 사용자 정보 가져오기
       const existingUserProfile = await AsyncStorage.getItem('userProfile');
       let parsedExistingUser = null;
-  
+
       if (existingUserProfile) {
         parsedExistingUser = JSON.parse(existingUserProfile);
         console.log('저장된 사용자 정보:', parsedExistingUser);
       }
-  
-      // 카카오 로그인 진행
+
       const isSuccess = await Kakao_PopUp();
       if (isSuccess) {
         const storedData = await AsyncStorage.getItem('userProfile');
         if (storedData) {
           const { nickname, email } = JSON.parse(storedData);
           console.log('카카오에서 가져온 프로필:', { nickname, email });
-  
-          // 저장된 사용자 정보와 비교
+
           if (
             parsedExistingUser &&
             parsedExistingUser.nickname === nickname &&
             parsedExistingUser.email === email
           ) {
             console.log('프로필이 일치합니다. 메인 화면으로 이동합니다.');
-            navigation.navigate('Main'); // 메인 화면으로 바로 이동
-            return; // 로그인 절차 종료
+            navigation.navigate('Main');
+            return;
           }
-  
-          // 프로필이 일치하지 않을 경우 모달 표시
+
           setNickname(nickname);
           setEmail(email);
-          setModalVisible(true); // 모달 표시
+          handleOpenModal(); // 모달 열기
         }
       } else {
         showToast('카카오 로그인 실패. 다시 시도해주세요.');
@@ -95,13 +94,19 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
 
+  // 게스트 로그인 처리
   const handleGuestLogin = async () => {
     setLoading(true);
     try {
-      showToast('게스트 계정으로 로그인되었습니다.');
-      navigation.navigate('Main'); // 메인으로 이동
+      await AsyncStorage.multiRemove([
+        'userProfile',
+        'userInfo',
+        'diseaseInterests',
+        'medicineInterests',
+      ]);
+      showToast('게스트 계정으로 로그인 완료 시 정보가 제한됩니다.');
+      navigation.navigate('Main');
     } catch (error) {
       console.error('게스트 로그인 중 오류:', error);
     } finally {
@@ -109,7 +114,33 @@ const Login = () => {
     }
   };
 
+  // 모달 열 때 기존 데이터 로드
+  const handleOpenModal = async () => {
+    try {
+      const storedUserInfo = await AsyncStorage.getItem('userInfo');
+      if (storedUserInfo) {
+        const { nickname, email, gender, birthdate } = JSON.parse(storedUserInfo);
+        setNickname(nickname || '');
+        setEmail(email || '');
+        setGender(gender || '');
+        setBirthdate(birthdate || '');
+      }
+      setModalVisible(true);
+    } catch (error) {
+      console.error('사용자 정보 불러오기 중 오류:', error);
+    }
+  };
+
+  // 사용자 정보 저장
   const handleSaveUserInfo = async () => {
+    if (!gender || !birthdate) {
+      const errorMessage = !gender
+        ? '성별을 선택해주세요.'
+        : '생년월일을 선택해주세요.';
+      showToast(errorMessage);
+      return;
+    }
+
     const userInfo = {
       nickname,
       email,
@@ -119,7 +150,7 @@ const Login = () => {
 
     try {
       await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-      console.log('사용자 정보:', userInfo);
+      console.log('사용자 정보 저장 완료:', userInfo);
       setModalVisible(false);
       navigation.navigate('Disease_Data');
     } catch (error) {
@@ -191,7 +222,7 @@ const Login = () => {
 
             <Picker
               selectedValue={gender}
-              onValueChange={(itemValue) => setGender(itemValue)}
+              onValueChange={itemValue => setGender(itemValue)}
               style={styles.picker}>
               <Picker.Item label="성별 선택" value="" />
               <Picker.Item label="남성" value="남성" />
@@ -219,7 +250,9 @@ const Login = () => {
               />
             )}
 
-            <TouchableOpacity style={styles.saveButton} onPress={handleSaveUserInfo}>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSaveUserInfo}>
               <Text style={styles.saveButtonText}>저장</Text>
             </TouchableOpacity>
           </View>

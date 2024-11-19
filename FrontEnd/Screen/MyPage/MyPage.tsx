@@ -7,7 +7,7 @@ import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
 import {handleTestComponent} from '../../Function/Navigation';
 
 const MyPage = ({navigation}) => {
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState('GUEST');
   const [profileImage, setProfileImage] = useState(
     '../../Image/사람_프로필.png',
   );
@@ -16,22 +16,21 @@ const MyPage = ({navigation}) => {
     const loadData = async () => {
       try {
         const storedUserProfile = await AsyncStorage.getItem('userProfile');
-  
+
         if (storedUserProfile) {
-          const { nickname, profileImage } = JSON.parse(storedUserProfile); // JSON 파싱
+          const {nickname, profileImage} = JSON.parse(storedUserProfile); // JSON 파싱
           setNickname(nickname || '닉네임 없음');
           setProfileImage(profileImage || '../../Image/사람_프로필.png');
         } else {
-          console.log('저장된 사용자 정보가 없습니다.');
+          console.log('사용자 정보 없음');
         }
       } catch (error) {
         console.error('AsyncStorage에서 데이터 불러오기 실패:', error);
       }
     };
-  
+
     loadData();
   }, []);
-  
 
   return (
     <>
