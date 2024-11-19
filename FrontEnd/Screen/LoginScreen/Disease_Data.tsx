@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,29 +17,39 @@ const Disease_Data = ({ navigation }: { navigation: any }) => {
   const [shuffledInterests, setShuffledInterests] = useState<string[]>([]);
 
   useEffect(() => {
-    const interests = [
-      '감염성',
-      '종양류',
-      '혈액, 조혈기관, 면역계',
-      '내분비계, 영양, 대사',
-      '정신 및 행동장애',
-      '신경계',
-      '눈 또는 유양돌기',
-      '순환계',
-      '호흡계',
-      '소화계',
-      '치과',
-      '피부 및 피하조직',
-      '근육계, 골격계, 결합조직',
-      '배설계',
-      '생식계',
-      '임신, 출산, 산후',
-      '출생전후기',
-      '기형, 선천적, 유전',
-      '손상, 중독',
-      '그 외, 이상소견, 분류 없음',
-    ];
-    setShuffledInterests(interests.sort(() => Math.random() - 0.5));
+    const loadInterests = async () => {
+      const interests = [
+        '감염성',
+        '종양류',
+        '혈액, 조혈기관, 면역계',
+        '내분비계, 영양, 대사',
+        '정신 및 행동장애',
+        '신경계',
+        '눈 또는 유양돌기',
+        '순환계',
+        '호흡계',
+        '소화계',
+        '치과',
+        '피부 및 피하조직',
+        '근육계, 골격계, 결합조직',
+        '배설계',
+        '생식계',
+        '임신, 출산, 산후',
+        '출생전후기',
+        '기형, 선천적, 유전',
+        '손상, 중독',
+        '그 외, 이상소견, 분류 없음',
+      ];
+      setShuffledInterests(interests.sort(() => Math.random() - 0.5));
+
+      // AsyncStorage에서 이전 선택 데이터 불러오기
+      const savedInterests = await AsyncStorage.getItem('diseaseInterests');
+      if (savedInterests) {
+        setSelectedInterests(JSON.parse(savedInterests));
+      }
+    };
+
+    loadInterests();
   }, []);
 
   const toggleInterest = (interest: string) => {
@@ -50,14 +61,18 @@ const Disease_Data = ({ navigation }: { navigation: any }) => {
   };
 
   const handleNext = async () => {
-    try {
-      await AsyncStorage.setItem(
-        'diseaseInterests',
-        JSON.stringify(selectedInterests),
+    if (selectedInterests.length === 0) {
+      ToastAndroid.showWithGravity(
+        '관심있는 질환을 선택해주세요.',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
       );
+      return;
+    }
+    try {
+      await AsyncStorage.setItem('diseaseInterests', JSON.stringify(selectedInterests));
       console.log('질환 데이터 저장:', selectedInterests);
-
-      navigation.navigate('Medicine_Data'); // 의약품 데이터 페이지로 이동
+      navigation.navigate('Medicine_Data');
     } catch (error) {
       console.error('질환 데이터 저장 중 오류:', error);
     }
@@ -176,5 +191,7 @@ const styles = StyleSheet.create({
 });
 
 export default Disease_Data;
+
+
 
 
