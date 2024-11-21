@@ -229,7 +229,6 @@ const CameraCapture = ({navigation}) => {
   );
 };
 
-// 스타일 정의
 const styles = StyleSheet.create({
   container: {
     flex: 1,

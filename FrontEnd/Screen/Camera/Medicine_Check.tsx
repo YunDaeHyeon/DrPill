@@ -9,7 +9,7 @@ const MedicineCheck = ({navigation, route}: any) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={() => goMain(navigation)}>
-        <Image source={require('../../Image/홈.png')} />
+        <Image source={require('../../Image/home.png')} />
       </TouchableOpacity>
 
       <View style={styles.row1}>
