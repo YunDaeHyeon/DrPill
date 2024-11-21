@@ -1,10 +1,11 @@
 //내 계정 화면입니다.
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
 import {handleTestComponent} from '../../Function/Navigation';
+import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
   const [nickname, setNickname] = useState('GUEST');
@@ -37,14 +38,14 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <Image source={require('../../Image/종.png')} style={Styles.bell} />
+          <Image source={require('../../Image/bell.png')} style={Styles.bell} />
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
                 source={
                   profileImage.startsWith('http')
                     ? {uri: profileImage}
-                    : require('../../Image/사람_프로필.png')
+                    : require('../../Image/profile.png')
                 }
                 style={Styles.profile_image}
               />
@@ -60,22 +61,21 @@ const MyPage = ({navigation}) => {
               source={require('../../Image/mic.png')}
               style={Styles.setting_button_icon}
             />
-            <Text style={Styles.setting_button_text}>  오디오 기능</Text>
+            <Text style={Styles.setting_button_text}> 오디오 기능</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style ={Styles.setting_touch}>
+          <TouchableOpacity style={Styles.setting_touch}>
             <Image
-            source={require('../../Image/cart.png')}
-            style={Styles.setting_button_icon}
+              source={require('../../Image/cart.png')}
+              style={Styles.setting_button_icon}
             />
-            <Text style = {Styles.setting_button_text}> 사용자 관심 질환</Text>
+            <Text style={Styles.setting_button_text}> 사용자 관심 질환</Text>
           </TouchableOpacity>
 
-
-          <TouchableOpacity style ={Styles.setting_touch}>
+          <TouchableOpacity style={Styles.setting_touch}>
             <Image
-            source={require('../../Image/cloud-01.png')}
-            style={Styles.setting_button_icon}
+              source={require('../../Image/cloud-01.png')}
+              style={Styles.setting_button_icon}
             />
 
             <Text
@@ -84,8 +84,6 @@ const MyPage = ({navigation}) => {
               테스트 페이지 이동
             </Text>
           </TouchableOpacity>
-
-
         </View>
       </View>
 
@@ -172,7 +170,6 @@ const Styles = StyleSheet.create({
   },
 
   setting_button_text: {
-    
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
