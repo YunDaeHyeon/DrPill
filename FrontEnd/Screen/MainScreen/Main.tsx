@@ -186,7 +186,7 @@ const Main = ({navigation}) => {
               onPress={() => handleAntiInfo(navigation)} // 임시로 소염제 핸들러 사용
             >
               <Image
-                source={require('../../Image/소염제_아이콘.png')}
+                source={require('../../Image/pillicon.png')}
                 style={Styles.menu_icon}
               />
               <Text style={Styles.menu_text}>땀</Text>
