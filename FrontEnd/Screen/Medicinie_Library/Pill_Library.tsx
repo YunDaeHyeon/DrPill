@@ -122,7 +122,7 @@ const PillLibrary = ({navigation}) => {
                 style={Styles.library_contain}
                 onPress={() => modalOpenListener(item.id)}>
                 <Image
-                  source={require('../../Image/알약.png')}
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />

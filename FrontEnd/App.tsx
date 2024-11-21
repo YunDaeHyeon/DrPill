@@ -23,7 +23,6 @@ import TestComponent from './Screen/MyPage/TestComponent.tsx';
 import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
 import Medicine_Data from './Screen/LoginScreen/Medicine_Data.tsx';
 
-
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -74,71 +73,42 @@ const App = () => {
           />
 
           <Stack.Screen
+            name="Gallery"
+            component={Gallery}
+            options={{headerShown: false}}
+          />
+
+          <Stack.Screen
             name="CameraCapture"
             component={CameraCapture}
             options={{headerShown: false}}
           />
 
           <Stack.Screen
-            name="Gallery"
-            component={Gallery}
+            name="MedicineCheck"
+            component={MedicineCheck}
             options={{headerShown: false}}
           />
 
-        <Stack.Screen
-          name="FindMedicine"
-          component={FindMedicine}
-          options={{headerShown: false}}
-        />
+          <Stack.Screen
+            name="TestComponent"
+            component={TestComponent}
+            options={{headerShown: false}}
+          />
 
-        <Stack.Screen
-          name="PillLibrary"
-          component={PillLibrary}
-          options={{headerShown: false}}
-        />
+          <Stack.Screen
+            name="Disease_Data"
+            component={Disease_Data}
+            options={{headerShown: false}}
+          />
 
-        <Stack.Screen
-          name="MyPage"
-          component={MyPage}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="CameraCapture"
-          component={CameraCapture}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="Gallery"
-          component={Gallery}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="MedicineCheck"
-          component={MedicineCheck}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="TestComponent"
-          component={TestComponent}
-          options={{headerShown: false}}
-        />
-
-<Stack.Screen
-          name="Disease_Data"
-          component={Disease_Data}
-          options={{headerShown: false}}
-        />
-
-<Stack.Screen
-          name="Medicine_Data"
-          component={Medicine_Data}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
+          <Stack.Screen
+            name="Medicine_Data"
+            component={Medicine_Data}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
+      </MedicineListProvider>
     </NavigationContainer>
   );
 };
