@@ -1,5 +1,5 @@
 //약 도서관 화면입니다.
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Image,
@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
+import Config from 'react-native-config';
 
 // 테스트 데이터
 const test_data = [
@@ -92,6 +93,22 @@ const PillLibrary = ({navigation}) => {
   const modelCloseListener = () => {
     setSelectedItem(null);
   };
+
+  // 관심 의약품 호출
+  const callMedicineCategoryListener = async () => {
+    try {
+      const response = await fetch(
+        `${Config.AUTH_SERVER_URL}/favorite-medicine`,
+      );
+      const result = response.json();
+    } catch (error) {
+      console.error('서버로부터 응답이 실패하였습니다. : ', error);
+    }
+  };
+
+  useEffect(() => {
+    callMedicineCategoryListener();
+  }, []);
 
   return (
     <>
