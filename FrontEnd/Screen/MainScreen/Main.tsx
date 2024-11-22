@@ -2,197 +2,105 @@
 //메인 화면입니다.
 import {useEffect, useState} from 'react';
 import {
-  StyleSheet,
-  Image,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Text,
+  StyleSheet, // 스타일 정의를 위한 컴포넌트 
+  Image, // 이미지를 렌더링하기 위한 컴포넌트 
+  View, // 화면의 영역(컨테이너)을 정의하기 위한 컴포넌트 
+  TouchableOpacity, // 터치 가능한 버튼 역할의 컴포넌트 
+  TextInput, // 앱 사용자가 텍스트를 입력할 수 있는 입력 필드
+  Text, // 텍스트를 렌더링하기 위한 컴포넌트 
+  ScrollView,
 } from 'react-native';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar';
 
+// 테스트 데이터 : 서버에서 불러옴 
+const test_data = [
+  {
+    id: 1, // 데이터의 고유 식별자 
+    title: '진통제혜진', // 버튼에 표시될 약품 이름 
+  },
+  {
+    id: 2,
+    title: '두통약용재',
+  },
+  {
+    id: 3,
+    title: '발냄새대현',
+  },
+  {
+    id: 4,
+    title: '발냄새혁규',
+  },
+
+];
+//메인 컴포넌트 정의, navigation 객체를 받아와 화면 전환을 처리 
 const Main = ({navigation}) => {
-  const [text, setText] = useState(''); //text지우면 안됨
+  const [text, setText] = useState(''); // 검색창 테스트 상태. 입력 값이 변경되면 업데이트
   return (
     <>
-      {/* 전체 화면의 컨테이너 */}
+      {/* 화면 전체를 감싸는 뷰*/}
       <View style={Styles.container}>
-        {/* 검색 박스 */}
+        {/* 검색 박스 영역 */}
         <View style={Styles.searchbox}>
+          {/* 검색 아이콘 */}
           <TouchableOpacity>
             <Image
-              source={require('../../Image/searchicon.png')}
-              style={Styles.search_icon}
+              source={require('../../Image/searchicon.png')} // 검색 창 아이콘 이미지 경로
+              style={Styles.search_icon} // 아이콘 스타일 정의의
             />
           </TouchableOpacity>
+          {/* 검색창 텍스트 입력 필드 */}
           <TextInput
-            style={[Styles.search_text, {fontSize: 15, textAlign: 'center'}]} // 텍스트 크기와 정렬 설정
-            onChangeText={newText => setText(newText)} // 입력 텍스트 상태 갱신
-            placeholder="약의 이름을 입력해주세요" // 입력 필드의 기본 안내 텍스트
+            style={[Styles.search_text, {fontSize: 15, textAlign: 'center'}]} // 텍스트 입력 스타일 추가 
+            onChangeText={newText => setText(newText)} // 사용자가 텍스트 입력 시 상태 업데이트 
+            placeholder="약의 이름을 입력해주세요" // 사용자 안내용 기본 텍스트 
             placeholderTextColor={'#C0E3FD'} // 기본 텍스트 색상
           />
         </View>
 
-        {/* '약품종류' 텍스트 */}
+        {/* '약품종류' 제목 */}
         <View
           style={{
-            position: 'absolute',
-            marginTop: 133,
-            left: 29,
+            position: 'absolute', // 화면에서 절대 위치 지정 
+            marginTop: 133, // 위쪽 여백 
+            left: 29, // 왼쪽으로부터의 여백 
           }}>
           <Text style={{fontSize: 20, fontFamily: 'Jua', fontWeight: 'bold'}}>
-            약품종류
+            약품종류 {/* "약품종류"라는 제목을 화면에 표시 */}
           </Text>
         </View>
 
-        {/* 메뉴 버튼 뷰 */}
-        <View style={Styles.menubutton_view}>
-          {/* 첫 번째 열의 버튼 */}
-          <View style={Styles.menubutton_1}>
-            {/* 소화제 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                width: 152,
-                height: 88,
-                borderWidth: 1,
-                borderColor: '#D9D9D9',
-                borderRadius: 10,
-                elevation: 5,
-                shadowColor: 'black',
-                backgroundColor: 'white',
-                justifyContent: 'center',
-              }}
+        {/* 스크롤 가능한 메뉴 영역 */}
+        <ScrollView style={Styles.scrollview_maincontainer}>
+          {/* 메뉴 버튼들(약품 종류 목록)을 담는 뷰 */}
+          <View style={Styles.menubutton_container}>
+            {/* 테스트 데이터를 기반으로 버튼을 동적으로 생성 */}
+            {
+              test_data.map((item) => (
+                <TouchableOpacity
+                key={item.id} // React에서 동적 리스트를 렌더링할 때 고유 키 필요 
+              activeOpacity={0.7} // 터치 시 버튼 투명도 변화
+              style=
+              {Styles.menubutton_style} // 버튼 스타일 
               onPress={() =>
-                handleMedicineInfo(navigation, '해열·진통 소염제')
+                handleMedicineInfo(navigation, item.title) // 버튼 클릭시 실행될 함수
               }>
-              <Image
-                source={require('../../Image/headicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text
-                style={{marginLeft: '18%', fontSize: 20, fontWeight: 'bold'}}>
-                해열·진통{'\n'}소염제
-              </Text>
-            </TouchableOpacity>
-
-            {/* 감기약 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style}
-              onPress={() => handleMedicineInfo(navigation, '발한제 지한제')}>
-              <Image
-                source={require('../../Image/sweaticon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>발한제 지한제</Text>
-            </TouchableOpacity>
-
-            {/* 비타민 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style}
-              onPress={() => handleMedicineInfo(navigation, '안과용제')}>
-              <Image
-                source={require('../../Image/eye.png')}
-                style={Styles.menu_icon}
-              />
-              <Text
-                style={{marginLeft: '20%', fontSize: 20, fontWeight: 'bold'}}>
-                안과용제
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style}
-              onPress={() => handleMedicineInfo(navigation, '구강용약')}>
-              <Image
-                source={require('../../Image/tooth.png')}
-                style={Styles.menu_icon}
-              />
-              <Text
-                style={{marginLeft: '20%', fontSize: 20, fontWeight: 'bold'}}>
-                구강용약
-              </Text>
-            </TouchableOpacity>
-
-            {/* 구강약 버튼 (추가됨) */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                width: 152,
-                height: 88,
-                marginLeft: 6,
-                borderWidth: 1,
-                borderColor: '#D9D9D9',
-                borderRadius: 10,
-                elevation: 5,
-                shadowColor: 'black',
-                backgroundColor: 'white',
-                justifyContent: 'center',
-              }}
-              onPress={() => handleMedicineInfo(navigation, '구충제')}>
-              <Image
-                source={require('../../Image/wormicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>구충제</Text>
-            </TouchableOpacity>
-
-            {/* 알레르기 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style2}
-              onPress={() => handleMedicineInfo(navigation, '알레르기')}>
-              <Image
-                source={require('../../Image/allergyicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>알레르기</Text>
-            </TouchableOpacity>
-
-            {/* 소염제 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style2}
-              onPress={() => handleMedicineInfo(navigation, '이비과용제')}>
-              <Image
-                source={require('../../Image/noseicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text
-                style={{marginLeft: '10%', fontSize: 20, fontWeight: 'bold'}}>
-                이비과용제
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style2}
-              onPress={() => handleMedicineInfo(navigation, '제산제')}>
+                {/* 약품 아이콘 */}
               <Image
                 source={require('../../Image/pillicon.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>제산제</Text>
+               {/* 약품 이름 표시 */}
+              <Text
+                style={{fontSize: 20, fontWeight: 'bold'}}>
+                {item.title} {/* 동적으로 렌더링된 약품 이름 */}
+              </Text>
             </TouchableOpacity>
+              ))
+            }
 
-            {/* 땀 약 버튼 (추가됨) */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style}
-              onPress={() => handleAntiInfo(navigation)} // 임시로 소염제 핸들러 사용
-            >
-              <Image
-                source={require('../../Image/pillicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>땀</Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </View>
 
       {/* 하단 네비게이션 바 */}
@@ -203,69 +111,82 @@ const Main = ({navigation}) => {
 
 // 스타일 정의
 const Styles = StyleSheet.create({
-  // 전체 화면 컨테이너 스타일
+  // 화면 전체를 감싸는 컨테이너 
   container: {
-    flex: 1, // 화면 넌체를 차지
-    backgroundColor: 'white', // 배경 흰색
+    flex: 1, // 화면 전체를 차지하도록 설정 
+    backgroundColor: 'white', // 
     alignItems: 'center', // 자식 요소들을 수평으로 가운데 정렬
   },
 
+// 검색 박스 스타일 
   searchbox: {
-    borderColor: '#EAEAEA', // 테두리 색상
-    borderWidth: 1, // 테두리 두께
+    borderColor: '#EAEAEA', // 
+    borderWidth: 1, // 
     borderRadius: 30, // 둥근 모서리
     width: '80%', // 너비를 화면의 80%로 설정
     height: 57, // 고정 높이
     backgroundColor: 'white',
     marginTop: 35,
     elevation: 10,
-    shadowColor: 'grey',
-    justifyContent: 'center',
+    shadowColor: 'grey', //ios 그림자 색상
+    justifyContent: 'center', // 내부 콘텐츠 수직 정렬 
   },
 
+//검색 돋보기 아이콘
   search_icon: {
-    //검색 돋보기 아이콘
     position: 'absolute',
     marginLeft: 272,
     marginTop: 13,
+    
   },
 
+  // //검색창 텍스트 스타일 
   search_text: {
-    //검색창 글씨
     marginLeft: 25,
     width: 240,
     fontSize: 18,
     color: 'black',
   },
 
-  menubutton_view: {
-    //메뉴상자 뷰
-    width: 321,
-    height: 414,
-    marginTop: 80,
-    flexDirection: 'row',
+  //메뉴 컨테이너 스타일 
+  scrollview_maincontainer: {
+    width: '90%',
+    height: '70%',
+    flex: 1,
+    // 빨간 박스 표시
+    borderWidth: 1,
+    borderColor: 'red',
+    marginTop: '25%',
+
+  },
+
+  menubutton_container: {
+    width:'44%',
+    marginTop:'4%',
+    left:'10%',
+    height: '130%',
+    flexDirection: 'row', // 내부 요소들을 가로로 정렬
+    flexWrap:'wrap', //줄바꿈 허용 
+    justifyContent: 'center', 
     backgroundColor: 'white',
+
+    borderWidth: 1,
+    borderColor: 'blue',
+
   },
 
-  // 첫 번째 열 버튼 스타일
-  menubutton_1: {
-    width: '45%',
-  },
-
-  // 두 번재 열 버튼 스타일
-  menubutton_2: {
-    width: '45%',
-  },
+// 개별 아이템들
 
   // 개별 메뉴 버튼 스타일
   menubutton_style: {
-    width: '100%', // 부모 뷰의 너비를 가득 채움
-    height: 88,
+    width: '95%', // 버튼 너비 
+    height: '20%',
     marginTop: 20,
-    borderWidth: 1, // 테두리 두께
+    borderWidth: 1, 
     borderColor: '#D9D9D9',
     borderRadius: 10,
     elevation: 5,
+    fontSize: 50,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 2}, // iOS 그림자 방향 (x, y)
     shadowOpacity: 0.25, // iOS 그림자 불투명도
@@ -273,6 +194,12 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center', // 내부 콘텐츠 수직 정렬
     alignItems: 'center', // 내부 콘텐츠 수평 정렬
+
+    borderWidth: 1,
+    borderColor: 'yellow',
+    marginTop: '25%',
+
+    
   },
 
   //메튜 버튼의 아이콘 스타일
@@ -280,11 +207,6 @@ const Styles = StyleSheet.create({
     marginBottom: 5, // 아이콘과 텍스트 사이
   },
 
-  menu_text: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
 });
 
-export default Main;
+export default Main; // Main 컴포넌트를 외부에서 사용할 수 있도록 내보냄
