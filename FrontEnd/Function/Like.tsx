@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 export const PillBox = () => {
-  const [isHeartFull, setIsHeartFull] = useState(false);
+  const [isHeartFull, setIsHeartFull] = useState(true);
 
   const changeHeart = () => {
     setIsHeartFull(!isHeartFull); // 상태를 변경하여 이미지 전환
