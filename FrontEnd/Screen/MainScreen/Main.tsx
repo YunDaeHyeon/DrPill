@@ -107,7 +107,6 @@ const Main = ({navigation}) => {
         </ScrollView>
       </View>
 
-      {/* 하단 네비게이션 바 */}
       <NavigationBar navigation={navigation} />
     </>
   );
