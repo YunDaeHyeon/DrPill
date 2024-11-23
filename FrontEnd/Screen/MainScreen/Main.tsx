@@ -31,6 +31,16 @@ const test_data = [
     id: 4,
     title: '발냄새혁규',
   },
+  {
+    id: 5,
+    title: '테스트',
+  },
+  {
+    id: 6,
+    title: '발냄새대현',
+  },
+  
+  
 
 ];
 //메인 컴포넌트 정의, navigation 객체를 받아와 화면 전환을 처리 
@@ -92,7 +102,7 @@ const Main = ({navigation}) => {
               />
                {/* 약품 이름 표시 */}
               <Text
-                style={{fontSize: 20, fontWeight: 'bold'}}>
+                style={{fontSize: 14}}>
                 {item.title} {/* 동적으로 렌더링된 약품 이름 */}
               </Text>
             </TouchableOpacity>
@@ -161,10 +171,8 @@ const Styles = StyleSheet.create({
   },
 
   menubutton_container: {
-    width:'44%',
-    marginTop:'4%',
-    left:'10%',
-    height: '130%',
+    width:'100%',
+    height: '100%',
     flexDirection: 'row', // 내부 요소들을 가로로 정렬
     flexWrap:'wrap', //줄바꿈 허용 
     justifyContent: 'center', 
@@ -179,14 +187,13 @@ const Styles = StyleSheet.create({
 
   // 개별 메뉴 버튼 스타일
   menubutton_style: {
-    width: '95%', // 버튼 너비 
-    height: '20%',
-    marginTop: 20,
+    width: '40%', // 버튼 너비 
+    height: '35%',
     borderWidth: 1, 
     borderColor: '#D9D9D9',
     borderRadius: 10,
     elevation: 5,
-    fontSize: 50,
+    fontSize: 20,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 2}, // iOS 그림자 방향 (x, y)
     shadowOpacity: 0.25, // iOS 그림자 불투명도
@@ -194,10 +201,8 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center', // 내부 콘텐츠 수직 정렬
     alignItems: 'center', // 내부 콘텐츠 수평 정렬
-
-    borderWidth: 1,
-    borderColor: 'yellow',
-    marginTop: '25%',
+    marginTop: '5%',
+    marginHorizontal: 10, // 버큰 간의 좌우 여백 추가 
 
     
   },
