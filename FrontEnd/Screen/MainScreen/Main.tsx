@@ -11,16 +11,47 @@ import {
 } from 'react-native';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar';
+import Config from 'react-native-config';
+import axios from 'axios';
 
 const Main = ({navigation}) => {
   const [text, setText] = useState(''); //text지우면 안됨
+
+  // 검색
+  /*
+    [요청변수]
+    entpName : 업체 이름
+    itemName : 약 이름
+    efcyQesitm : 약 효능
+    useMethodQesitm : 사용법
+
+    [응답변수]
+    totalCount : 전체 결과 수
+    entpName : 업체명
+    itemName : 제품명
+    itemSeq : 품목기준코드
+    efcyQesitm : 약의 효능
+    useMethodQesitm : 약의 사용법
+    atpnQesitm : 약의 주의사항
+    seQesitm : 약의 부작용
+    depositMethodQesitm : 약의 보관법
+  */
+  const onSearchMedicineHandler = async text => {
+    const response = await axios.get(
+      `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
+        `serviceKey=${Config.React_APP_API_KEY}&` +
+        `itemName=${text}&` +
+        `type=json`,
+    );
+    console.log(response);
+  };
   return (
     <>
       {/* 전체 화면의 컨테이너 */}
       <View style={Styles.container}>
         {/* 검색 박스 */}
         <View style={Styles.searchbox}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onSearchMedicineHandler(text)}>
             <Image
               source={require('../../Image/searchicon.png')}
               style={Styles.search_icon}
@@ -29,8 +60,9 @@ const Main = ({navigation}) => {
           <TextInput
             style={[Styles.search_text, {fontSize: 15, textAlign: 'center'}]} // 텍스트 크기와 정렬 설정
             onChangeText={newText => setText(newText)} // 입력 텍스트 상태 갱신
-            placeholder="약의 이름을 입력해주세요" // 입력 필드의 기본 안내 텍스트
+            placeholder="약의 이름, 효능 등을 입력하세요" // 입력 필드의 기본 안내 텍스트
             placeholderTextColor={'#C0E3FD'} // 기본 텍스트 색상
+            onChange={newText => setText(newText)}
           />
         </View>
 
@@ -64,16 +96,14 @@ const Main = ({navigation}) => {
                 backgroundColor: 'white',
                 justifyContent: 'center',
               }}
-              onPress={() =>
-                handleMedicineInfo(navigation, '해열·진통 소염제')
-              }>
+              onPress={() => handleMedicineInfo(navigation, '해열제')}>
               <Image
                 source={require('../../Image/headicon.png')}
                 style={Styles.menu_icon}
               />
               <Text
                 style={{marginLeft: '18%', fontSize: 20, fontWeight: 'bold'}}>
-                해열·진통{'\n'}소염제
+                해열, 진통제
               </Text>
             </TouchableOpacity>
 
@@ -81,115 +111,42 @@ const Main = ({navigation}) => {
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style}
-              onPress={() => handleMedicineInfo(navigation, '발한제 지한제')}>
+              onPress={() => handleMedicineInfo(navigation, '발한제')}>
               <Image
                 source={require('../../Image/sweaticon.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>발한제 지한제</Text>
+              <Text style={Styles.menu_text}>백엔드</Text>
             </TouchableOpacity>
-
-            {/* 비타민 버튼 */}
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style}
-              onPress={() => handleMedicineInfo(navigation, '안과용제')}>
+              onPress={() => handleMedicineInfo(navigation, '진통제')}>
               <Image
-                source={require('../../Image/eye.png')}
+                source={require('../../Image/sweaticon.png')}
                 style={Styles.menu_icon}
               />
-              <Text
-                style={{marginLeft: '20%', fontSize: 20, fontWeight: 'bold'}}>
-                안과용제
-              </Text>
+              <Text style={Styles.menu_text}>백엔드</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style}
-              onPress={() => handleMedicineInfo(navigation, '구강용약')}>
+              onPress={() => handleMedicineInfo(navigation, '지한제')}>
               <Image
-                source={require('../../Image/tooth.png')}
+                source={require('../../Image/sweaticon.png')}
                 style={Styles.menu_icon}
               />
-              <Text
-                style={{marginLeft: '20%', fontSize: 20, fontWeight: 'bold'}}>
-                구강용약
-              </Text>
+              <Text style={Styles.menu_text}>백엔드</Text>
             </TouchableOpacity>
-
-            {/* 구강약 버튼 (추가됨) */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                width: 152,
-                height: 88,
-                marginLeft: 6,
-                borderWidth: 1,
-                borderColor: '#D9D9D9',
-                borderRadius: 10,
-                elevation: 5,
-                shadowColor: 'black',
-                backgroundColor: 'white',
-                justifyContent: 'center',
-              }}
-              onPress={() => handleMedicineInfo(navigation, '구충제')}>
-              <Image
-                source={require('../../Image/wormicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>구충제</Text>
-            </TouchableOpacity>
-
-            {/* 알레르기 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style2}
-              onPress={() => handleMedicineInfo(navigation, '알레르기')}>
-              <Image
-                source={require('../../Image/allergyicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>알레르기</Text>
-            </TouchableOpacity>
-
-            {/* 소염제 버튼 */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style2}
-              onPress={() => handleMedicineInfo(navigation, '이비과용제')}>
-              <Image
-                source={require('../../Image/noseicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text
-                style={{marginLeft: '10%', fontSize: 20, fontWeight: 'bold'}}>
-                이비과용제
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.menubutton_style2}
-              onPress={() => handleMedicineInfo(navigation, '제산제')}>
-              <Image
-                source={require('../../Image/pillicon.png')}
-                style={Styles.menu_icon}
-              />
-              <Text style={Styles.menu_text}>제산제</Text>
-            </TouchableOpacity>
-
-            {/* 땀 약 버튼 (추가됨) */}
             <TouchableOpacity
               activeOpacity={0.7}
               style={Styles.menubutton_style}
-              onPress={() => handleAntiInfo(navigation)} // 임시로 소염제 핸들러 사용
-            >
+              onPress={() => handleMedicineInfo(navigation, '소염제')}>
               <Image
-                source={require('../../Image/pillicon.png')}
+                source={require('../../Image/sweaticon.png')}
                 style={Styles.menu_icon}
               />
-              <Text style={Styles.menu_text}>땀</Text>
+              <Text style={Styles.menu_text}>백엔드</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -221,21 +178,24 @@ const Styles = StyleSheet.create({
     elevation: 10,
     shadowColor: 'grey',
     justifyContent: 'center',
+    borderColor: 'red',
   },
 
   search_icon: {
     //검색 돋보기 아이콘
     position: 'absolute',
-    marginLeft: 272,
+    marginLeft: 280,
     marginTop: 13,
   },
 
   search_text: {
     //검색창 글씨
-    marginLeft: 25,
-    width: 240,
+    marginLeft: 70,
+    width: 200,
     fontSize: 18,
     color: 'black',
+    borderColor: 'red',
+    borderWidth: 1,
   },
 
   menubutton_view: {
