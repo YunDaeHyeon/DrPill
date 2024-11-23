@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Image,
@@ -8,13 +8,23 @@ import {
   Text,
   Modal,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {MedicineListBox} from '../../Function/ListLike';
 
-import ImagePath from '../../Image/Based64Image/ImagePath';
+import Config from 'react-native-config';
+import axios from 'axios';
+
+const categoryKeywords = {
+  '해열·진통 소염제': ['해열', '진통', '소염', '열'],
+  '발한제 지한제': ['발한', '지한', '땀', '다한증', '손', '발'],
+  안과용제: ['안과', '눈물약', '건조'],
+  구강용약: ['구강', '치아'],
+  구충제: ['구충', '기생충'],
+};
 
 const MedicineList = ({navigation, medicineName}) => {
   const medicineListContext = useContext(MedicineListContext);
@@ -24,37 +34,57 @@ const MedicineList = ({navigation, medicineName}) => {
     );
   }
 
-  const {text, setText, isListOpen, toggleListOpen, selectedImage} =
-    medicineListContext;
+  const {text, setText, isListOpen, toggleListOpen} = medicineListContext;
+  const [loading, setLoading] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  var i = 0;
+  //데이터 가져오기
+  useEffect(() => {
+    const fetchMedicineData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          'http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList',
+          {
+            params: {
+              serviceKey: Config.REACT_APP_SERVICE_KEY,
+              numOfRows: 100,
 
-  // 약 이미지 동적 변환
-  switch (medicineName) {
-    case '해열·진통 소염제':
-      break;
-    case '발한제 지한제':
-      i = 1;
-      break;
-    case '안과용제':
-      i = 2;
-      break;
-    case '구강용약':
-      i = 3;
-      break;
-    case '구충제':
-      i = 4;
-      break;
-    case '알레르기':
-      i = 5;
-      break;
-    case '이비과용제':
-      i = 6;
-      break;
-    case '제산제':
-      i = 7;
-      break;
-  }
+              type: 'json',
+            },
+          },
+        );
+        const data = response.data.body.items || [];
+        console.log('넘어온 데이터 : ', data);
+        filterMedicineData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMedicineData();
+  }, []);
+
+  // 약 분류하기
+  const filterMedicineData = data => {
+    const keywords = categoryKeywords[medicineName] || [];
+    const filtered = data.filter(
+      item =>
+        item.efcyQesitm &&
+        keywords.some(keyword => item.efcyQesitm.includes(keyword)),
+    );
+    // console.log(filtered);
+    setFilteredData(filtered);
+  };
+
+  // 모달 열기
+  const openModal = imageUri => {
+    setSelectedImage(imageUri);
+    toggleListOpen();
+  };
 
   return (
     <>
@@ -68,7 +98,7 @@ const MedicineList = ({navigation, medicineName}) => {
             style={Styles.search_text}
             onChangeText={setText}
             value={text}
-            placeholder={`${medicineName}`}
+            placeholder={'약의 이름을 입력해주세요'}
             placeholderTextColor={'#C0E3FD'}
           />
         </View>
@@ -79,208 +109,27 @@ const MedicineList = ({navigation, medicineName}) => {
             style={Styles.sort_filter}
           />
         </View>
-
-        <ScrollView>
-          <View style={Styles.allergycontain_view}>
-            <View style={Styles.allergyview_1}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i])}>
-                <Image
-                  source={{uri: ImagePath[i]}}
-                  style={Styles.allergy_contain2}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 1])}>
-                <Image
-                  source={{uri: ImagePath[i + 1]}}
-                  style={Styles.allergy_contain3}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 2])}>
-                <Image
-                  source={{uri: ImagePath[i + 2]}}
-                  style={Styles.allergy_contain3}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 3])}>
-                <Image
-                  source={{uri: ImagePath[i + 3]}}
-                  style={Styles.allergy_contain3}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-            </View>
-
-            <View style={Styles.allergyview_2}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 4])}>
-                <Image
-                  source={{uri: ImagePath[i + 4]}}
-                  style={Styles.allergy_contain2}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 5])}>
-                <Image
-                  source={{uri: ImagePath[i + 5]}}
-                  style={Styles.allergy_contain3}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 6])}>
-                <Image
-                  source={{uri: ImagePath[i + 6]}}
-                  style={Styles.allergy_contain3}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 7])}>
-                <Image
-                  source={{uri: ImagePath[i + 7]}}
-                  style={Styles.allergy_contain3}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain3}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-            </View>
-
-            <View style={Styles.allergyview_3}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 8])}>
-                <Image
-                  source={{uri: ImagePath[i + 8]}}
-                  style={Styles.allergy_contain}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 9])}>
-                <Image
-                  source={{uri: ImagePath[i + 9]}}
-                  style={Styles.allergy_contain4}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 10])}>
-                <Image
-                  source={{uri: ImagePath[i + 10]}}
-                  style={Styles.allergy_contain4}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => toggleListOpen(ImagePath[i + 11])}>
-                <Image
-                  source={{uri: ImagePath[i + 11]}}
-                  style={Styles.allergy_contain4}
-                />
-              </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain4}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain4}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain4}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={Styles.allergy_contain4}
-              />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
-            </View>
-          </View>
-        </ScrollView>
+        {loading ? (
+          <ActivityIndicator size="large" color="#b4b4b4" />
+        ) : (
+          <ScrollView contentContainerStyle={Styles.medicineList}>
+            {filteredData.map((item, index) => (
+              <View key={index} style={Styles.medicineItem}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => openModal(item.itemImage)}>
+                  <Image
+                    source={{
+                      uri: item.itemImage || 'https://via.placeholder.com/100',
+                    }}
+                    style={Styles.medicineImage}
+                  />
+                </TouchableOpacity>
+                <Text style={Styles.medicineText}>{item.itemName}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        )}
 
         <Modal
           visible={isListOpen}
@@ -314,41 +163,27 @@ const MedicineList = ({navigation, medicineName}) => {
                     />
                   </View>
                 </View>
-                <View style={Styles.modalcontext}>
-                  <Text style={Styles.library_modalText}>제품명</Text>
+                {filteredData.map((item, index) => (
+                  <View key={index} style={Styles.modalcontext}>
+                    <Text style={Styles.library_modalText}>제품명</Text>
+                    <Text>{item.itemName}</Text>
 
-                  <Image
-                    source={require('../../Image/ty_name.png')}
-                    style={Styles.librarymodal_image}
-                  />
-                  <Text style={Styles.library_modalText}>효능</Text>
-                  <View style={Styles.effectmodal}>
-                    <Image
-                      source={require('../../Image/ty_effect.png')}
-                      style={Styles.librarymodal_image}
-                    />
+                    <Text style={Styles.library_modalText}>효능</Text>
+                    <Text>{item.efcyQesitm}</Text>
+
+                    <Text style={Styles.library_modalText}>사용법</Text>
+                    <Text>{item.useMethodQesitm}</Text>
+
+                    <Text style={Styles.library_modalText}>주의사항</Text>
+                    <Text>{item.atpnQesitm}</Text>
+
+                    <Text style={Styles.library_modalText}>부작용</Text>
+                    <Text>{item.seQesitm}</Text>
+
+                    <Text style={Styles.library_modalText}>보관법</Text>
+                    <Text>{item.depositMethodQesitm}</Text>
                   </View>
-                  <Text style={Styles.library_modalText}>사용법</Text>
-                  <Image
-                    source={require('../../Image/ty_use.png')}
-                    style={Styles.librarymodal_image}
-                  />
-                  <Text style={Styles.library_modalText}>주의사항</Text>
-                  <Image
-                    source={require('../../Image/ty_cau.png')}
-                    style={Styles.librarymodal_image}
-                  />
-                  <Text style={Styles.library_modalText}>부작용</Text>
-                  <Image
-                    source={require('../../Image/ty_err.png')}
-                    style={Styles.librarymodal_image}
-                  />
-                  <Text style={Styles.library_modalText}>보관법</Text>
-                  <Image
-                    source={require('../../Image/ty_in.png')}
-                    style={Styles.librarymodal_image}
-                  />
-                </View>
+                ))}
               </ScrollView>
 
               <TouchableOpacity
@@ -360,7 +195,6 @@ const MedicineList = ({navigation, medicineName}) => {
           </View>
         </Modal>
       </View>
-
       <NavigationBar navigation={navigation} />
     </>
   );
@@ -403,72 +237,12 @@ const Styles = StyleSheet.create({
   allergycontain_view: {
     //알레르기 박스 뷰
     width: '100%',
-    height: '100%',
+    height: '260%',
     marginTop: 25,
     flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-
-  allergyview_1: {
-    //알레르기 왼쪽 뷰
-    width: '33.33%',
-    backgroundColor: 'white',
-  },
-
-  allergyview_2: {
-    //알레르기 가운데 뷰
-    width: '33.33%',
-    backgroundColor: 'white',
-  },
-
-  allergyview_3: {
-    //알레르기 오른쪽 뷰
-    width: '33.33%',
-    backgroundColor: 'white',
-  },
-
-  allergy_contain: {
-    //알레르기 박스
-    width: '98%',
-    height: 106,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-    marginLeft: '1%',
-  },
-
-  allergy_contain2: {
-    width: '99%',
-    height: 106,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-    marginLeft: '1%',
-    objectFit: 'cover',
-  },
-
-  allergy_contain3: {
-    width: '99%',
-    height: 106,
-    marginTop: 15,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-    marginLeft: '1%',
-  },
-
-  allergy_contain4: {
-    width: '98%',
-    height: 106,
-    marginTop: 15,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-    marginLeft: '1%',
-  },
-
-  allergycontain_text: {
-    //알레르기 텍스트
-    marginTop: 3,
-    fontSize: 18,
-    fontFamily: 'Jua',
-    fontWeight: 'bold',
+    backgroundColor: 'yellow',
+    borderBottomColor: '#D9D9D9',
+    borderBottomWidth: 1,
   },
 
   sort_filter: {
@@ -476,6 +250,7 @@ const Styles = StyleSheet.create({
     left: '38%',
     marginTop: 16,
   },
+
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
@@ -499,6 +274,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   modal_image: {
+    //모달 이미지
     justifyContent: 'center',
     alignItems: 'center',
     width: 300,
@@ -524,6 +300,7 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalbox: {
+    //모달 박스
     width: 320,
     height: 235,
     borderRadius: 30,
@@ -535,6 +312,7 @@ const Styles = StyleSheet.create({
   },
 
   modalcontext: {
+    //약 이름 모달
     width: 320,
     marginTop: 10,
     height: '100%',
@@ -561,6 +339,38 @@ const Styles = StyleSheet.create({
     width: 320,
     height: 150,
     backgroundColor: 'white',
+  },
+
+  medicineList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+
+  medicineItem: {
+    flexDirection: 'row',
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderBottomWidth: 1,
+    borderColor: '#D9D9D9',
+    padding: 8,
+  },
+
+  medicineImage: {
+    width: 100,
+    height: 70,
+    borderRadius: 8,
+    marginTop: 10,
+    marginLeft: 8,
+  },
+
+  medicineText: {
+    fontSize: 16,
+    marginLeft: 7,
+    marginTop: '9%',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
