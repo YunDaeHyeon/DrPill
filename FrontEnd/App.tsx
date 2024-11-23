@@ -22,6 +22,7 @@ import {MedicineListProvider} from './Function/MainListContext.tsx';
 import TestComponent from './Screen/MyPage/TestComponent.tsx';
 import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
 import Medicine_Data from './Screen/LoginScreen/Medicine_Data.tsx';
+import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -105,6 +106,11 @@ const App = () => {
           <Stack.Screen
             name="Medicine_Data"
             component={Medicine_Data}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="UserInfoPage"
+            component={UserInfoPage}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
