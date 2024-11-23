@@ -41,9 +41,7 @@ const Main = ({navigation}) => {
             marginTop: 133,
             left: 29,
           }}>
-          <Text style={{fontSize: 20, fontFamily: 'Jua', fontWeight: 'bold'}}>
-            약품종류
-          </Text>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>약품종류</Text>
         </View>
 
         {/* 메뉴 버튼 뷰 */}
@@ -195,7 +193,6 @@ const Main = ({navigation}) => {
         </View>
       </View>
 
-      {/* 하단 네비게이션 바 */}
       <NavigationBar navigation={navigation} />
     </>
   );
