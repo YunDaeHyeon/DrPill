@@ -81,7 +81,7 @@ const MyPage = ({navigation}) => {
             <Text
               style={Styles.setting_button_text}
               onPress={() => handleTestComponent(navigation)}>
-              테스트 페이지 이동
+              관심 질환/의약품 변경
             </Text>
           </TouchableOpacity>
         </View>
