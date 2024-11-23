@@ -1,4 +1,4 @@
-//약 도서관 화면
+//약 도서관 화면입니다.
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -6,14 +6,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Modal, // 모달창 표시를 위한 컴포넌트 
+  Modal,
   ScrollView,
   Button,
-  Dimensions, // 화면 크기 정보 가져오기 
+  Dimensions,
 } from 'react-native';
 import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
-import Config from 'react-native-config'; // 환경 변수 관리 
+import Config from 'react-native-config';
 
 // 테스트 데이터
 const test_data = [
@@ -78,16 +78,14 @@ const test_data = [
 // 화면의 가로 크기 가져오기
 const screenWidth = Dimensions.get('window').width;
 
-//Pilllibrary 컴포넌트 정의 
 const PillLibrary = ({navigation}) => {
-
-  // 선택된 약 데이터를 저장하는 상태 
-  const [selectedItem, setSelectedItem] = useSstate(null); 
+  // 데이터 상태
+  const [selectedItem, setSelectedItem] = useState(null);
 
   // Model 핸들러
   // 모달창 열기
   const modalOpenListener = id => {
-    const selectedData = test_data.find(item => item.id === id);                                   
+    const selectedData = test_data.find(item => item.id === id);
     setSelectedItem(selectedData);
   };
 
@@ -96,45 +94,38 @@ const PillLibrary = ({navigation}) => {
     setSelectedItem(null);
   };
 
-  // 서버에서 관심 의약품 호출
+  // 관심 의약품 호출
   const callMedicineCategoryListener = async () => {
     try {
-      //서버 요청 보내기 
       const response = await fetch(
         `${Config.AUTH_SERVER_URL}/favorite-medicine`,
       );
-      const result = response.json(); // 응답 데이터 파싱 
-      //오류 처리 
+      const result = response.json();
     } catch (error) {
       console.error('서버로부터 응답이 실패하였습니다. : ', error);
     }
   };
 
-  // 화면이 렌더링 될 때 한 번 실행(useEffect 사용)
   useEffect(() => {
     callMedicineCategoryListener();
   }, []);
 
   return (
     <>
-      {/* 메인 컨테이너 */}
       <View style={Styles.container}>
-        {/* 헤더 텍스트 */}
         <Text style={Styles.pilllibrary_font}>약 도서관</Text>
-        {/* 스크롤 가능한 약 목록 */}
-        <ScrollView style={Styles.contain_controller}>  {/* 부모 */}
-          <View style={Styles.library_contain_view}>  {/* 자식 */}
-            {/* 테스트 데이터를 반복 렌더링 */}
+        <ScrollView style={Styles.contain_controller}>
+          <View style={Styles.library_contain_view}>
             {test_data.map(item => (
               <TouchableOpacity
-                key={item.id} // 각 아이템 고유 키 
-                style={Styles.library_contain} // 약 카드 스타일 
-                onPress={() => modalOpenListener(item.id)}>  {/* 클릭 시 모달 열기 */}
+                key={item.id}
+                style={Styles.library_contain}
+                onPress={() => modalOpenListener(item.id)}>
                 <Image
-                  source={require('../../Image/medicinelibrary.png')} // 약 이미지 
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
-                <PillBox /> {/* 하트 아이콘 */}
+                <PillBox />
               </TouchableOpacity>
             ))}
           </View>
@@ -143,13 +134,13 @@ const PillLibrary = ({navigation}) => {
 
       {/* 모달 창 */}
       <Modal
-        transparent={true}  // 배경 투명 
-        visible={!!selectedItem} // 선택된 약이 있으면 보이기 
-        animationType="fade" // 페이드 애니메이션 
-        onRequestClose={modelCloseListener}> {/* 뒤로가기 시 모달 닫기 */}
+        transparent={true}
+        visible={!!selectedItem}
+        animationType="fade"
+        onRequestClose={modelCloseListener}>
         <View style={Styles.modal_main_container}>
           <View style={Styles.modal_sub_container}>
-            {selectedItem && ( // 선택된 약 정보가 있으면 표시
+            {selectedItem && (
               <>
                 <Text style={Styles.modal_title}>{selectedItem.title}</Text>
                 <Text style={Styles.modal_text}>
@@ -171,21 +162,19 @@ const PillLibrary = ({navigation}) => {
           </View>
         </View>
       </Modal>
-      {/* 네비게이션 바 */}
       <NavigationBar navigation={navigation} />
     </>
   );
 };
 
-//스타일 정의 
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center', // 가로 중앙 정렬 
+    alignItems: 'center',
   },
 
-  //약 도서관 헤더 스타일 
+  //약 도서관 글씨
   pilllibrary_font: {
     position: 'absolute',
     marginTop: 31,
@@ -195,32 +184,22 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
 
-  // 스크롤 뷰 컨트롤러 
   contain_controller: {
     marginTop: '25%',
     marginBottom: '5%',
   },
 
-  // 스크롤뷰
-  scrollview_contain: {
-    marginTop: '25%',
-    backgroundColor: 'white',
-    width: '105%',
-    height: '84%',
-    flex: 1,
-  },
-
-  // 약 카드 컨테이너 (부모)
+  // 부모
   library_contain_view: {
     width: 328,
     height: '100%',
-    flexDirection: 'row', // 중요
-    flexWrap: 'wrap', // 중요
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     backgroundColor: 'white',
   },
 
-  // 약 카드(자식)
+  // 자식
   library_contain: {
     width: 143,
     height: 143,
