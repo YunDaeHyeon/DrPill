@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar';
+import Config from 'react-native-config';
+import axios from 'axios';
+import {Picker} from '@react-native-picker/picker';
 
 // 테스트 데이터
 const test_data = [
@@ -66,25 +69,91 @@ const test_data = [
 ];
 
 const Main = ({navigation}) => {
-  const [text, setText] = useState(''); //text지우면 안됨
+  const [text, setText] = useState('');
+  const [selectedOption, setSelectedOption] = useState('효능');
+
+  const placeholderText = {
+    효능: '효능을 입력하세요',
+    제품명: '제품을 입력하세요',
+    제조사: '제조사를 입력하세요',
+  };
+
+  // 검색
+  /*
+    [요청변수]
+    entpName : 업체 이름
+    itemName : 약 이름
+    efcyQesitm : 약 효능
+    useMethodQesitm : 사용법
+
+    [응답변수]
+    totalCount : 전체 결과 수
+    entpName : 업체명
+    itemName : 제품명
+    itemSeq : 품목기준코드
+    efcyQesitm : 약의 효능
+    useMethodQesitm : 약의 사용법
+    atpnQesitm : 약의 주의사항
+    seQesitm : 약의 부작용
+    depositMethodQesitm : 약의 보관법
+  */
+  const onSearchMedicineHandler = async text => {
+    try {
+      // 옵션에 따라 필드명을 결정
+      let queryField = '';
+      if (selectedOption === '효능') {
+        queryField = 'efcyQesitm';
+      } else if (selectedOption === '제조사') {
+        queryField = 'entpName';
+      } else if (selectedOption === '제품명') {
+        queryField = 'itemName';
+      }
+
+      // 동적으로 URL 생성
+      const response = await axios.get(
+        `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
+          `serviceKey=${Config.React_APP_API_KEY}&` +
+          `${queryField}=${text}&` +
+          `type=json`,
+      );
+
+      console.log('값 : ', response.data); // 결과 출력
+    } catch (error) {
+      console.error('에러 발생: ', error);
+    }
+  };
+
   return (
     <>
       {/* 전체 화면의 컨테이너 */}
       <View style={Styles.container}>
         {/* 검색 박스 */}
         <View style={Styles.searchbox}>
-          <TouchableOpacity>
+          {/* 드롭박스 */}
+          <Picker
+            selectedValue={selectedOption}
+            onValueChange={itemValue => setSelectedOption(itemValue)}
+            style={Styles.search_select}>
+            <Picker.Item label="효능" value="효능" />
+            <Picker.Item label="제품명" value="제품명" />
+            <Picker.Item label="제조사" value="제조사" />
+          </Picker>
+
+          {/* 검색 입력창 */}
+          <TextInput
+            style={Styles.search_text}
+            onChangeText={newText => setText(newText)}
+            placeholder={placeholderText[selectedOption]} // 선택된 옵션에 따른 placeholder
+            placeholderTextColor={'#C0E3FD'}
+          />
+
+          {/* 검색 아이콘 */}
+          <TouchableOpacity onPress={() => onSearchMedicineHandler(text)}>
             <Image
               source={require('../../Image/searchicon.png')}
               style={Styles.search_icon}
             />
           </TouchableOpacity>
-          <TextInput
-            style={[Styles.search_text, {fontSize: 15, textAlign: 'center'}]} // 텍스트 크기와 정렬 설정
-            onChangeText={newText => setText(newText)} // 입력 텍스트 상태 갱신
-            placeholder="약의 이름을 입력해주세요" // 입력 필드의 기본 안내 텍스트
-            placeholderTextColor={'#C0E3FD'} // 기본 텍스트 색상
-          />
         </View>
 
         <Text style={Styles.main_font}>약품 종류</Text>
@@ -122,31 +191,35 @@ const Styles = StyleSheet.create({
   },
 
   searchbox: {
-    borderColor: '#EAEAEA', // 테두리 색상
-    borderWidth: 1, // 테두리 두께
-    borderRadius: 30, // 둥근 모서리
-    width: '80%', // 너비를 화면의 80%로 설정
-    height: 57, // 고정 높이
+    flexDirection: 'row', // 가로 정렬
+    alignItems: 'center', // 세로 정렬
+    borderColor: '#EAEAEA',
+    borderWidth: 1,
+    borderRadius: 30,
+    width: '90%',
+    height: 57,
     backgroundColor: 'white',
     marginTop: 35,
     elevation: 10,
     shadowColor: 'grey',
-    justifyContent: 'center',
+    fontSize: 10,
   },
-
-  search_icon: {
-    //검색 돋보기 아이콘
-    position: 'absolute',
-    marginLeft: 272,
-    marginTop: 13,
-  },
-
-  search_text: {
-    //검색창 글씨
-    marginLeft: 25,
-    width: 240,
-    fontSize: 18,
+  search_select: {
+    width: '30%', // 드롭박스 너비
+    marginLeft: 10, // 드롭박스와 검색창 간격
     color: 'black',
+  },
+  search_text: {
+    flex: 1, // 남은 공간을 모두 사용
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'left',
+    paddingHorizontal: 10,
+  },
+  search_icon: {
+    width: 24,
+    height: 24,
+    marginRight: 15,
   },
 
   // 타이틀
