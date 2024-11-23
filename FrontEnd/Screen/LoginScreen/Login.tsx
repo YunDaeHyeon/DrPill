@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TouchableOpacity,
   Image,
@@ -10,10 +10,10 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Kakao_PopUp } from './Login_Success';
-import { Picker } from '@react-native-picker/picker';
+import {Kakao_PopUp} from './Login_Success';
+import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Login = () => {
@@ -68,8 +68,8 @@ const Login = () => {
       if (isSuccess) {
         const storedData = await AsyncStorage.getItem('userProfile');
         if (storedData) {
-          const { nickname, email } = JSON.parse(storedData);
-          console.log('카카오에서 가져온 프로필:', { nickname, email });
+          const {nickname, email} = JSON.parse(storedData);
+          console.log('카카오에서 가져온 프로필:', {nickname, email});
 
           if (
             parsedExistingUser &&
@@ -119,7 +119,7 @@ const Login = () => {
     try {
       const storedUserInfo = await AsyncStorage.getItem('userInfo');
       if (storedUserInfo) {
-        const { nickname, email, gender, birthdate } = JSON.parse(storedUserInfo);
+        const {nickname, email, gender, birthdate} = JSON.parse(storedUserInfo);
         setNickname(nickname || '');
         setEmail(email || '');
         setGender(gender || '');
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignItems: 'center',
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#87CEEB',
     borderRadius: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },

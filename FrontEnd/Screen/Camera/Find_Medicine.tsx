@@ -95,7 +95,6 @@ const FindMedicine = ({navigation}) => {
           </View>
         </View>
       </View>
-
       <NavigationBar navigation={navigation} />
     </>
   );
@@ -284,3 +283,5 @@ const Styles = StyleSheet.create({
 });
 
 export default FindMedicine;
+
+

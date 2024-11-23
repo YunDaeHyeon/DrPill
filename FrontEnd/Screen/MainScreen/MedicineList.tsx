@@ -91,7 +91,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain2}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>포크랄시럽</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -101,7 +101,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain3}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>명세핀정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -111,7 +111,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain3}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>사일레노정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -121,31 +121,31 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain3}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>루나팜정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={Styles.allergy_contain3}
               />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>트리람정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={Styles.allergy_contain3}
               />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>졸민정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={Styles.allergy_contain3}
               />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>졸피신정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={Styles.allergy_contain3}
               />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>스틸렉스정</Text>
             </View>
 
             <View style={Styles.allergyview_2}>
@@ -157,7 +157,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain2}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>스립정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -167,7 +167,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain3}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>카르마인씨알정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -177,7 +177,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain3}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>조스정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -187,13 +187,13 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain3}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>리보트릴정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={Styles.allergy_contain3}
               />
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>뉴로카바캡슐</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -223,7 +223,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>조스정</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -233,7 +233,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain4}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>잘레딥</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -243,7 +243,7 @@ const MedicineList = ({navigation, medicineName}) => {
                   style={Styles.allergy_contain4}
                 />
               </TouchableOpacity>
-              <Text style={Styles.allergycontain_text}>베아제</Text>
+              <Text style={Styles.allergycontain_text}>이로바</Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
