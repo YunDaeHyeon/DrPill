@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width: deviceWidth } = Dimensions.get('window');
+const {width: deviceWidth} = Dimensions.get('window');
 
-const Disease_Data = ({ navigation }: { navigation: any }) => {
+const Disease_Data = ({navigation}: {navigation: any}) => {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [shuffledInterests, setShuffledInterests] = useState<string[]>([]);
 
@@ -53,9 +53,9 @@ const Disease_Data = ({ navigation }: { navigation: any }) => {
   }, []);
 
   const toggleInterest = (interest: string) => {
-    setSelectedInterests((prevState) =>
+    setSelectedInterests(prevState =>
       prevState.includes(interest)
-        ? prevState.filter((item) => item !== interest)
+        ? prevState.filter(item => item !== interest)
         : [...prevState, interest],
     );
   };
@@ -70,7 +70,10 @@ const Disease_Data = ({ navigation }: { navigation: any }) => {
       return;
     }
     try {
-      await AsyncStorage.setItem('diseaseInterests', JSON.stringify(selectedInterests));
+      await AsyncStorage.setItem(
+        'diseaseInterests',
+        JSON.stringify(selectedInterests),
+      );
       console.log('질환 데이터 저장:', selectedInterests);
       navigation.navigate('Medicine_Data');
     } catch (error) {
@@ -89,7 +92,10 @@ const Disease_Data = ({ navigation }: { navigation: any }) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => toggleInterest(interest)}
-                style={[styles.interestCard, isSelected && styles.selectedCard]}>
+                style={[
+                  styles.interestCard,
+                  isSelected && styles.selectedCard,
+                ]}>
                 <View
                   style={[
                     styles.checkBox,
@@ -161,11 +167,11 @@ const styles = StyleSheet.create({
   },
   selectedCheckBox: {
     backgroundColor: '#ffffff',
-    borderColor: '#00796b',
+    borderColor: '#3AA8F8',
   },
   checkText: {
     fontSize: 12,
-    color: '#00796b',
+    color: '#3AA8F8',
   },
   interestText: {
     fontSize: 14,
@@ -173,7 +179,6 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'absolute',
     bottom: 20,
     width: '100%',
     paddingHorizontal: 16,
@@ -181,7 +186,7 @@ const styles = StyleSheet.create({
   footerButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#00796b',
+    backgroundColor: '#3AA8F8',
     borderRadius: 8,
   },
   footerButtonText: {
@@ -191,7 +196,3 @@ const styles = StyleSheet.create({
 });
 
 export default Disease_Data;
-
-
-
-

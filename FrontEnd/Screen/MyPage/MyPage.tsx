@@ -81,7 +81,7 @@ const MyPage = ({navigation}) => {
             <Text
               style={Styles.setting_button_text}
               onPress={() => handleTestComponent(navigation)}>
-              테스트 페이지 이동
+              로그아웃/회원탈퇴
             </Text>
           </TouchableOpacity>
         </View>
