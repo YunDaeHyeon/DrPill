@@ -1,21 +1,22 @@
-//약 도서관 화면
+//약 도서관 화면입니다.
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Image,
   View,
   Text,
-  TouchableOpacity,
-  Modal, // 모달창 표시를 위한 컴포넌트 
+  TouchableOpacity, // 클릭 가능 영역을 제공하는 컴포넌트 
+  Modal, // 팝업 화면 생성 
   ScrollView,
   Button,
-  Dimensions, // 화면 크기 정보 가져오기 
+  Dimensions, // 화면 크기(너비, 높이)관련 데이터를 가져오는 utility
+
 } from 'react-native';
 import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
-import Config from 'react-native-config'; // 환경 변수 관리 
+import Config from 'react-native-config'; // 환경 변수 관리를 위한 라이브러리 import 
 
-// 테스트 데이터
+// 테스트 데이터, 실제 데이터가 아닌 화면 개발/디자인을 위한 임시 데이터 
 const test_data = [
   {
     id: 1,
@@ -78,114 +79,128 @@ const test_data = [
 // 화면의 가로 크기 가져오기
 const screenWidth = Dimensions.get('window').width;
 
-//Pilllibrary 컴포넌트 정의 
+// pilllibrary 컴포넌트 정의 (이 컴포넌트가 실제 화면에 보여짐)
 const PillLibrary = ({navigation}) => {
+  // **state 정의**: 상태 관리 
+  // 'selectedItem'은 현재 선택된 약 데이터를 저장 
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // 선택된 약 데이터를 저장하는 상태 
-  const [selectedItem, setSelectedItem] = useSstate(null); 
-
-  // Model 핸들러
-  // 모달창 열기
+  // Model 열기 핸들러
+  // 사용자가 약 아이템을 클릭했을 때 호출 됨 
   const modalOpenListener = id => {
-    const selectedData = test_data.find(item => item.id === id);                                   
+    // 'id'에 해당되는 약 데이터를 찾아 'selectedItem'에 저장 
+    const selectedData = test_data.find(item => item.id === id);
     setSelectedItem(selectedData);
   };
 
   // 모달창 닫기
   const modelCloseListener = () => {
-    setSelectedItem(null);
+    setSelectedItem(null); // 선택된 약 데이터를 초기화하여 모달창을 닫음 
   };
 
-  // 서버에서 관심 의약품 호출
+  // 서버로부터 관심 약품 데이터 가져오기 
   const callMedicineCategoryListener = async () => {
     try {
-      //서버 요청 보내기 
       const response = await fetch(
-        `${Config.AUTH_SERVER_URL}/favorite-medicine`,
+        `${Config.AUTH_SERVER_URL}/favorite-medicine`, // 서버 URL
       );
-      const result = response.json(); // 응답 데이터 파싱 
-      //오류 처리 
-    } catch (error) {
+      const result = response.json(); //JSON 형식으로 변환 
+    } catch (error) { 
+      // 에러 발생 시 로그 출력 
       console.error('서버로부터 응답이 실패하였습니다. : ', error);
     }
   };
 
-  // 화면이 렌더링 될 때 한 번 실행(useEffect 사용)
+  //화면이 처음 렌더링 될 때 한 번만 'callMedicineCategorylistener' 함수 호출 
   useEffect(() => {
     callMedicineCategoryListener();
   }, []);
 
   return (
     <>
-      {/* 메인 컨테이너 */}
+      
       <View style={Styles.container}>
-        {/* 헤더 텍스트 */}
+
         <Text style={Styles.pilllibrary_font}>약 도서관</Text>
-        {/* 스크롤 가능한 약 목록 */}
-        <ScrollView style={Styles.contain_controller}>  {/* 부모 */}
-          <View style={Styles.library_contain_view}>  {/* 자식 */}
-            {/* 테스트 데이터를 반복 렌더링 */}
+
+       
+        <ScrollView style={Styles.contain_controller}>
+          <View style={Styles.library_contain_view}>
+
+           
             {test_data.map(item => (
               <TouchableOpacity
-                key={item.id} // 각 아이템 고유 키 
-                style={Styles.library_contain} // 약 카드 스타일 
-                onPress={() => modalOpenListener(item.id)}>  {/* 클릭 시 모달 열기 */}
+                key={item.id}
+                style={Styles.library_contain}
+                onPress={() => modalOpenListener(item.id)}> 
                 <Image
-                  source={require('../../Image/medicinelibrary.png')} // 약 이미지 
+                  source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
                 />
-                <PillBox /> {/* 하트 아이콘 */}
+                <PillBox />
               </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
       </View>
 
-      {/* 모달 창 */}
+      
       <Modal
-        transparent={true}  // 배경 투명 
-        visible={!!selectedItem} // 선택된 약이 있으면 보이기 
-        animationType="fade" // 페이드 애니메이션 
-        onRequestClose={modelCloseListener}> {/* 뒤로가기 시 모달 닫기 */}
-        <View style={Styles.modal_main_container}>
-          <View style={Styles.modal_sub_container}>
-            {selectedItem && ( // 선택된 약 정보가 있으면 표시
-              <>
-                <Text style={Styles.modal_title}>{selectedItem.title}</Text>
-                <Text style={Styles.modal_text}>
-                  효능: {selectedItem.effect}
-                </Text>
-                <Text style={Styles.modal_text}>
-                  사용법: {selectedItem.usege}
-                </Text>
-                <Text style={Styles.modal_text}>
-                  주의사항: {selectedItem.caution}
-                </Text>
-                <TouchableOpacity
+      visible={!!selectedItem}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={modelCloseListener}
+    >
+      <View style={Styles.modalMainContainer}>
+        <View style={Styles.modalSubContainer}>
+          {/* 약 이름 */}
+          <Text style={Styles.modalTitle}>{selectedItem?.title || '약 이름'}</Text>
+          
+          {/* 약 이미지 */}
+          <Image
+            source={require('../../Image/ty.png')} // 이미지 경로 수정
+            style={Styles.medicineImage}
+          />
+
+          {/* 약 정보: 보관 방법 */}
+          <View style={Styles.infoBox}>
+            <Text style={Styles.infoTitle}>보관 방법</Text>
+            <Text style={Styles.infoContent}>
+              {selectedItem?.usege || '기밀용기, 실온보관 (1~30°C)'}
+            </Text>
+          </View>
+
+          {/* 약 정보: 효능효과 */}
+          <View style={Styles.infoBox}>
+            <Text style={Styles.infoTitle}>효능효과</Text>
+            <Text style={Styles.infoContent}>
+              {selectedItem?.effect || '감기의 제증상 완화'}
+            </Text>
+          </View>
+
+          <TouchableOpacity
                   onPress={() => modelCloseListener()}
                   style={Styles.modal_close_btn}>
                   <Text style={Styles.modal_close_btn_text}>닫기</Text>
                 </TouchableOpacity>
-              </>
-            )}
-          </View>
         </View>
-      </Modal>
-      {/* 네비게이션 바 */}
+      </View>
+    </Modal>
       <NavigationBar navigation={navigation} />
     </>
   );
 };
 
-//스타일 정의 
+// 스타일 정의 
+
 const Styles = StyleSheet.create({
-  container: {
+  container: {    
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center', // 가로 중앙 정렬 
-  },
+    alignItems: 'center',
+  }, // 화면 레이아웃 
 
-  //약 도서관 헤더 스타일 
+  //약 도서관 글씨
   pilllibrary_font: {
     position: 'absolute',
     marginTop: 31,
@@ -195,7 +210,7 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
 
-  // 스크롤 뷰 컨트롤러 
+// 스크롤뷰 외부 스타일 
   contain_controller: {
     marginTop: '25%',
     marginBottom: '5%',
@@ -210,17 +225,17 @@ const Styles = StyleSheet.create({
     flex: 1,
   },
 
-  // 약 카드 컨테이너 (부모)
+  // 약 아이템 컨테이너 스타일 (부모)
   library_contain_view: {
     width: 328,
     height: '100%',
-    flexDirection: 'row', // 중요
-    flexWrap: 'wrap', // 중요
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     backgroundColor: 'white',
   },
 
-  // 약 카드(자식)
+  // 약 아이템 개별 스타일(자식)
   library_contain: {
     width: 143,
     height: 143,
@@ -248,53 +263,130 @@ const Styles = StyleSheet.create({
     marginBottom: 90,
   },
 
-  // 모달 (메인 컨테이너)
-  modal_main_container: {
+  modalMainContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)', // 반투명 배경
   },
-
-  // 모달 (서브 컨테이너)
-  modal_sub_container: {
+  modalSubContainer: {
     width: '90%',
-    height: '90%',
-    padding: 20,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 20,
+    padding: 20,
     alignItems: 'center',
   },
-
-  // 모달 (제목)
-  modal_title: {
-    color: 'black',
-    fontSize: 30,
+  modalTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  medicineImage: {
+    width: 200, // 이미지 너비
+    height: 100, // 이미지 높이
+    resizeMode: 'contain', // 이미지 비율 유지
+    marginBottom: 20,
+  },
+  infoBox: {
+    width: '100%',
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+    padding: 15,
     marginBottom: 10,
   },
-  // 모달 (내용)
-  modal_text: {
-    color: 'black',
+  infoTitle: {
+    fontSize: 16,
     fontWeight: 'bold',
-    fontSize: 20,
+    marginBottom: 5,
   },
-  // 모달 (닫기)
-  modal_close_btn: {
-    position: 'absolute',
-    bottom: 20,
-    left: screenWidth / 2 - 60,
-    paddingVertical: 10,
+  infoContent: {
+    fontSize: 14,
+    color: '#555',
+  },
+  modalCloseBtn: {
+    marginTop: 20,
     paddingHorizontal: 20,
-    backgroundColor: '#3f88bf',
-    borderRadius: 5,
+    paddingVertical: 10,
+    backgroundColor: '#2196F3',
+    borderRadius: 30,
+  },
+  modalCloseBtnText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 
-  // 모달 (닫기 버튼 텍스트)
-  modal_close_btn_text: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
+
+  // // 모달 (메인 컨테이너)
+  // modal_main_container: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: 'rgba(0,0,0,0.5)',
+  //   borderColor : 'blue',
+  //   borderWidth:1,
+  // },
+
+  // // 모달 내부 (서브 컨테이너)
+  // modal_sub_container: {
+  //   width: '90%',
+  //   height: '90%',
+  //   padding: 20,
+  //   backgroundColor: 'white',
+  //   borderRadius: 10,
+  //   alignItems: 'center',
+  //   borderColor : 'red',
+  //   borderWidth:1,
+  // },
+
+  // // 모달 (제목)
+  // modal_title: {
+  //   color: 'black',
+  //   fontSize: 30,
+  //   fontWeight: 'bold',
+  //   marginBottom: 10,
+  // },
+  // // 모달 (내용)
+  // modal_text: {
+  //   color: 'black',
+  //   fontWeight: 'bold',
+  //   fontSize: 20,
+  // },
+  // // 모달 (닫기)
+  // modal_close_btn: {
+  //   position: 'absolute',
+  //   bottom: 20,
+  //   left: screenWidth / 2 - 60,
+  //   paddingVertical: 10,
+  //   paddingHorizontal: 20,
+  //   backgroundColor: '#3f88bf',
+  //   borderRadius: 5,
+  // },
+
+  // // 모달 (닫기 버튼 텍스트)
+  // modal_close_btn_text: {
+  //   color: 'white',
+  //   fontWeight: 'bold',
+  // },
+  // infoBox: {
+  //   width: '100%',
+  //   backgroundColor: '#f9f9f9',
+  //   borderRadius: 10,
+  //   padding: 15,
+  //   marginBottom: 10,
+  //   borderColor : 'yellow',
+  //   borderWidth:1,
+  // },
+  // modaltite:{width:'100%',
+
+  // },
+  medicineImage:{
+    width: 200, // 이미지 너비
+    height: 100, // 이미지 높이
+    resizeMode: 'contain', // 이미지 비율 유지
+    marginBottom: 20,
+
+  }
 });
 
 export default PillLibrary;
