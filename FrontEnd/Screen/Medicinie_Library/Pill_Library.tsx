@@ -156,7 +156,7 @@ const Styles = StyleSheet.create({
     marginTop: 31,
     left: 30,
     fontSize: 30,
-    fontWeight: 'bold',
+
     color: 'black',
   },
 
