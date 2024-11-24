@@ -38,7 +38,10 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <Image source={require('../../Image/bell.png')} style={Styles.bell} />
+          <Image
+            source={require('../../Image/settings.png')}
+            style={Styles.settings}
+          />
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
@@ -81,7 +84,7 @@ const MyPage = ({navigation}) => {
             <Text
               style={Styles.setting_button_text}
               onPress={() => handleTestComponent(navigation)}>
-              관심 질환/의약품 변경
+              로
             </Text>
           </TouchableOpacity>
         </View>
@@ -116,7 +119,7 @@ const Styles = StyleSheet.create({
 
   profile_view: {
     width: 90,
-    marginLeft: 50,
+    marginLeft: 30,
     marginTop: 30,
     backgroundColor: 'white',
     alignItems: 'center',
@@ -132,7 +135,7 @@ const Styles = StyleSheet.create({
   },
 
   user_name: {
-    fontSize: 25,
+    fontSize: 20,
     marginTop: 10,
     fontWeight: 'bold',
     color: 'black',
@@ -149,7 +152,6 @@ const Styles = StyleSheet.create({
     left: 30,
     fontSize: 30,
     color: 'black',
-    fontWeight: 'bold',
   },
 
   setting_text_view: {
@@ -162,7 +164,7 @@ const Styles = StyleSheet.create({
 
   setting_text: {
     fontSize: 30,
-    fontWeight: 'bold',
+
     color: 'black',
     left: 30,
     marginTop: 64,
@@ -171,7 +173,7 @@ const Styles = StyleSheet.create({
 
   setting_button_text: {
     fontSize: 22,
-    fontWeight: 'bold',
+
     color: 'black',
     left: 15,
   },
@@ -186,7 +188,7 @@ const Styles = StyleSheet.create({
     left: 40,
   },
 
-  bell: {
+  settings: {
     position: 'absolute',
     right: 30,
     marginTop: 52,
