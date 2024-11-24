@@ -102,8 +102,7 @@ export const MedicineListBox = ({selectedItem}) => {
 
 const Styles = StyleSheet.create({
   heart: {
-    position: 'absolute',
-    marginLeft: '100%',
-    marginTop: 12,
+    marginLeft: '80%',
+    marginTop: '1%',
   },
 });
