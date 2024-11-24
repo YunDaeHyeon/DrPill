@@ -1,13 +1,7 @@
 //카메라 화면입니다.
 import React, {useEffect, useState, useRef} from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  Modal,
-} from 'react-native';
+import {View, TouchableOpacity, Image, StyleSheet, Modal} from 'react-native';
+import CustomText from '../../Function/CustomText';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {handleGAllery} from '../../Function/Navigation';
 import CameraModal from './CameraModal';
@@ -56,14 +50,14 @@ const CameraCapture = ({navigation}) => {
 
   // 권한 상태에 따른 렌더링
   if (cameraPermission === null) {
-    return <Text>카메라 권한 확인 중...</Text>;
+    return <CustomText>카메라 권한 확인 중...</CustomText>;
   } else if (!cameraPermission) {
-    return <Text>카메라 권한이 부여되지 않았습니다.</Text>;
+    return <CustomText>카메라 권한이 부여되지 않았습니다.</CustomText>;
   }
 
   // 카메라 장치가 없는 경우
   if (!device) {
-    return <Text>카메라 장치가 없습니다.</Text>;
+    return <CustomText>카메라 장치가 없습니다.</CustomText>;
   }
 
   // 사진 촬영 함수
@@ -207,18 +201,20 @@ const CameraCapture = ({navigation}) => {
         onRequestClose={() => setShowModal(false)}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modalText}>촬영 Tip</Text>
-            <Text style={styles.modalMessage}>
+            <CustomText style={styles.modalText}>촬영 Tip</CustomText>
+            <CustomText style={styles.modalMessage}>
               1. 밝은 곳에서 촬영해 주세요 {'\n'}
               2. 초점을 잘 맞춰주세요 {'\n'}
               3. 약의 글씨가 보이도록 촬영해 주세요{'\n'}
               4. 약의 글씨가 거꾸로 되면 안 돼요!❌
-            </Text>
+            </CustomText>
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => setShowModal(false)} // 버튼 클릭 시 모달 닫기
             >
-              <Text style={styles.modalButtonText}>네, 이해했습니다.</Text>
+              <CustomText style={styles.modalButtonText}>
+                네, 이해했습니다.
+              </CustomText>
             </TouchableOpacity>
           </View>
         </View>

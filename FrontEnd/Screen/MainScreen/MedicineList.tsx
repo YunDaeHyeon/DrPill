@@ -5,11 +5,11 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Text,
   Modal,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import CustomText from '../../Function/CustomText';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 import {NavigationBar} from '../Commonness/NavigationBar';
@@ -110,7 +110,9 @@ const MedicineList = ({navigation, medicineName}) => {
                     style={Styles.medicineImage}
                   />
                 </TouchableOpacity>
-                <Text style={Styles.medicineText}>{item.itemName}</Text>
+                <CustomText style={Styles.medicineText}>
+                  {item.itemName}
+                </CustomText>
               </View>
             ))}
           </ScrollView>

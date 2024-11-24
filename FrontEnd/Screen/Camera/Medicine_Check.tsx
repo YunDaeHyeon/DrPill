@@ -1,6 +1,7 @@
 //약 구별 화면입니다
 import React from 'react';
-import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import CustomText from '../../Function/CustomText.tsx';
 import {goMain} from '../../Function/Navigation.tsx';
 
 const MedicineCheck = ({navigation, route}: any) => {
@@ -59,7 +60,7 @@ const MedicineCheck = ({navigation, route}: any) => {
           </View>
         </TouchableOpacity>
       </View>
-      <Text>상세정보를 확인을 위해 이미지를 선택해주세요</Text>
+      <CustomText>상세정보를 확인을 위해 이미지를 선택해주세요</CustomText>
     </View>
   );
 };

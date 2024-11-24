@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Image,
   View,
-  Text,
   TouchableOpacity,
   Modal, // 모달창 표시를 위한 컴포넌트
   ScrollView,
   Dimensions, // 화면 크기 정보 가져오기
 } from 'react-native';
+import CustomText from '../../Function/CustomText';
 import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config'; // 환경 변수 관리
@@ -115,7 +115,7 @@ const PillLibrary = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
-        <Text style={Styles.pilllibrary_font}>약 도서관</Text>
+        <CustomText style={Styles.pilllibrary_font}>약 도서관</CustomText>
         <ScrollView style={Styles.contain_controller}>
           <View style={Styles.library_contain_view}>
             {test_data.map(item => (

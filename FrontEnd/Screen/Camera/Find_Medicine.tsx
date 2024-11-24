@@ -1,6 +1,7 @@
 //찾은 약 정보 화면입니다.
 import {useState} from 'react';
-import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import CustomText from '../../Function/CustomText';
 
 import {NavigationBar} from '../Commonness/NavigationBar';
 
@@ -26,7 +27,9 @@ const FindMedicine = ({navigation}) => {
         </View>
 
         <View style={Styles.find_image_view}>
-          <Text style={Styles.find_text}>사진의 이미지와 90% 유사해요</Text>
+          <CustomText style={Styles.find_text}>
+            사진의 이미지와 90% 유사해요
+          </CustomText>
 
           <View style={Styles.find_image_info_view}>
             <Image
@@ -51,9 +54,9 @@ const FindMedicine = ({navigation}) => {
 
         <View style={Styles.similar_image_view}>
           <View style={Styles.similar_text_block}>
-            <Text style={{color: '#3AA8F8', fontWeight: 'bold'}}>
+            <CustomText style={{color: '#3AA8F8', fontWeight: 'bold'}}>
               유사한 약물
-            </Text>
+            </CustomText>
           </View>
 
           <View style={Styles.similar_medicine_view}>
@@ -65,7 +68,9 @@ const FindMedicine = ({navigation}) => {
                     style={Styles.medicine_image}
                   />
                 </View>
-                <Text style={Styles.medicine_image_view_text}>타이레놀</Text>
+                <CustomText style={Styles.medicine_image_view_text}>
+                  타이레놀
+                </CustomText>
               </TouchableOpacity>
             </View>
 
@@ -77,7 +82,9 @@ const FindMedicine = ({navigation}) => {
                     style={Styles.medicine_image}
                   />
                 </View>
-                <Text style={Styles.medicine_image_view_text}>판콜</Text>
+                <CustomText style={Styles.medicine_image_view_text}>
+                  판콜
+                </CustomText>
               </TouchableOpacity>
             </View>
 
@@ -89,7 +96,9 @@ const FindMedicine = ({navigation}) => {
                     style={Styles.medicine_image}
                   />
                 </View>
-                <Text style={Styles.medicine_image_view_text}>약약</Text>
+                <CustomText style={Styles.medicine_image_view_text}>
+                  약약
+                </CustomText>
               </TouchableOpacity>
             </View>
           </View>
@@ -283,5 +292,3 @@ const Styles = StyleSheet.create({
 });
 
 export default FindMedicine;
-
-

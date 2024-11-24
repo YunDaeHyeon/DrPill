@@ -24,14 +24,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-  <key>KAKAO_APP_KEY</key>
-  <string>dde8d3e5d50bef3dafc368f6d40c8239</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-      <string>kakaodde8d3e5d50bef3dafc368f6d40c8239</string>
-      <string>kakaolink</string>
-      <string>kakaokompassauth</string>
-  </array>
+	<key>KAKAO_APP_KEY</key>
+	<string>dde8d3e5d50bef3dafc368f6d40c8239</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaodde8d3e5d50bef3dafc368f6d40c8239</string>
+		<string>kakaolink</string>
+		<string>kakaokompassauth</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -61,5 +61,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Jua-Regular.ttf</string>
+	</array>
 </dict>
 </plist>

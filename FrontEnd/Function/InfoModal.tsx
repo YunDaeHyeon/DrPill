@@ -3,12 +3,12 @@ import React from 'react';
 import {
   Modal,
   View,
-  Text,
   Image,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import CustomText from './CustomText';
 import {MedicineListBox} from './ListLike';
 
 const InfoModal = ({visible, selectedItem, onClose}) => {
@@ -22,9 +22,9 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
         <View style={Styles.modalSubContainer}>
           <MedicineListBox />
           <View style={Styles.modalbox}>
-            <Text style={Styles.modalTitle}>
+            <CustomText style={Styles.modalTitle}>
               {selectedItem?.itemName || '약 이름'}
-            </Text>
+            </CustomText>
             <View style={Styles.imagecontainer}>
               <Image
                 source={{
@@ -39,42 +39,46 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
 
           <ScrollView style={Styles.modalThdContainer}>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능</Text>
-              <Text>{selectedItem?.efcyQesitm || '정보 없음'}</Text>
+              <CustomText style={Styles.infoTitle}>업체명</CustomText>
+              <CustomText>
+                {selectedItem?.entpName || '정보가 없어요 :('}
+              </CustomText>
+            </View>
+            <View style={Styles.infoBox}>
+              <CustomText style={Styles.infoTitle}>효능</CustomText>
+              <CustomText>
+                {selectedItem?.efcyQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
 
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>주의사항</Text>
+              <CustomText style={Styles.infoTitle}>사용법</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {selectedItem?.useMethodQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
 
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>부작용</Text>
+              <CustomText style={Styles.infoTitle}>주의사항</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {selectedItem?.atpnQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
+              <CustomText style={Styles.infoTitle}>부작용</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {selectedItem?.seQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
-            </View>
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
-            </View>
-
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>보관 방법</Text>
+              <CustomText style={Styles.infoTitle}>보관방법</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {selectedItem?.depositMethodQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
           </ScrollView>
           <TouchableOpacity style={Styles.modalCloseBtn} onPress={onClose}>
-            <Text style={Styles.modalCloseBtnText}>닫기</Text>
+            <CustomText style={Styles.modalCloseBtnText}>닫기</CustomText>
           </TouchableOpacity>
         </View>
       </View>
