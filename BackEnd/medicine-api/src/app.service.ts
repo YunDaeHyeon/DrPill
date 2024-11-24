@@ -50,7 +50,12 @@ export class AppService {
       where: { itemSeq },
     });
     if (!medicine) {
-      medicine = this.medicineRepository.create({ itemSeq, ...medicineData });
+      // 수정: itemImage가 비어있는 경우 기본값 "" 설정
+      medicine = this.medicineRepository.create({
+        itemSeq,
+        ...medicineData,
+        itemImage: medicineData.itemImage || '', // 기본값 추가
+      });
       medicine = await this.medicineRepository.save(medicine);
     }
 
@@ -97,8 +102,14 @@ export class AppService {
       relations: ['medicine'], // Medicine 정보를 함께 로드
     });
 
-    // 3. Medicine 정보만 추출
-    const medicines = userMedicines.map((relation) => relation.medicine);
+    // 3. Medicine 정보만 추출 및 itemImage 기본값 "" 설정
+    const medicines = userMedicines.map((relation) => {
+      const medicine = relation.medicine;
+      return {
+        ...medicine,
+        itemImage: medicine.itemImage || '', // 수정: NULL 시 빈 문자열 반환
+      };
+    });
 
     return medicines;
   }
