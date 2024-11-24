@@ -76,7 +76,9 @@ const MyPage = ({navigation}) => {
             </CustomText>
           </TouchableOpacity>
 
-          <TouchableOpacity style={Styles.setting_touch}>
+          <TouchableOpacity
+            style={Styles.setting_touch}
+            onPress={() => navigation.navigate('Disease_Data')}>
             <Image
               source={require('../../Image/cart.png')}
               style={Styles.setting_button_icon}
