@@ -15,35 +15,35 @@ export class Medicine {
   itemSeq: number;
 
   // 약 이름
-  @Column()
+  @Column({ type: 'text' })
   itemName: String;
 
   // 약 이미지
-  @Column()
+  @Column({ type: 'text' })
   itemImage: String;
 
   // 업체명
-  @Column()
+  @Column({ type: 'text' })
   entpName: String;
 
   // 효능
-  @Column()
+  @Column({ type: 'text' })
   efcyQesitm: String;
 
   // 사용법
-  @Column()
+  @Column({ type: 'text' })
   useMethodQesitm: String;
 
   // 주의사항
-  @Column()
+  @Column({ type: 'text' })
   atpnQesitm: String;
 
   // 부작용
-  @Column()
+  @Column({ type: 'text' })
   seQesitm: String;
 
   // 보관법
-  @Column()
+  @Column({ type: 'text' })
   depositMethodQesitm: String;
 
   @OneToMany(() => UserMedicine, (userMedicine) => userMedicine.medicine)
