@@ -62,29 +62,26 @@ const LogoutDeleteScreen = () => {
         transparent={true}
         animationType="fade"
         onRequestClose={goBackToPreviousScreen}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>설정</Text>
-            <Text style={styles.modalMessage}>
-              로그아웃 또는 회원 탈퇴를 선택하세요.
-            </Text>
-            <View style={styles.modalButtons}>
+        <View style={commonStyles.modalOverlay}>
+          <View style={styles.mainModalContainer}>
+            <View style={styles.mainModalSubContainer}>
+              <Text style={styles.mainModalTitle}>설정</Text>
               <Pressable
-                style={styles.logoutButton}
+                style={styles.mainModalButton}
                 onPress={() => openConfirmModal('logout')}>
                 <Text style={styles.logoutButtonText}>로그아웃</Text>
               </Pressable>
               <Pressable
-                style={styles.deleteButton}
+                style={styles.mainModalButton}
                 onPress={() => openConfirmModal('delete')}>
                 <Text style={styles.deleteButtonText}>회원 탈퇴</Text>
               </Pressable>
+              <Pressable
+                style={styles.mainModalCancelButton}
+                onPress={goBackToPreviousScreen}>
+                <Text style={commonStyles.cancelButtonText}>닫기</Text>
+              </Pressable>
             </View>
-            <Pressable
-              style={styles.cancelButton}
-              onPress={goBackToPreviousScreen}>
-              <Text style={styles.cancelButtonText}>닫기</Text>
-            </Pressable>
           </View>
         </View>
       </Modal>
@@ -95,30 +92,32 @@ const LogoutDeleteScreen = () => {
         transparent={true}
         animationType="fade"
         onRequestClose={goBackToPreviousScreen}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>
-              {actionType === 'logout' ? '로그아웃 확인' : '회원 탈퇴 확인'}
-            </Text>
-            <Text style={styles.modalMessage}>
-              {actionType === 'logout'
-                ? '정말 로그아웃 하시겠습니까?'
-                : '회원 정보를 삭제하고 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.'}
-            </Text>
-            <View style={styles.modalButtons}>
-              <Pressable
-                style={styles.cancelButton}
-                onPress={goBackToPreviousScreen}>
-                <Text style={styles.cancelButtonText}>취소</Text>
-              </Pressable>
-              <Pressable
-                style={styles.confirmButton}
-                onPress={() => {
-                  if (actionType === 'logout') handleLogout();
-                  if (actionType === 'delete') handleAccountDeletion();
-                }}>
-                <Text style={styles.confirmButtonText}>확인</Text>
-              </Pressable>
+        <View style={commonStyles.modalOverlay}>
+          <View style={styles.confirmModalContainer}>
+            <View style={styles.confirmModalSubContainer}>
+              <Text style={styles.confirmModalTitle}>
+                {actionType === 'logout' ? '로그아웃 확인' : '회원 탈퇴 확인'}
+              </Text>
+              <Text style={styles.confirmModalMessage}>
+                {actionType === 'logout'
+                  ? '정말 로그아웃 하시겠습니까?'
+                  : '회원 정보를 삭제하고 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.'}
+              </Text>
+              <View style={styles.confirmModalButtons}>
+                <Pressable
+                  style={styles.confirmModalCancelButton}
+                  onPress={goBackToPreviousScreen}>
+                  <Text style={commonStyles.cancelButtonText}>취소</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.confirmModalConfirmButton}
+                  onPress={() => {
+                    if (actionType === 'logout') handleLogout();
+                    if (actionType === 'delete') handleAccountDeletion();
+                  }}>
+                  <Text style={styles.confirmButtonText}>확인</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </View>
@@ -127,6 +126,21 @@ const LogoutDeleteScreen = () => {
   );
 };
 
+const commonStyles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+  cancelButtonText: {
+    color: '#555',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+});
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -134,75 +148,87 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
   },
-  modalOverlay: {
+  // 첫 번째 모달 스타일
+  mainModalContainer: {
+    width: '75%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    padding: 20,
+    height: '30%',
+  },
+  mainModalSubContainer: {
+    width: '100%',
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
+  },
+  mainModalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  mainModalButton: {
+    backgroundColor: 'white',
+    paddingVertical: 15,
+    borderTopColor: '#EAEAEA',
+    borderTopWidth: 1,
+    alignItems: 'center',
+    width: '100%',
+  },
+  mainModalCancelButton: {
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#EAEAEA',
+    backgroundColor: 'white',
+    width: '100%',
     alignItems: 'center',
   },
-  modalContainer: {
+  logoutButtonText: {
+    color: 'red',
+  },
+  deleteButtonText: {
+    color: '#3499E2',
+  },
+
+  // 두 번째 모달 스타일
+  confirmModalContainer: {
     width: '80%',
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
   },
-  modalTitle: {
+  confirmModalSubContainer: {
+    width: '100%',
+  },
+  confirmModalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  modalMessage: {
+  confirmModalMessage: {
     fontSize: 16,
     color: '#555',
     textAlign: 'center',
     marginBottom: 20,
   },
-  modalButtons: {
+  confirmModalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginBottom: 20,
   },
-  logoutButton: {
-    flex: 1,
-    backgroundColor: '#3AA8F8',
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginHorizontal: 5,
-    alignItems: 'center',
-  },
-  logoutButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  deleteButton: {
-    flex: 1,
-    backgroundColor: '#FF6B6B',
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginHorizontal: 5,
-    alignItems: 'center',
-  },
-  deleteButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  cancelButton: {
+  confirmModalCancelButton: {
     backgroundColor: '#EAEAEA',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
+    marginHorizontal: 5,
   },
-  cancelButtonText: {
-    color: '#555',
-    fontWeight: 'bold',
-  },
-  confirmButton: {
-    backgroundColor: '#FF6B6B',
+  confirmModalConfirmButton: {
+    backgroundColor: '#3499E2',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
+    marginHorizontal: 5,
   },
   confirmButtonText: {
     color: 'white',
