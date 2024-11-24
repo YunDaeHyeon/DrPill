@@ -15,7 +15,7 @@ export const MedicineListBox = () => {
   const {selectedImage, addImageToLibrary} = medicineListContext; // Context에서 함수와 데이터 추출
   const [isHeartFull, setIsHeartFull] = useState(false);
 
-  async function conn() {
+  /*async function conn() {
     try {
       const response = await fetch(
         `${Config.AUTH_SERVER_URL}/favorite-medicine`,
@@ -28,7 +28,7 @@ export const MedicineListBox = () => {
   }
 
   const test = conn();
-  console.log(test);
+  console.log(test);*/
 
   const changeHeart = () => {
     setIsHeartFull(!isHeartFull); // 상태를 변경하여 하트 이미지 전환

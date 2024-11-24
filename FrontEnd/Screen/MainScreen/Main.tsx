@@ -72,6 +72,8 @@ const Main = ({navigation}) => {
         queryField = 'entpName';
       } else if (selectedOption === '제품명') {
         queryField = 'itemName';
+      } else {
+        throw new Error('다시 검색해 주세요');
       }
 
       // 동적으로 URL 생성
@@ -82,19 +84,27 @@ const Main = ({navigation}) => {
           `type=json`,
       );
 
-      console.log('값 : ', response.data); // 결과 출력
+      if (response.data.body.items) {
+        console.log('검색 결과 목록:');
+        response.data.body.items.forEach(item => {
+          console.log(
+            `${item.itemName || '제품명 없음'} - ${
+              item.entpName || '제조사 없음'
+            }`,
+          );
+        });
+      } else {
+        console.log('검색 결과가 없습니다');
+      }
     } catch (error) {
-      console.error('에러 발생: ', error);
+      console.error('에러 발생: ', error.message);
     }
   };
 
   return (
     <>
-      {/* 전체 화면의 컨테이너 */}
       <View style={Styles.container}>
-        {/* 검색 박스 */}
         <View style={Styles.searchbox}>
-          {/* 드롭박스 */}
           <Picker
             selectedValue={selectedOption}
             onValueChange={itemValue => setSelectedOption(itemValue)}
@@ -105,7 +115,6 @@ const Main = ({navigation}) => {
             <Picker.Item label="제조사" value="제조사" />
           </Picker>
 
-          {/* 검색 입력창 */}
           <TextInput
             style={Styles.search_text}
             onChangeText={newText => setText(newText)}
@@ -113,7 +122,6 @@ const Main = ({navigation}) => {
             placeholderTextColor={'#C0E3FD'}
           />
 
-          {/* 검색 아이콘 */}
           <TouchableOpacity onPress={() => onSearchMedicineHandler(text)}>
             <Image
               source={require('../../Image/searchicon.png')}
