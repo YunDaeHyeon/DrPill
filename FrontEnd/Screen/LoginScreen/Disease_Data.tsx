@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   selectedCard: {
     backgroundColor: '#e3f2fd',
-    borderColor: '#90caf9',
+    borderColor: '#3499E2',
   },
   checkBox: {
     width: 16,
@@ -244,11 +244,11 @@ const styles = StyleSheet.create({
   },
   selectedCheckBox: {
     backgroundColor: '#ffffff',
-    borderColor: '#00796b',
+    borderColor: '#3499E2',
   },
   checkText: {
     fontSize: 12,
-    color: '#00796b',
+    color: '#3499E2',
   },
   interestText: {
     fontSize: 14,
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00796b',
+    backgroundColor: '#3499E2',
     borderRadius: 8,
   },
   footerButtonText: {

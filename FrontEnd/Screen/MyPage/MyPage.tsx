@@ -4,7 +4,7 @@ import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
-import {handleTestComponent} from '../../Function/Navigation';
+import {handleLogoutDeleteScreen} from '../../Function/Navigation';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
@@ -38,10 +38,14 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <Image
-            source={require('../../Image/settings.png')}
-            style={Styles.settings}
-          />
+          <TouchableOpacity
+            onPress={() => handleLogoutDeleteScreen(navigation)}>
+            <Image
+              source={require('../../Image/settings.png')}
+              style={Styles.settings}
+            />
+          </TouchableOpacity>
+
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
@@ -58,7 +62,7 @@ const MyPage = ({navigation}) => {
         </View>
 
         <View style={Styles.middle_bar}>
-          <Text style={Styles.setting_text}>설정</Text>
+          <Text style={Styles.setting_text}>맞춤 설정</Text>
           <TouchableOpacity style={Styles.setting_touch}>
             <Image
               source={require('../../Image/mic.png')}
@@ -67,25 +71,14 @@ const MyPage = ({navigation}) => {
             <Text style={Styles.setting_button_text}> 오디오 기능</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={Styles.setting_touch}>
+          <TouchableOpacity
+            style={Styles.setting_touch}
+            onPress={() => navigation.navigate('Disease_Data')}>
             <Image
               source={require('../../Image/cart.png')}
               style={Styles.setting_button_icon}
             />
-            <Text style={Styles.setting_button_text}> 사용자 관심 질환</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={Styles.setting_touch}>
-            <Image
-              source={require('../../Image/cloud-01.png')}
-              style={Styles.setting_button_icon}
-            />
-
-            <Text
-              style={Styles.setting_button_text}
-              onPress={() => handleTestComponent(navigation)}>
-              로그아웃/회원탈퇴
-            </Text>
+            <Text style={Styles.setting_button_text}>사용자 관심 질환</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -154,14 +147,6 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
 
-  setting_text_view: {
-    width: 48,
-    height: 38,
-    marginLeft: 47,
-    marginTop: 64,
-    backgroundColor: 'violet',
-  },
-
   setting_text: {
     fontSize: 30,
 
@@ -190,8 +175,10 @@ const Styles = StyleSheet.create({
 
   settings: {
     position: 'absolute',
-    right: 30,
-    marginTop: 52,
+    right: 35,
+    marginTop: -33,
+    width: 35,
+    height: 35,
   },
 });
 
