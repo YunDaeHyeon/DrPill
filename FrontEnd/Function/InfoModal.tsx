@@ -26,31 +26,31 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
             <View style={Styles.imagecontainer}>
               <Image
                 source={require('../Image/taksen.png')}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  resizeMode: 'cover',
-                  borderRadius: 10,
-                }}
+                style={Styles.libraryimage}
               />
             </View>
           </View>
+
           <ScrollView style={Styles.modalThdContainer}>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>보관 방법</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.effect || '기밀용기, 실온보관 (1~30°C)'}
-              </Text>
+              <Text style={Styles.infoTitle}>효능</Text>
             </View>
 
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
+              <Text style={Styles.infoTitle}>사용법</Text>
             </View>
 
-            {/* 나머지 정보들도 동일하게 추가 */}
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>주의사항</Text>
+            </View>
+
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>부작용</Text>
+            </View>
+
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>보관 방법</Text>
+            </View>
           </ScrollView>
           <TouchableOpacity style={Styles.modalCloseBtn} onPress={onClose}>
             <Text style={Styles.modalCloseBtnText}>닫기</Text>
@@ -147,6 +147,13 @@ const Styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: '5%',
     alignItems: 'center',
+  },
+
+  libraryimage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 10,
   },
 });
 

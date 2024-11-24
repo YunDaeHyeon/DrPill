@@ -112,61 +112,62 @@ const MedicineList = ({navigation, medicineName}) => {
           visible={isListOpen}
           transparent={true}
           onRequestClose={toggleListOpen}>
-          <View style={Styles.modalOverlay}>
-            <View style={Styles.modalContent}>
-              <ScrollView style={Styles.modalcontain}>
-                <View style={Styles.modalbox}>
-                  <Text
-                    style={{
-                      marginTop: 15,
-                      marginLeft: 10,
-                      fontSize: 25,
-                      fontWeight: 'bold',
-                    }}>
-                    약 고유번호
-                  </Text>
-                  <MedicineListBox />
-                  <View style={Styles.modal_image}>
-                    <Image
-                      source={{
-                        uri: `${selectedImage}` || undefined,
-                      }}
-                      style={{
-                        objectFit: 'cover',
-                        width: 300,
-                        height: 160,
-                        borderRadius: 10,
-                      }}
-                    />
-                  </View>
+          <View style={Styles.modalMainContainer}>
+            <View style={Styles.modalSubContainer}>
+              <MedicineListBox />
+
+              <View style={Styles.modalbox}>
+                <Text style={Styles.modalTitle}>약 이름</Text>
+                <View style={Styles.imagecontainer}>
+                  <Image
+                    source={selectedImage ? {uri: selectedImage} : undefined}
+                  />
                 </View>
-                {filteredData.map((item, index) => (
-                  <View key={index} style={Styles.modalcontext}>
-                    <Text style={Styles.library_modalText}>제품명</Text>
-                    <Text>{item.itemName}</Text>
+              </View>
 
-                    <Text style={Styles.library_modalText}>효능</Text>
-                    <Text>{item.efcyQesitm}</Text>
+              <ScrollView style={Styles.modalThdContainer}>
+                <View style={Styles.infoBox}>
+                  <Text style={Styles.infoTitle}>효능</Text>
+                  <Text>
+                    {filteredData.map(item => item.efcyQesitm).join(', ')}
+                  </Text>
+                </View>
 
-                    <Text style={Styles.library_modalText}>사용법</Text>
-                    <Text>{item.useMethodQesitm}</Text>
+                <View style={Styles.infoBox}>
+                  <Text style={Styles.infoTitle}>사용법</Text>
+                  <Text>
+                    {filteredData.map(item => item.useMethodQesitm).join(', ')}
+                  </Text>
+                </View>
 
-                    <Text style={Styles.library_modalText}>주의사항</Text>
-                    <Text>{item.atpnQesitm}</Text>
+                <View style={Styles.infoBox}>
+                  <Text style={Styles.infoTitle}>주의사항</Text>
+                  <Text>
+                    {filteredData.map(item => item.atpnQesitm).join(', ')}
+                  </Text>
+                </View>
 
-                    <Text style={Styles.library_modalText}>부작용</Text>
-                    <Text>{item.seQesitm}</Text>
+                <View style={Styles.infoBox}>
+                  <Text style={Styles.infoTitle}>부작용</Text>
+                  <Text>
+                    {filteredData.map(item => item.seQesitm).join(', ')}
+                  </Text>
+                </View>
 
-                    <Text style={Styles.library_modalText}>보관법</Text>
-                    <Text>{item.depositMethodQesitm}</Text>
-                  </View>
-                ))}
+                <View style={Styles.infoBox}>
+                  <Text style={Styles.infoTitle}>보관 방법</Text>
+                  <Text>
+                    {filteredData
+                      .map(item => item.depositMethodQesitm)
+                      .join(', ')}
+                  </Text>
+                </View>
               </ScrollView>
 
               <TouchableOpacity
-                onPress={toggleListOpen}
-                style={Styles.closeButton}>
-                <Text style={Styles.closeText}>닫기</Text>
+                style={Styles.modalCloseBtn}
+                onPress={toggleListOpen}>
+                <Text style={Styles.modalCloseBtnText}>닫기</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -210,112 +211,100 @@ const Styles = StyleSheet.create({
     fontSize: 18,
     color: 'black',
   },
-
-  allergycontain_view: {
-    //알레르기 박스 뷰
-    width: '100%',
-    height: '260%',
-    marginTop: 25,
-    flexDirection: 'row',
-    backgroundColor: 'yellow',
-    borderBottomColor: '#D9D9D9',
-    borderBottomWidth: 1,
-  },
-
   sort_filter: {
     //필터 아이콘
     left: '38%',
     marginTop: 16,
   },
 
-  modalOverlay: {
+  modalMainContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
+    backgroundColor: 'rgba(0,0,0,0.5)', // 반투명 배경
   },
-  modalContent: {
-    //모달 크기
+  modalSubContainer: {
     width: '90%',
     height: '90%',
+    backgroundColor: 'white',
+    borderRadius: 20,
     padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
   },
-  modalcontain: {
-    position: 'absolute',
-    width: '105%',
-    height: '93%',
-    marginTop: 15,
-    backgroundColor: 'white',
+  modalThdContainer: {
+    width: '100%',
   },
-  modal_image: {
-    //모달 이미지
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginLeft: 20,
+    marginTop: 5,
     justifyContent: 'center',
-    alignItems: 'center',
-    width: 300,
-    height: 160,
-    marginLeft: 9,
+    backgroundColor: 'white',
+  },
+  medicineImage: {
+    width: 200, // 이미지 너비
+    height: 100, // 이미지 높이
+    resizeMode: 'contain', // 이미지 비율 유지
+    marginTop: 5,
+    marginBottom: 10,
+    borderColor: 'blue',
+    borderWidth: 40,
+  },
+  infoBox: {
+    width: '100%',
+    backgroundColor: '#f9f9f9',
     borderRadius: 10,
-    marginTop: 10,
+    padding: 15,
+    marginBottom: 10,
+  },
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  infoContent: {
+    fontSize: 14,
+    color: '#555',
+  },
+  modalCloseBtn: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: '#3AA8F8',
+    borderRadius: 30,
+    marginLeft: '40%',
+    width: 70,
+  },
+
+  modalCloseBtnText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  imagecontainer: {
+    width: '80%', // 이미지 너비
+    height: '60%', // 이미지 높이
+    resizeMode: 'contain', // 이미지 비율 유지
+    marginBottom: 20,
+    borderRadius: 8,
     backgroundColor: 'grey',
   },
 
-  closeButton: {
-    //닫는 버튼
-    position: 'absolute',
-    marginTop: '210%',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#3f88bf',
-    borderRadius: 5,
-  },
-  closeText: {
-    //닫는 버튼 텍스트
-    color: 'white',
-    fontWeight: 'bold',
-  },
   modalbox: {
     //모달 박스
-    width: 320,
-    height: 235,
+    width: '100%',
+    height: '25%',
     borderRadius: 30,
     borderWidth: 1,
     borderColor: '#EAEAEA',
     elevation: 5,
     backgroundColor: 'white',
     shadowColor: 'gray',
-  },
-
-  modalcontext: {
-    //약 이름 모달
-    width: 320,
-    marginTop: 10,
-    height: '100%',
-    backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderTopColor: '#EAEAEA',
-  },
-  librarymodal_image: {
-    //사진
-    marginLeft: 10,
-    width: '95%',
-    objectFit: 'fill',
-  },
-
-  library_modalText: {
-    //모달 텍스트
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 5,
-  },
-
-  effectmodal: {
-    width: 320,
-    height: 150,
-    backgroundColor: 'white',
+    marginBottom: 15,
+    marginTop: '3%',
+    alignItems: 'center',
   },
 
   medicineList: {
