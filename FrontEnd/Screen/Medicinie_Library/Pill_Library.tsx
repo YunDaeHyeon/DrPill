@@ -16,6 +16,7 @@ import Config from 'react-native-config'; // 환경 변수 관리
 import {MedicineListBox} from '../../Function/ListLike';
 import InfoModal from '../../Function/InfoModal';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 화면의 가로 크기 가져오기
 const screenWidth = Dimensions.get('window').width;
@@ -24,11 +25,11 @@ const screenWidth = Dimensions.get('window').width;
 const PillLibrary = ({navigation}) => {
   // 데이터 상태
   const [selectedItem, setSelectedItem] = useState(null);
+  const [favoriteMedicine, setFavoriteMedicine] = useState([]); // 즐겨찾기 데이터
 
-  // Model 핸들러
   // 모달창 열기
   const modalOpenListener = id => {
-    const selectedData = test_data.find(item => item.id === id);
+    const selectedData = favoriteMedicine.find(item => item.itemSeq === id);
     setSelectedItem(selectedData);
   };
 
@@ -39,16 +40,19 @@ const PillLibrary = ({navigation}) => {
 
   // 관심 의약품 호출
   const callMedicineListener = async () => {
+    const result = await AsyncStorage.getItem('userId');
+    const uid = Number(result); // 사용자 ID를 숫자로 변환
     try {
       const response = await axios.get(
-        `${Config.AUTH_SERVER_URL}/favorite-get`,
+        `${Config.AUTH_SERVER_URL}/favorite-get?uid=${uid}`,
       );
-      const result = response.json();
+      setFavoriteMedicine(response.data); // 서버로부터 받은 데이터를 상태에 저장
     } catch (error) {
       console.error('서버로부터 응답이 실패하였습니다. : ', error);
     }
   };
 
+  // 처음 로드 시 관심 의약품 호출
   useEffect(() => {
     callMedicineListener();
   }, []);
@@ -59,13 +63,17 @@ const PillLibrary = ({navigation}) => {
         <CustomText style={Styles.pilllibrary_font}>약 도서관</CustomText>
         <ScrollView style={Styles.contain_controller}>
           <View style={Styles.library_contain_view}>
-            {test_data.map(item => (
+            {favoriteMedicine.map(item => (
               <TouchableOpacity
-                key={item.id}
+                key={item.itemSeq} // itemSeq를 고유 키로 사용
                 style={Styles.library_contain}
-                onPress={() => modalOpenListener(item.id)}>
+                onPress={() => modalOpenListener(item.itemSeq)}>
                 <Image
-                  source={require('../../Image/medicinelibrary.png')}
+                  source={{
+                    uri:
+                      item.itemImage ||
+                      require('../../Image/medicinelibrary.png'),
+                  }} // 동적 이미지
                   style={Styles.like_medicine_image}
                 />
                 <PillBox />
