@@ -6,35 +6,46 @@ import {
   PrimaryColumn,
   OneToMany,
 } from 'typeorm';
-import { RelationMedicineCategory } from './relationMedicineCategory.entity';
+import { UserMedicine } from './userMedicine.entity';
 
 @Entity('Medicine')
 export class Medicine {
-  // 식약분류
-  @Column()
-  category_name: number;
-
-  // 주성분코드
-  @Column()
-  medicine_class: string;
-
-  // 제품코드 (PK)
+  // 품목기준코드 PK
   @PrimaryColumn()
-  mid: number;
+  itemSeq: number;
 
-  // 제품명
+  // 약 이름
   @Column()
-  medicine_name: string;
+  itemName: String;
+
+  // 약 이미지
+  @Column()
+  itemImage: String;
 
   // 업체명
   @Column()
-  company_name: string;
+  entpName: String;
 
-  // ATC 코드
+  // 효능
   @Column()
-  atc_code: string;
+  efcyQesitm: String;
 
-  // 하나의 의약품(여러개의 의약품)은 하나의 식별분류에 속한다.
-  @OneToMany(() => RelationMedicineCategory, (relation) => relation.medicine)
-  relationCategories: RelationMedicineCategory[];
+  // 사용법
+  @Column()
+  useMethodQesitm: String;
+
+  // 주의사항
+  @Column()
+  atpnQesitm: String;
+
+  // 부작용
+  @Column()
+  seQesitm: String;
+
+  // 보관법
+  @Column()
+  depositMethodQesitm: String;
+
+  @OneToMany(() => UserMedicine, (userMedicine) => userMedicine.medicine)
+  userMedicines: UserMedicine[];
 }
