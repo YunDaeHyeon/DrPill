@@ -17,6 +17,7 @@ import {MedicineListBox} from '../../Function/ListLike';
 
 import Config from 'react-native-config';
 import axios from 'axios';
+import InfoModal from '../../Function/InfoModal';
 
 const MedicineList = ({navigation, medicineName}) => {
   console.log('전송 성공', medicineName);
@@ -30,9 +31,10 @@ const MedicineList = ({navigation, medicineName}) => {
   const {text, setText, isListOpen, toggleListOpen} = medicineListContext;
   const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null); // 선택된 항목 상태
+  const [modalVisible, setModalVisible] = useState(false); // 모달 상태
 
-  //데이터 가져오기
+  // 데이터 가져오기
   useEffect(() => {
     const fetchMedicineData = async () => {
       setLoading(true);
@@ -58,9 +60,15 @@ const MedicineList = ({navigation, medicineName}) => {
   }, []);
 
   // 모달 열기
-  const openModal = imageUri => {
-    setSelectedImage(imageUri);
-    toggleListOpen();
+  const openModal = item => {
+    setSelectedItem(item); // 선택된 데이터를 저장
+    setModalVisible(true); // 모달 열기
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setSelectedItem(null); // 선택된 데이터를 초기화
+    setModalVisible(false); // 모달 닫기
   };
 
   return (
@@ -94,7 +102,7 @@ const MedicineList = ({navigation, medicineName}) => {
               <View key={index} style={Styles.medicineItem}>
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  onPress={() => openModal(item.itemImage)}>
+                  onPress={() => openModal(item)}>
                   <Image
                     source={{
                       uri: item.itemImage || 'https://via.placeholder.com/100',
@@ -107,71 +115,11 @@ const MedicineList = ({navigation, medicineName}) => {
             ))}
           </ScrollView>
         )}
-
-        <Modal
-          visible={isListOpen}
-          transparent={true}
-          onRequestClose={toggleListOpen}>
-          <View style={Styles.modalMainContainer}>
-            <View style={Styles.modalSubContainer}>
-              <MedicineListBox />
-
-              <View style={Styles.modalbox}>
-                <Text style={Styles.modalTitle}>약 이름</Text>
-                <View style={Styles.imagecontainer}>
-                  <Image
-                    source={selectedImage ? {uri: selectedImage} : undefined}
-                  />
-                </View>
-              </View>
-
-              <ScrollView style={Styles.modalThdContainer}>
-                <View style={Styles.infoBox}>
-                  <Text style={Styles.infoTitle}>효능</Text>
-                  <Text>
-                    {filteredData.map(item => item.efcyQesitm).join(', ')}
-                  </Text>
-                </View>
-
-                <View style={Styles.infoBox}>
-                  <Text style={Styles.infoTitle}>사용법</Text>
-                  <Text>
-                    {filteredData.map(item => item.useMethodQesitm).join(', ')}
-                  </Text>
-                </View>
-
-                <View style={Styles.infoBox}>
-                  <Text style={Styles.infoTitle}>주의사항</Text>
-                  <Text>
-                    {filteredData.map(item => item.atpnQesitm).join(', ')}
-                  </Text>
-                </View>
-
-                <View style={Styles.infoBox}>
-                  <Text style={Styles.infoTitle}>부작용</Text>
-                  <Text>
-                    {filteredData.map(item => item.seQesitm).join(', ')}
-                  </Text>
-                </View>
-
-                <View style={Styles.infoBox}>
-                  <Text style={Styles.infoTitle}>보관 방법</Text>
-                  <Text>
-                    {filteredData
-                      .map(item => item.depositMethodQesitm)
-                      .join(', ')}
-                  </Text>
-                </View>
-              </ScrollView>
-
-              <TouchableOpacity
-                style={Styles.modalCloseBtn}
-                onPress={toggleListOpen}>
-                <Text style={Styles.modalCloseBtnText}>닫기</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+        <InfoModal
+          visible={modalVisible} // 모달 상태 전달
+          selectedItem={selectedItem} // 선택된 데이터 전달
+          onClose={closeModal} // 닫기 함수 전달
+        />
       </View>
       <NavigationBar navigation={navigation} />
     </>

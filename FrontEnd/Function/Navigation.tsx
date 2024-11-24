@@ -63,8 +63,3 @@ export const handleDetectedImages = (navigation: NavigationProp<any>) => {
 export const handleMedicineCheck = (navigation: NavigationProp<any>) => {
   navigation.dispatch(CommonActions.navigate('MedicineCheck'));
 };
-
-// 관심사 선택 UI 테스트
-export const handleTestComponent = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('TestComponent'));
-};
