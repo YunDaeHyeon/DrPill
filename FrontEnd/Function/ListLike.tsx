@@ -15,21 +15,6 @@ export const MedicineListBox = () => {
   const {selectedImage, addImageToLibrary} = medicineListContext; // Context에서 함수와 데이터 추출
   const [isHeartFull, setIsHeartFull] = useState(false);
 
-  /*async function conn() {
-    try {
-      const response = await fetch(
-        `${Config.AUTH_SERVER_URL}/favorite-medicine`,
-      );
-      console.log(response);
-      return 1;
-    } catch (error) {
-      console.error('서버로부터 응답이 실패하였습니다. : ', error);
-    }
-  }
-
-  const test = conn();
-  console.log(test);*/
-
   const changeHeart = () => {
     setIsHeartFull(!isHeartFull); // 상태를 변경하여 하트 이미지 전환
     if (selectedImage && addImageToLibrary) {
@@ -53,7 +38,8 @@ export const MedicineListBox = () => {
 const Styles = StyleSheet.create({
   heart: {
     position: 'absolute',
-    marginLeft: '100%',
+    width: '100%',
+    alignItems: 'flex-end',
     marginTop: 12,
   },
 });
