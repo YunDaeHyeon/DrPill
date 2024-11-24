@@ -45,7 +45,32 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
 
             <View style={Styles.infoBox}>
               <Text style={Styles.infoTitle}>주의사항</Text>
-              <Text>{selectedItem?.atpnQesitm || '정보 없음'}</Text>
+            </View>
+
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>부작용</Text>
+            </View>
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>효능효과</Text>
+              <Text style={Styles.infoContent}>
+                {selectedItem?.usege || '감기의 제증상 완화'}
+              </Text>
+            </View>
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>효능효과</Text>
+              <Text style={Styles.infoContent}>
+                {selectedItem?.usege || '감기의 제증상 완화'}
+              </Text>
+            </View>
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>효능효과</Text>
+              <Text style={Styles.infoContent}>
+                {selectedItem?.usege || '감기의 제증상 완화'}
+              </Text>
+            </View>
+
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>보관 방법</Text>
             </View>
           </ScrollView>
           <TouchableOpacity style={Styles.modalCloseBtn} onPress={onClose}>
