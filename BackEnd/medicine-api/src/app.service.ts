@@ -82,4 +82,24 @@ export class AppService {
     // 2. 관계 삭제
     await this.umRepository.delete(relation.id);
   }
+
+  // GET /favorite-get
+  async getFavoriteMedicine(uid: number): Promise<Medicine[]> {
+    // 1. 사용자 존재 확인
+    const user = await this.userRepository.findOne({ where: { uid } });
+    if (!user) {
+      throw new Error(`사용자 정보를 찾을 수 없습니다.`);
+    }
+
+    // 2. 즐겨찾기된 의약품 조회
+    const userMedicines = await this.umRepository.find({
+      where: { user: { uid } },
+      relations: ['medicine'], // Medicine 정보를 함께 로드
+    });
+
+    // 3. Medicine 정보만 추출
+    const medicines = userMedicines.map((relation) => relation.medicine);
+
+    return medicines;
+  }
 }
