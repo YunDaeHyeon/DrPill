@@ -8,12 +8,6 @@ export class CreateUserDTO {
   nickname: string;
 
   @IsString()
-  interest_disease: string;
-
-  @IsString()
-  interest_medicine: string;
-
-  @IsString()
   birthday: string;
 
   @IsString()
