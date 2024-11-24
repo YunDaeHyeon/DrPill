@@ -12,10 +12,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		5C7387D2DFE940FC96AFC8DA /* Jua-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-MedicineApp-MedicineAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedicineApp-MedicineAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FC7AECAE83A346B04EFB6E55 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D6F34ECCE427B038883DD899 /* PrivacyInfo.xcprivacy */; };
-		5C7387D2DFE940FC96AFC8DA /* Jua-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp-MedicineAppTests.release.xcconfig"; path = "Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6F34ECCE427B038883DD899 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MedicineApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */ = {isa = PBXFileReference; name = "Jua-Regular.ttf"; path = "../assets/fonts/Jua-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Jua-Regular.ttf"; path = "../assets/fonts/Jua-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +86,15 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		129DEC6ACF0D42B48C6C3F9C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* MedicineApp */ = {
@@ -155,15 +164,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		129DEC6ACF0D42B48C6C3F9C /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
