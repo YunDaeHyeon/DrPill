@@ -4,7 +4,7 @@ import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
-import {handleTestComponent} from '../../Function/Navigation';
+import {handleLogoutDeleteScreen} from '../../Function/Navigation';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
@@ -38,7 +38,8 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <TouchableOpacity onPress={() => handleTestComponent(navigation)}>
+          <TouchableOpacity
+            onPress={() => handleLogoutDeleteScreen(navigation)}>
             <Image
               source={require('../../Image/settings.png')}
               style={Styles.settings}
@@ -86,7 +87,7 @@ const MyPage = ({navigation}) => {
 
             <Text
               style={Styles.setting_button_text}
-              onPress={() => handleTestComponent(navigation)}>
+              onPress={() => handleLogoutDeleteScreen(navigation)}>
               로그아웃/회원탈퇴
             </Text>
           </TouchableOpacity>
@@ -187,7 +188,9 @@ const Styles = StyleSheet.create({
   settings: {
     position: 'absolute',
     right: 35,
-    marginTop: -30,
+    marginTop: -33,
+    width: 35,
+    height: 35,
   },
 });
 
