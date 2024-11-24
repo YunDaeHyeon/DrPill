@@ -49,6 +49,24 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
                 {selectedItem?.usege || '감기의 제증상 완화'}
               </Text>
             </View>
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>효능효과</Text>
+              <Text style={Styles.infoContent}>
+                {selectedItem?.usege || '감기의 제증상 완화'}
+              </Text>
+            </View>
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>효능효과</Text>
+              <Text style={Styles.infoContent}>
+                {selectedItem?.usege || '감기의 제증상 완화'}
+              </Text>
+            </View>
+            <View style={Styles.infoBox}>
+              <Text style={Styles.infoTitle}>효능효과</Text>
+              <Text style={Styles.infoContent}>
+                {selectedItem?.usege || '감기의 제증상 완화'}
+              </Text>
+            </View>
 
             {/* 나머지 정보들도 동일하게 추가 */}
           </ScrollView>
