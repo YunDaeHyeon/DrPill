@@ -68,6 +68,6 @@ export const handleMedicineCheck = (navigation: NavigationProp<any>) => {
   navigation.dispatch(CommonActions.navigate('MedicineCheck'));
 };
 
-export const handleTestComponent = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('TestComponent'));
+export const handleLogoutDeleteScreen = (navigation: NavigationProp<any>) => {
+  navigation.dispatch(CommonActions.navigate('LogoutDeleteScreen'));
 };

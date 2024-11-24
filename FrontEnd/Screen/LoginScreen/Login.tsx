@@ -104,7 +104,7 @@ const Login = () => {
                 style={styles.login_logo}
               />
               <CustomText style={styles.black_text}>
-                카카오 계정으로 로그인
+                카카오계정으로 시작하기
               </CustomText>
             </TouchableOpacity>
 
@@ -117,7 +117,7 @@ const Login = () => {
                 style={styles.login_logo}
               />
               <CustomText style={styles.white_text}>
-                게스트 계정으로 로그인
+                게스트 계정으로 시작하기
               </CustomText>
             </TouchableOpacity>
           </View>

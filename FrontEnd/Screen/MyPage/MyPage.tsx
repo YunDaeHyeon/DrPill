@@ -6,7 +6,7 @@ import CustomText from '../../Function/CustomText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
-import {handleTestComponent} from '../../Function/Navigation';
+import {handleLogoutDeleteScreen} from '../../Function/Navigation';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
@@ -39,11 +39,15 @@ const MyPage = ({navigation}) => {
     <>
       <View style={Styles.container}>
         <View style={Styles.topbar}>
-          <CustomText style={Styles.page_text}>계정</CustomText>
-          <Image
-            source={require('../../Image/settings.png')}
-            style={Styles.settings}
-          />
+          <Text style={Styles.page_text}>계정</Text>
+          <TouchableOpacity
+            onPress={() => handleLogoutDeleteScreen(navigation)}>
+            <Image
+              source={require('../../Image/settings.png')}
+              style={Styles.settings}
+            />
+          </TouchableOpacity>
+
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
@@ -91,7 +95,7 @@ const MyPage = ({navigation}) => {
 
             <CustomText
               style={Styles.setting_button_text}
-              onPress={() => handleTestComponent(navigation)}>
+              onPress={() => handleLogoutDeleteScreen(navigation)}>
               로그아웃/회원탈퇴
             </CustomText>
           </TouchableOpacity>
@@ -162,14 +166,6 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
 
-  setting_text_view: {
-    width: 48,
-    height: 38,
-    marginLeft: 47,
-    marginTop: 64,
-    backgroundColor: 'violet',
-  },
-
   setting_text: {
     fontSize: 30,
 
@@ -198,8 +194,10 @@ const Styles = StyleSheet.create({
 
   settings: {
     position: 'absolute',
-    right: 30,
-    marginTop: 52,
+    right: 35,
+    marginTop: -33,
+    width: 35,
+    height: 35,
   },
 });
 
