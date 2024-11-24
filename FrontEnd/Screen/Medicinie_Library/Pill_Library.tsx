@@ -6,15 +6,17 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Modal, // 모달창 표시를 위한 컴포넌트 
+  Modal, // 모달창 표시를 위한 컴포넌트
   ScrollView,
-  Dimensions, // 화면 크기 정보 가져오기 
+  Dimensions, // 화면 크기 정보 가져오기
 } from 'react-native';
 import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
-import Config from 'react-native-config'; // 환경 변수 관리 
+import Config from 'react-native-config'; // 환경 변수 관리
+import {MedicineListBox} from '../../Function/ListLike';
+import InfoModal from '../../Function/InfoModal';
 
-// 테스트 데이터, 실제 데이터가 아닌 화면 개발/디자인을 위한 임시 데이터 
+// 테스트 데이터, 실제 데이터가 아닌 화면 개발/디자인을 위한 임시 데이터
 const test_data = [
   {
     id: 1,
@@ -77,7 +79,7 @@ const test_data = [
 // 화면의 가로 크기 가져오기
 const screenWidth = Dimensions.get('window').width;
 
-//Pilllibrary 컴포넌트 정의 
+//Pilllibrary 컴포넌트 정의
 const PillLibrary = ({navigation}) => {
   // 데이터 상태
   const [selectedItem, setSelectedItem] = useState(null);
@@ -114,13 +116,13 @@ const PillLibrary = ({navigation}) => {
     <>
       <View style={Styles.container}>
         <Text style={Styles.pilllibrary_font}>약 도서관</Text>
-        <ScrollView style={Styles.contain_controller}> 
-          <View style={Styles.library_contain_view}> 
+        <ScrollView style={Styles.contain_controller}>
+          <View style={Styles.library_contain_view}>
             {test_data.map(item => (
               <TouchableOpacity
                 key={item.id}
                 style={Styles.library_contain}
-                onPress={() => modalOpenListener(item.id)}> 
+                onPress={() => modalOpenListener(item.id)}>
                 <Image
                   source={require('../../Image/medicinelibrary.png')}
                   style={Styles.like_medicine_image}
@@ -131,50 +133,21 @@ const PillLibrary = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
-
-      
-      <Modal
-      visible={!!selectedItem}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={modelCloseListener}
-    >
-      <View style={Styles.modalMainContainer}>
-        <View style={Styles.modalSubContainer}>
-      
-          <Text style={Styles.modalTitle}>{selectedItem?.title || '약 이름'}</Text>
-          <Image
-            source={require('../../Image/ty.png')}
-            style={Styles.medicineImage}
-          />
-          <View style={Styles.infoBox}>
-            <Text style={Styles.infoTitle}>보관 방법</Text>
-            <Text style={Styles.infoContent}>
-              {selectedItem?.effect || '기밀용기, 실온보관 (1~30°C)'}
-            </Text>
-          </View>
-          <View style={Styles.infoBox}>
-            <Text style={Styles.infoTitle}>효능효과</Text>
-            <Text style={Styles.infoContent}>
-              {selectedItem?.usege || '감기의 제증상 완화'}
-            </Text>
-          </View>
-          <TouchableOpacity style={Styles.modalCloseBtn} onPress={modelCloseListener}>
-            <Text style={Styles.modalCloseBtnText}>닫기</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
+      <InfoModal
+        visible={!!selectedItem}
+        selectedItem={selectedItem}
+        onClose={modelCloseListener}
+      />
       <NavigationBar navigation={navigation} />
     </>
   );
 };
 
 const Styles = StyleSheet.create({
-  container: {    
+  container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center', // 가로 중앙 정렬 
+    alignItems: 'center', // 가로 중앙 정렬
   },
 
   //약 도서관 글씨
@@ -187,7 +160,7 @@ const Styles = StyleSheet.create({
     color: 'black',
   },
 
-  // 스크롤 뷰 컨트롤러 
+  // 스크롤 뷰 컨트롤러
   contain_controller: {
     marginTop: '25%',
     marginBottom: '5%',
@@ -239,66 +212,6 @@ const Styles = StyleSheet.create({
     marginLeft: 105,
     marginBottom: 90,
   },
-
-  modalMainContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)', // 반투명 배경
-  },
-  modalSubContainer: {
-    width: '90%',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  medicineImage: {
-    width: 200, // 이미지 너비
-    height: 100, // 이미지 높이
-    resizeMode: 'contain', // 이미지 비율 유지
-    marginBottom: 20,
-  },
-  infoBox: {
-    width: '100%',
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  infoContent: {
-    fontSize: 14,
-    color: '#555',
-  },
-  modalCloseBtn: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#2196F3',
-    borderRadius: 30,
-  },
-  modalCloseBtnText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  medicineImage:{
-    width: 200, // 이미지 너비
-    height: 100, // 이미지 높이
-    resizeMode: 'contain', // 이미지 비율 유지
-    marginBottom: 20,
-
-  }
 });
 
 export default PillLibrary;
