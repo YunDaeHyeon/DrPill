@@ -26,6 +26,7 @@ const Login = () => {
   };
 
   const handleKakaoLogin = async () => {
+    console.log('카카오 로그인 클릭!!!!');
     setLoading(true);
     try {
       const storedUserProfile = await AsyncStorage.getItem('userProfile');

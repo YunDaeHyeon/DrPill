@@ -1,6 +1,9 @@
 import React from 'react';
 import {ToastAndroid} from 'react-native';
-import {login, getProfile} from '@react-native-seoul/kakao-login';
+import {
+  getProfile,
+  loginWithKakaoAccount,
+} from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const showToast = (message: string) => {
@@ -29,7 +32,7 @@ export const Guest_PopUp = async (navigation): Promise<void> => {
 
 export const Kakao_PopUp = async (): Promise<boolean> => {
   try {
-    const result = await login();
+    const result = await loginWithKakaoAccount();
     console.log('로그인 로그:', result);
 
     // 로그인 성공 후 프로필 가져오기
