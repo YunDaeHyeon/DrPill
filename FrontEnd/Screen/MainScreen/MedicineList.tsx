@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Modal,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
@@ -13,18 +12,19 @@ import CustomText from '../../Function/CustomText';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 import {NavigationBar} from '../Commonness/NavigationBar';
-import {MedicineListBox} from '../../Function/ListLike';
 
 import Config from 'react-native-config';
 import axios from 'axios';
 import InfoModal from '../../Function/InfoModal';
 
+//검색
 const MedicineList = ({navigation, medicineName, category}) => {
   if (category) {
     console.log('검색해서 넘어온 결과입니다. : ', medicineName);
   } else {
     console.log('관심분야에서 선택한 결과입니다. ', medicineName);
   }
+
   const medicineListContext = useContext(MedicineListContext);
   if (!medicineListContext) {
     throw new Error(
@@ -32,19 +32,21 @@ const MedicineList = ({navigation, medicineName, category}) => {
     );
   }
 
+  //
   const {text, setText, isListOpen, toggleListOpen} = medicineListContext;
   const [loading, setLoading] = useState(false);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]); //약 이미지, 이름 표시
   const [selectedItem, setSelectedItem] = useState(null); // 선택된 항목 상태
   const [modalVisible, setModalVisible] = useState(false); // 모달 상태
   // 정렬을 위한 State
   const [arrayItem, setArrayItem] = useState([]);
+  const [filterChange, setFilterChange] = useState(true);
 
   // 데이터 가져오기
   useEffect(() => {
     const fetchMedicineData = async () => {
       setLoading(true);
-      // 검색
+
       if (category) {
         try {
           const response = await axios.get(
@@ -56,10 +58,7 @@ const MedicineList = ({navigation, medicineName, category}) => {
           );
           const data = response.data.body.items || [];
           setArrayItem(data);
-          /*
-            arrayItem <- array 얘를 기준으로 
-          */
-          setFilteredData(data); // 화면에 그려짐
+          setFilteredData(data);
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
@@ -75,8 +74,10 @@ const MedicineList = ({navigation, medicineName, category}) => {
               `efcyQesitm=${medicineName}&` +
               `type=json`,
           );
+
           const data = response.data.body.items || [];
-          setFilteredData(data);
+          setArrayItem(data);
+          setFilteredData(data); //화면에 그려짐
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
@@ -100,6 +101,41 @@ const MedicineList = ({navigation, medicineName, category}) => {
     setModalVisible(false); // 모달 닫기
   };
 
+  //정렬된 상태로 시작
+  useEffect(() => {
+    const firstChange = () => {
+      // 가나다
+      const sortedData = [...arrayItem].sort((a, b) =>
+        a.itemName.localeCompare(b.itemName, 'ko'),
+      );
+      setFilteredData(sortedData);
+    };
+
+    if (arrayItem.length > 0) {
+      firstChange();
+    }
+  }, [arrayItem]);
+
+  //필터 체인지
+  const changeFilter = () => {
+    let sortedData;
+    if (filterChange) {
+      // 이미지 유무 정렬
+      sortedData = [...arrayItem].sort((a, b) => {
+        if (!a.itemImage && b.itemImage) return 1; // 사진 없을 때 뒤로
+        if (a.itemImage && !b.itemImage) return -1; // 사진 있으면 앞으로
+        return 0;
+      });
+    } else {
+      // 가나다순
+      sortedData = [...arrayItem].sort((a, b) =>
+        a.itemName.localeCompare(b.itemName, 'ko'),
+      );
+    }
+    setFilteredData(sortedData);
+    setFilterChange(!filterChange);
+  };
+
   return (
     <>
       <View style={Styles.container}>
@@ -117,16 +153,19 @@ const MedicineList = ({navigation, medicineName, category}) => {
           />
         </View>
 
-        <View>
+        <TouchableOpacity onPress={changeFilter} style={Styles.sort_filter}>
           <Image
-            source={require('../../Image/filter.png')}
-            style={Styles.sort_filter}
+            source={
+              filterChange
+                ? require('../../Image/filter.png')
+                : require('../../Image/filterimage.png')
+            }
           />
-        </View>
+        </TouchableOpacity>
 
         {loading ? (
           <ActivityIndicator size="large" color="#b4b4b4" />
-        ) : (
+        ) : filteredData && filteredData.length > 0 ? (
           <ScrollView contentContainerStyle={Styles.medicineList}>
             {filteredData.map((item, index) => (
               <View key={index} style={Styles.medicineItem}>
@@ -146,7 +185,21 @@ const MedicineList = ({navigation, medicineName, category}) => {
               </View>
             ))}
           </ScrollView>
+        ) : (
+          <View
+            style={{
+              width: '100%',
+              height: '80%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'white',
+            }}>
+            <CustomText style={{fontSize: 20}}>
+              조회된 약이 없습니다. :/
+            </CustomText>
+          </View>
         )}
+
         <InfoModal
           visible={modalVisible} // 모달 상태 전달
           selectedItem={selectedItem} // 선택된 데이터 전달
@@ -194,7 +247,7 @@ const Styles = StyleSheet.create({
   },
   sort_filter: {
     //필터 아이콘
-    left: '38%',
+    left: '40%',
     marginTop: 16,
   },
 
@@ -315,9 +368,9 @@ const Styles = StyleSheet.create({
   medicineText: {
     fontSize: 16,
     marginLeft: 7,
-    marginTop: '9%',
+    marginTop: '8%',
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
   },
 });
 
