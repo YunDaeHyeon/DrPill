@@ -39,7 +39,7 @@ const MyPage = ({navigation}) => {
     <>
       <View style={Styles.container}>
         <View style={Styles.topbar}>
-          <Text style={Styles.page_text}>계정</Text>
+          <CustomText style={Styles.page_text}>계정</CustomText>
           <TouchableOpacity
             onPress={() => handleLogoutDeleteScreen(navigation)}>
             <Image
