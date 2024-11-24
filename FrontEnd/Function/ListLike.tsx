@@ -110,5 +110,9 @@ const styles = StyleSheet.create({
   heartImage: {
     width: 24,
     height: 24,
+    position: 'absolute',
+    width: '100%',
+    alignItems: 'flex-end',
+    marginTop: 12,
   },
 });
