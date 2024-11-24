@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     padding: 20,
-    height: '30%',
+    height: '33%',
   },
   mainModalSubContainer: {
     width: '100%',
