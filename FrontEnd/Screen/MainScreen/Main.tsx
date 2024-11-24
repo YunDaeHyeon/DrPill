@@ -124,27 +124,7 @@ const Main = ({navigation}) => {
       } else {
         throw new Error('다시 검색해 주세요');
       }
-
-      // 동적으로 URL 생성
-      const response = await axios.get(
-        `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
-          `serviceKey=${Config.React_APP_API_KEY}&` +
-          `${queryField}=${text}&` +
-          `type=json`,
-      );
-
-      if (response.data.body.items) {
-        console.log('검색 결과 목록:');
-        response.data.body.items.forEach(item => {
-          console.log(
-            `${item.itemName || '제품명 없음'} - ${
-              item.entpName || '제조사 없음'
-            }`,
-          );
-        });
-      } else {
-        console.log('검색 결과가 없습니다');
-      }
+      handleMedicineInfo(navigation, text, queryField);
     } catch (error) {
       console.error('에러 발생: ', error.message);
     }
