@@ -29,4 +29,10 @@ export class AppController {
   removeFavoriteMedicine(@Body() data: { uid: number; itemSeq: number }) {
     return this.appService.removeFavoriteMedicine(data.uid, data.itemSeq);
   }
+
+  // 약 즐겨찾기 목록 호출
+  @Get('/favorite-get')
+  getFavoriteMedicine(@Query('uid') uid: number) {
+    return this.appService.getFavoriteMedicine(uid);
+  }
 }
