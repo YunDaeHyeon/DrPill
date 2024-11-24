@@ -15,7 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Kakao_PopUp} from './Login_Success';
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {handleTestComponent} from '../../Function/Navigation';
 
 const Login = () => {
   const navigation = useNavigation();

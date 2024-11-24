@@ -1,5 +1,5 @@
 // 관심 질환 정의
-export const interestMedicine = [
+export const interestDisease = [
   '위염',
   '식도염',
   '소화불량',
@@ -90,7 +90,6 @@ export const interestMedicine = [
   '골절',
   '척추 질환',
   '관절염',
-  '류마티스관절염',
   '여드름',
   '아토피',
   '습진',
@@ -102,7 +101,6 @@ export const interestMedicine = [
   '치주염',
   '구강건조증',
   '입냄새',
-  '홍역',
   '유행성 이하선염',
   '수두',
   '천식',

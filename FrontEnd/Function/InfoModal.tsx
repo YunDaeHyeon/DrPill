@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {MedicineListBox} from './ListLike';
 
 const InfoModal = ({visible, selectedItem, onClose}) => {
   return (
@@ -19,13 +20,18 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
       onRequestClose={onClose}>
       <View style={Styles.modalMainContainer}>
         <View style={Styles.modalSubContainer}>
+          <MedicineListBox />
           <View style={Styles.modalbox}>
             <Text style={Styles.modalTitle}>
-              {selectedItem?.title || '약 이름'}
+              {selectedItem?.itemName || '약 이름'}
             </Text>
             <View style={Styles.imagecontainer}>
               <Image
-                source={require('../Image/taksen.png')}
+                source={{
+                  uri:
+                    selectedItem?.itemImage ||
+                    'https://via.placeholder.com/150',
+                }}
                 style={Styles.libraryimage}
               />
             </View>
@@ -34,22 +40,12 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
           <ScrollView style={Styles.modalThdContainer}>
             <View style={Styles.infoBox}>
               <Text style={Styles.infoTitle}>효능</Text>
-            </View>
-
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>사용법</Text>
+              <Text>{selectedItem?.efcyQesitm || '정보 없음'}</Text>
             </View>
 
             <View style={Styles.infoBox}>
               <Text style={Styles.infoTitle}>주의사항</Text>
-            </View>
-
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>부작용</Text>
-            </View>
-
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>보관 방법</Text>
+              <Text>{selectedItem?.atpnQesitm || '정보 없음'}</Text>
             </View>
           </ScrollView>
           <TouchableOpacity style={Styles.modalCloseBtn} onPress={onClose}>
@@ -80,7 +76,7 @@ const Styles = StyleSheet.create({
     width: '100%',
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
     marginLeft: 20,
