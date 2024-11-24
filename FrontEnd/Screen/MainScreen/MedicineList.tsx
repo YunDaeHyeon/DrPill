@@ -94,6 +94,7 @@ const MedicineList = ({navigation, medicineName}) => {
             style={Styles.sort_filter}
           />
         </View>
+
         {loading ? (
           <ActivityIndicator size="large" color="#b4b4b4" />
         ) : (
@@ -123,6 +124,7 @@ const MedicineList = ({navigation, medicineName}) => {
           onClose={closeModal} // 닫기 함수 전달
         />
       </View>
+
       <NavigationBar navigation={navigation} />
     </>
   );
