@@ -15,66 +15,7 @@ import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config'; // 환경 변수 관리
 import {MedicineListBox} from '../../Function/ListLike';
 import InfoModal from '../../Function/InfoModal';
-
-// 테스트 데이터, 실제 데이터가 아닌 화면 개발/디자인을 위한 임시 데이터
-const test_data = [
-  {
-    id: 1,
-    title: '약 1',
-    effect: '효능 1',
-    usege: '사용법 1',
-    caution: '주의사항 1',
-  },
-  {
-    id: 2,
-    title: '약 2',
-    effect: '효능2',
-    usege: '사용법 2',
-    caution: '주의사항 2',
-  },
-  {
-    id: 3,
-    title: '약 3',
-    effect: '효능 3',
-    usege: '사용법 3',
-    caution: '주의사항 3',
-  },
-  {
-    id: 4,
-    title: '약 4',
-    effect: '효능 4',
-    usege: '사용법 4',
-    caution: '주의사항 4',
-  },
-  {
-    id: 5,
-    title: '약 5',
-    effect: '효능 5',
-    usege: '사용법 5',
-    caution: '주의사항 5',
-  },
-  {
-    id: 6,
-    title: '약 6',
-    effect: '효능 6',
-    usege: '사용법 6',
-    caution: '주의사항 6',
-  },
-  {
-    id: 7,
-    title: '약 7',
-    effect: '효능 7',
-    usege: '사용법 7',
-    caution: '주의사항 7',
-  },
-  {
-    id: 8,
-    title: '약 8',
-    effect: '효능 8',
-    usege: '사용법 8',
-    caution: '주의사항 8',
-  },
-];
+import axios from 'axios';
 
 // 화면의 가로 크기 가져오기
 const screenWidth = Dimensions.get('window').width;
@@ -97,10 +38,10 @@ const PillLibrary = ({navigation}) => {
   };
 
   // 관심 의약품 호출
-  const callMedicineCategoryListener = async () => {
+  const callMedicineListener = async () => {
     try {
-      const response = await fetch(
-        `${Config.AUTH_SERVER_URL}/favorite-medicine`,
+      const response = await axios.get(
+        `${Config.AUTH_SERVER_URL}/favorite-get`,
       );
       const result = response.json();
     } catch (error) {
@@ -109,7 +50,7 @@ const PillLibrary = ({navigation}) => {
   };
 
   useEffect(() => {
-    callMedicineCategoryListener();
+    callMedicineListener();
   }, []);
 
   return (
