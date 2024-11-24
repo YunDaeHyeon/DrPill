@@ -20,7 +20,7 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
       onRequestClose={onClose}>
       <View style={Styles.modalMainContainer}>
         <View style={Styles.modalSubContainer}>
-          <MedicineListBox />
+          <MedicineListBox selectedItem={selectedItem} />
           <View style={Styles.modalbox}>
             <CustomText style={Styles.modalTitle}>
               {selectedItem?.itemName || '약 이름'}
