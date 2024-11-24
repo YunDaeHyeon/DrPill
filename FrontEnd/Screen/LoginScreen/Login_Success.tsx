@@ -47,8 +47,6 @@ export const Kakao_PopUp = async (): Promise<boolean> => {
         'userProfile',
         JSON.stringify({nickname, email, profileImage}),
       );
-
-      showToast('카카오 로그인 성공');
       return true; // 성공 시 true 반환
     } else {
       // 프로필 데이터가 없으면 로그인 실패 처리
