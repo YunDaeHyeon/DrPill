@@ -103,7 +103,7 @@ const Login = () => {
                 source={require('../../Image/kakaologo.png')}
                 style={styles.login_logo}
               />
-              <Text style={styles.black_text}>카카오 계정으로 로그인</Text>
+              <Text style={styles.black_text}>카카오계정으로 시작하기</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -114,7 +114,7 @@ const Login = () => {
                 source={require('../../Image/guestlogo.png')}
                 style={styles.login_logo}
               />
-              <Text style={styles.white_text}>게스트 계정으로 로그인</Text>
+              <Text style={styles.white_text}>게스트 계정으로 시작하기</Text>
             </TouchableOpacity>
           </View>
         </>

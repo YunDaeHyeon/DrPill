@@ -91,7 +91,7 @@ const Main = ({navigation}) => {
     callInterestMedicine();
     // 컴포넌트 언마운트 시 리스너 제거
     return () => backHandler.remove();
-  }, [backPressedOnce]);
+  }, []);
 
   // 검색
   /*
