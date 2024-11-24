@@ -24,6 +24,7 @@ const Main = ({navigation}) => {
 
   const placeholderText = {
     효능: '효능을 입력하세요',
+    질환: '질환을 입력하세요',
     제품명: '제품을 입력하세요',
     제조사: '제조사를 입력하세요',
   };
@@ -65,7 +66,7 @@ const Main = ({navigation}) => {
   const onSearchMedicineHandler = async text => {
     try {
       let queryField = '';
-      if (selectedOption === '효능') {
+      if (selectedOption === '효능' || selectedOption === '질환') {
         queryField = 'efcyQesitm';
       } else if (selectedOption === '제조사') {
         queryField = 'entpName';
@@ -99,6 +100,7 @@ const Main = ({navigation}) => {
             onValueChange={itemValue => setSelectedOption(itemValue)}
             style={Styles.search_select}>
             <Picker.Item label="효능" value="효능" />
+            <Picker.Item label="질환" value="질환" />
             <Picker.Item label="제품명" value="제품명" />
             <Picker.Item label="제조사" value="제조사" />
           </Picker>
