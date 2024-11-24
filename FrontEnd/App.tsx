@@ -19,7 +19,7 @@ import PillLibrary from './Screen/Medicinie_Library/Pill_Library.tsx'; // 약 �
 import MyPage from './Screen/MyPage/MyPage.tsx'; // 마이페이지 화면
 import {MedicineListProvider} from './Function/MainListContext.tsx';
 
-import TestComponent from './Screen/MyPage/TestComponent.tsx';
+import LogoutDeleteScreen from './Screen/MyPage/LogoutDeleteScreen.tsx';
 import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
 import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
 
@@ -91,8 +91,8 @@ const App = () => {
           />
 
           <Stack.Screen
-            name="TestComponent"
-            component={TestComponent}
+            name="LogoutDeleteScreen"
+            component={LogoutDeleteScreen}
             options={{headerShown: false}}
           />
 
