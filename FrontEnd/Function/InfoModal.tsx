@@ -40,13 +40,13 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
           <ScrollView style={Styles.modalThdContainer}>
             <View style={Styles.infoBox}>
               <CustomText style={Styles.infoTitle}>업체명</CustomText>
-              <CustomText>
+              <CustomText style={Styles.infoContent}>
                 {selectedItem?.entpName || '정보가 없어요 :('}
               </CustomText>
             </View>
             <View style={Styles.infoBox}>
               <CustomText style={Styles.infoTitle}>효능</CustomText>
-              <CustomText>
+              <CustomText style={Styles.infoContent}>
                 {selectedItem?.efcyQesitm || '정보가 없어요 :('}
               </CustomText>
             </View>
@@ -130,12 +130,12 @@ const Styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 5,
   },
   infoContent: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#555',
   },
   modalCloseBtn: {
