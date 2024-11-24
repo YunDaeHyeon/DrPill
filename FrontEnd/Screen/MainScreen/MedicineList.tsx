@@ -18,15 +18,8 @@ import {MedicineListBox} from '../../Function/ListLike';
 import Config from 'react-native-config';
 import axios from 'axios';
 
-const categoryKeywords = {
-  '해열·진통 소염제': ['해열', '진통', '소염', '열'],
-  '발한제 지한제': ['발한', '지한', '땀', '다한증', '손', '발'],
-  안과용제: ['안과', '눈물약', '건조'],
-  구강용약: ['구강', '치아'],
-  구충제: ['구충', '기생충'],
-};
-
 const MedicineList = ({navigation, medicineName}) => {
+  console.log('전송 성공', medicineName);
   const medicineListContext = useContext(MedicineListContext);
   if (!medicineListContext) {
     throw new Error(
@@ -45,19 +38,15 @@ const MedicineList = ({navigation, medicineName}) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          'http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList',
-          {
-            params: {
-              serviceKey: Config.REACT_APP_SERVICE_KEY,
-              numOfRows: 100,
-
-              type: 'json',
-            },
-          },
+          `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
+            `serviceKey=${Config.React_APP_API_KEY}&` +
+            `numOfRows=30&` +
+            `efcyQesitm=${medicineName}&` +
+            `type=json`,
         );
+
         const data = response.data.body.items || [];
-        console.log('넘어온 데이터 : ', data);
-        filterMedicineData(data);
+        setFilteredData(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -67,18 +56,6 @@ const MedicineList = ({navigation, medicineName}) => {
 
     fetchMedicineData();
   }, []);
-
-  // 약 분류하기
-  const filterMedicineData = data => {
-    const keywords = categoryKeywords[medicineName] || [];
-    const filtered = data.filter(
-      item =>
-        item.efcyQesitm &&
-        keywords.some(keyword => item.efcyQesitm.includes(keyword)),
-    );
-    // console.log(filtered);
-    setFilteredData(filtered);
-  };
 
   // 모달 열기
   const openModal = imageUri => {

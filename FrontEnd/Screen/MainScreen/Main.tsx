@@ -122,7 +122,7 @@ const Main = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={Styles.main_font}>약품 종류</Text>
+        <Text style={Styles.main_font}>질환 종류</Text>
         <ScrollView style={Styles.medicine_container}>
           <View style={Styles.sub_container}>
             {interestMedicine.map(item => (
@@ -130,7 +130,7 @@ const Main = ({navigation}) => {
                 key={item.id}
                 activeOpacity={0.7}
                 style={Styles.menubutton_style}
-                onPress={() => handleMedicineInfo(navigation, '발한제 지한제')}>
+                onPress={() => handleMedicineInfo(navigation, item.name)}>
                 <Image
                   source={require('../../Image/pillicon.png')}
                   style={Styles.menu_icon}
