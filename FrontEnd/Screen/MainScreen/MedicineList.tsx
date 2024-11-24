@@ -19,8 +19,12 @@ import Config from 'react-native-config';
 import axios from 'axios';
 import InfoModal from '../../Function/InfoModal';
 
-const MedicineList = ({navigation, medicineName}) => {
-  console.log('전송 성공', medicineName);
+const MedicineList = ({navigation, medicineName, category}) => {
+  if (category) {
+    console.log('검색해서 넘어온 결과입니다. : ', medicineName);
+  } else {
+    console.log('관심분야에서 선택한 결과입니다. ', medicineName);
+  }
   const medicineListContext = useContext(MedicineListContext);
   if (!medicineListContext) {
     throw new Error(
@@ -33,26 +37,51 @@ const MedicineList = ({navigation, medicineName}) => {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null); // 선택된 항목 상태
   const [modalVisible, setModalVisible] = useState(false); // 모달 상태
+  // 정렬을 위한 State
+  const [arrayItem, setArrayItem] = useState([]);
 
   // 데이터 가져오기
   useEffect(() => {
     const fetchMedicineData = async () => {
       setLoading(true);
-      try {
-        const response = await axios.get(
-          `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
-            `serviceKey=${Config.React_APP_API_KEY}&` +
-            `numOfRows=30&` +
-            `efcyQesitm=${medicineName}&` +
-            `type=json`,
-        );
-
-        const data = response.data.body.items || [];
-        setFilteredData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
+      // 검색
+      if (category) {
+        try {
+          const response = await axios.get(
+            `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
+              `serviceKey=${Config.React_APP_API_KEY}&` +
+              `numOfRows=30&` +
+              `${category}=${medicineName}&` +
+              `type=json`,
+          );
+          const data = response.data.body.items || [];
+          setArrayItem(data);
+          /*
+            arrayItem <- array 얘를 기준으로 
+          */
+          setFilteredData(data); // 화면에 그려짐
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // 관심분야에서 선택했을 때
+        try {
+          const response = await axios.get(
+            `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
+              `serviceKey=${Config.React_APP_API_KEY}&` +
+              `numOfRows=30&` +
+              `efcyQesitm=${medicineName}&` +
+              `type=json`,
+          );
+          const data = response.data.body.items || [];
+          setFilteredData(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
