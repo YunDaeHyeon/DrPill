@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Kakao_PopUp} from './Login_Success';
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {handleTestComponent} from '../../Function/Navigation';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -106,7 +107,7 @@ const Login = () => {
         'medicineInterests',
       ]);
       showToast('게스트 계정으로 로그인 완료 시 정보가 제한됩니다.');
-      navigation.navigate('Main');
+      navigation.navigate('Medicine_Data');
     } catch (error) {
       console.error('게스트 로그인 중 오류:', error);
     } finally {

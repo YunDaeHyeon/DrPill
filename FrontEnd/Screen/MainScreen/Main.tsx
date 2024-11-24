@@ -15,68 +15,34 @@ import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config';
 import axios from 'axios';
 import {Picker} from '@react-native-picker/picker';
-
-// 테스트 데이터
-const test_data = [
-  {
-    id: 1,
-    title: '약 1',
-  },
-  {
-    id: 2,
-    title: '약 2',
-  },
-  {
-    id: 3,
-    title: '약 3',
-  },
-  {
-    id: 4,
-    title: '약 4',
-  },
-  {
-    id: 5,
-    title: '약 5',
-  },
-  {
-    id: 6,
-    title: '약 6',
-  },
-  {
-    id: 7,
-    title: '약 7',
-  },
-  {
-    id: 8,
-    title: '약 8',
-  },
-  {
-    id: 9,
-    title: '약 9',
-  },
-  {
-    id: 10,
-    title: '약 10',
-  },
-  {
-    id: 11,
-    title: '약 11',
-  },
-  {
-    id: 12,
-    title: '약 12',
-  },
-];
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Main = ({navigation}) => {
   const [text, setText] = useState('');
   const [selectedOption, setSelectedOption] = useState('효능');
+  const [interestMedicine, setInterestMedicine] = useState([]);
 
   const placeholderText = {
     효능: '효능을 입력하세요',
+    질환: '질환을 입력하세요',
     제품명: '제품을 입력하세요',
     제조사: '제조사를 입력하세요',
   };
+
+  useEffect(() => {
+    const callInterestMedicine = async () => {
+      const interest_medicine = await AsyncStorage.getItem('medicineInterests');
+      const clean_data = interest_medicine.replace(/[\[\]"]+/g, '');
+      const array_data = clean_data?.split(',');
+      const result = array_data.map((item, index) => ({
+        id: index + 1,
+        name: item.trim(),
+      }));
+      console.log('결과 : ', result);
+      setInterestMedicine(result);
+    };
+    callInterestMedicine();
+  }, []);
 
   // 검색
   /*
@@ -99,9 +65,8 @@ const Main = ({navigation}) => {
   */
   const onSearchMedicineHandler = async text => {
     try {
-      // 옵션에 따라 필드명을 결정
       let queryField = '';
-      if (selectedOption === '효능') {
+      if (selectedOption === '효능' || selectedOption === '질환') {
         queryField = 'efcyQesitm';
       } else if (selectedOption === '제조사') {
         queryField = 'entpName';
@@ -135,6 +100,7 @@ const Main = ({navigation}) => {
             onValueChange={itemValue => setSelectedOption(itemValue)}
             style={Styles.search_select}>
             <Picker.Item label="효능" value="효능" />
+            <Picker.Item label="질환" value="질환" />
             <Picker.Item label="제품명" value="제품명" />
             <Picker.Item label="제조사" value="제조사" />
           </Picker>
@@ -156,20 +122,20 @@ const Main = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={Styles.main_font}>약품 종류</Text>
+        <Text style={Styles.main_font}>질환 종류</Text>
         <ScrollView style={Styles.medicine_container}>
           <View style={Styles.sub_container}>
-            {test_data.map(item => (
+            {interestMedicine.map(item => (
               <TouchableOpacity
                 key={item.id}
                 activeOpacity={0.7}
                 style={Styles.menubutton_style}
-                onPress={() => handleMedicineInfo(navigation, '발한제 지한제')}>
+                onPress={() => handleMedicineInfo(navigation, item.name)}>
                 <Image
                   source={require('../../Image/pillicon.png')}
                   style={Styles.menu_icon}
                 />
-                <Text style={Styles.menu_text}>{item.title}</Text>
+                <Text style={Styles.menu_text}>{item.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
