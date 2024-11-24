@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
@@ -11,6 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomText from '../../Function/CustomText';
 import axios from 'axios';
 import Config from 'react-native-config';
 import {interestDisease} from '../../Function/interests_disease';
@@ -99,7 +99,7 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>관심있는 질환</Text>
+      <CustomText style={styles.title}>관심있는 질환</CustomText>
       <ScrollView>
         <View style={styles.row}>
           {shuffledInterests.map((interest, index) => {
@@ -117,9 +117,11 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
                     styles.checkBox,
                     isSelected && styles.selectedCheckBox,
                   ]}>
-                  {isSelected && <Text style={styles.checkText}>✔</Text>}
+                  {isSelected && (
+                    <CustomText style={styles.checkText}>✔</CustomText>
+                  )}
                 </View>
-                <Text style={styles.interestText}>{interest}</Text>
+                <CustomText style={styles.interestText}>{interest}</CustomText>
               </TouchableOpacity>
             );
           })}
@@ -138,9 +140,9 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
                 onPress={() => toggleInterest(item)}
                 style={[styles.interestCard, styles.selectedCard]}>
                 <View style={[styles.checkBox, styles.selectedCheckBox]}>
-                  <Text style={styles.checkText}>✔</Text>
+                  <CustomText style={styles.checkText}>✔</CustomText>
                 </View>
-                <Text style={styles.interestText}>{item}</Text>
+                <CustomText style={styles.interestText}>{item}</CustomText>
               </TouchableOpacity>
             ))}
           </View>
@@ -151,10 +153,10 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
           style={styles.footerButton}
           onPress={() => navigation.goBack()}>
-          <Text style={styles.footerButtonText}>이전</Text>
+          <CustomText style={styles.footerButtonText}>이전</CustomText>
         </TouchableOpacity>
         <TouchableOpacity style={styles.footerButton} onPress={handleSubmit}>
-          <Text style={styles.footerButtonText}>완료</Text>
+          <CustomText style={styles.footerButtonText}>완료</CustomText>
         </TouchableOpacity>
       </View>
     </View>

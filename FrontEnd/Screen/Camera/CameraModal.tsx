@@ -3,12 +3,11 @@ import React from 'react';
 import {
   Modal,
   View,
-  Text,
   ActivityIndicator,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-
+import CustomText from '../../Function/CustomText';
 // props 타입 정의
 interface CameraModalProps {
   visible: boolean; // 모달의 가시성을 결정하는 boolean 값
@@ -37,26 +36,31 @@ const CameraModal: React.FC<CameraModalProps> = ({
               color="#b4b4b4"
               style={{transform: [{scale: 1.5}]}}
             />
-            <Text style={{color: 'white', fontWeight: 'bold', marginTop: 17}}>
+            <CustomText
+              style={{color: 'white', fontWeight: 'bold', marginTop: 17}}>
               1분 정도 기다려주세요...
-            </Text>
+            </CustomText>
           </View>
         ) : (
           <View style={styles.camera_modalcontain}>
-            <Text style={styles.camera_modaltitle}>
+            <CustomText style={styles.camera_modaltitle}>
               찍힌 이미지가 맞습니까?
-            </Text>
-            <Text> </Text>
+            </CustomText>
+            <CustomText> </CustomText>
             <View style={styles.camera_modal_buttonContainer}>
               <TouchableOpacity
                 style={styles.camera_modal_button}
                 onPress={onClose}>
-                <Text style={styles.camera_modal_buttonText}>취소</Text>
+                <CustomText style={styles.camera_modal_buttonText}>
+                  취소
+                </CustomText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.camera_modal_button}
                 onPress={onConfirm}>
-                <Text style={styles.camera_modal_buttonText}>확인</Text>
+                <CustomText style={styles.camera_modal_buttonText}>
+                  확인
+                </CustomText>
               </TouchableOpacity>
             </View>
           </View>

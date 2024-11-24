@@ -1,6 +1,8 @@
 //내 계정 화면입니다.
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+// 커스텀 Text 컴포넌트
+import CustomText from '../../Function/CustomText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
@@ -37,7 +39,7 @@ const MyPage = ({navigation}) => {
     <>
       <View style={Styles.container}>
         <View style={Styles.topbar}>
-          <Text style={Styles.page_text}>계정</Text>
+          <CustomText style={Styles.page_text}>계정</CustomText>
           <Image
             source={require('../../Image/settings.png')}
             style={Styles.settings}
@@ -53,18 +55,21 @@ const MyPage = ({navigation}) => {
                 style={Styles.profile_image}
               />
             </View>
-            <Text style={Styles.user_name}>{nickname}</Text>
+            <CustomText style={Styles.user_name}>{nickname}</CustomText>
           </View>
         </View>
 
         <View style={Styles.middle_bar}>
-          <Text style={Styles.setting_text}>설정</Text>
+          <CustomText style={Styles.setting_text}>설정</CustomText>
           <TouchableOpacity style={Styles.setting_touch}>
             <Image
               source={require('../../Image/mic.png')}
               style={Styles.setting_button_icon}
             />
-            <Text style={Styles.setting_button_text}> 오디오 기능</Text>
+            <CustomText style={Styles.setting_button_text}>
+              {' '}
+              오디오 기능
+            </CustomText>
           </TouchableOpacity>
 
           <TouchableOpacity style={Styles.setting_touch}>
@@ -72,7 +77,10 @@ const MyPage = ({navigation}) => {
               source={require('../../Image/cart.png')}
               style={Styles.setting_button_icon}
             />
-            <Text style={Styles.setting_button_text}> 사용자 관심 질환</Text>
+            <CustomText style={Styles.setting_button_text}>
+              {' '}
+              사용자 관심 질환
+            </CustomText>
           </TouchableOpacity>
 
           <TouchableOpacity style={Styles.setting_touch}>
@@ -81,11 +89,11 @@ const MyPage = ({navigation}) => {
               style={Styles.setting_button_icon}
             />
 
-            <Text
+            <CustomText
               style={Styles.setting_button_text}
               onPress={() => handleTestComponent(navigation)}>
               로그아웃/회원탈퇴
-            </Text>
+            </CustomText>
           </TouchableOpacity>
         </View>
       </View>

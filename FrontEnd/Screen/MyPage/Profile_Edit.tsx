@@ -2,12 +2,12 @@
 import React, {useState} from 'react';
 import {
   StyleSheet,
-  Text,
   Image,
   TouchableOpacity,
   View,
   TextInput,
 } from 'react-native';
+import CustomText from '../../Function/CustomText';
 
 import {editSave, goAccount} from '../../Function/Navigation';
 
@@ -25,7 +25,7 @@ const ProfileEdit = ({navigation}) => {
           />
         </TouchableOpacity>
 
-        <Text style={Styles.proflie_edit_text}>프로필 수정</Text>
+        <CustomText style={Styles.proflie_edit_text}>프로필 수정</CustomText>
 
         <TouchableOpacity onPress={() => editSave(navigation)}>
           <Image
@@ -54,7 +54,7 @@ const ProfileEdit = ({navigation}) => {
       <View style={Styles.bottombar}>
         <View style={Styles.user_info_view}>
           <View style={Styles.user_name}>
-            <Text style={Styles.user_name_text}>사용자 이름</Text>
+            <CustomText style={Styles.user_name_text}>사용자 이름</CustomText>
             <TextInput
               style={Styles.username_edit}
               onChangeText={newText => setText(newText)}
@@ -65,8 +65,10 @@ const ProfileEdit = ({navigation}) => {
           </View>
 
           <View style={Styles.user_email}>
-            <Text style={Styles.user_email_text}>계정 이메일</Text>
-            <Text style={Styles.login_email_check}>{email_value}</Text>
+            <CustomText style={Styles.user_email_text}>계정 이메일</CustomText>
+            <CustomText style={Styles.login_email_check}>
+              {email_value}
+            </CustomText>
           </View>
         </View>
       </View>

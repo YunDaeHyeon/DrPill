@@ -7,12 +7,12 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Text,
   ScrollView,
   Alert,
   BackHandler,
   ToastAndroid,
 } from 'react-native';
+import CustomText from '../../Function/CustomText.tsx';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config';
@@ -171,7 +171,7 @@ const Main = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={Styles.main_font}>질환 종류</Text>
+        <CustomText style={Styles.main_font}>질환 종류</CustomText>
         <ScrollView style={Styles.medicine_container}>
           <View style={Styles.sub_container}>
             {interestDisease.map(item => (
@@ -184,7 +184,7 @@ const Main = ({navigation}) => {
                   source={require('../../Image/pillicon.png')}
                   style={Styles.menu_icon}
                 />
-                <Text style={Styles.menu_text}>{item.name}</Text>
+                <CustomText style={Styles.menu_text}>{item.name}</CustomText>
               </TouchableOpacity>
             ))}
           </View>
@@ -223,6 +223,7 @@ const Styles = StyleSheet.create({
     width: '30%', // 드롭박스 너비
     marginLeft: 10, // 드롭박스와 검색창 간격
     color: 'black',
+    fontFamily: 'Jua-Regular',
   },
   search_text: {
     flex: 1, // 남은 공간을 모두 사용
@@ -230,6 +231,7 @@ const Styles = StyleSheet.create({
     color: 'black',
     textAlign: 'left',
     paddingHorizontal: 10,
+    fontFamily: 'Jua-Regular',
   },
   search_icon: {
     width: 24,
