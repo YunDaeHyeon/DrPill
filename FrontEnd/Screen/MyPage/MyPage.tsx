@@ -81,7 +81,7 @@ const MyPage = ({navigation}) => {
             <Text
               style={Styles.setting_button_text}
               onPress={() => handleTestComponent(navigation)}>
-              관심 질환/의약품 변경
+              로그아웃/회원탈퇴
             </Text>
           </TouchableOpacity>
         </View>

@@ -13,7 +13,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Config from 'react-native-config';
-import {interestMedicine} from '../../Function/interests_medicine';
+import {interestDisease} from '../../Function/interests_disease';
 
 const {width: deviceWidth} = Dimensions.get('window');
 
@@ -50,10 +50,10 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const loadInterests = async () => {
-      setShuffledInterests(interestMedicine.sort(() => Math.random() - 0.5));
+      setShuffledInterests(interestDisease.sort(() => Math.random() - 0.5));
 
       // AsyncStorage에서 이전 선택 데이터 불러오기
-      const savedInterests = await AsyncStorage.getItem('medicineInterests');
+      const savedInterests = await AsyncStorage.getItem('diseaseInterests');
       if (savedInterests) {
         setSelectedInterests(JSON.parse(savedInterests));
       }
@@ -82,10 +82,10 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
     try {
       // 의약품 데이터 저장
       await AsyncStorage.setItem(
-        'medicineInterests',
+        'diseaseInterests',
         JSON.stringify(selectedInterests),
       );
-      console.log('의약품 데이터 저장:', selectedInterests);
+      console.log('질환 데이터 저장:', selectedInterests);
       navigation.navigate('Main');
     } catch (error) {
       console.error('데이터 전송 중 오류:', error);
@@ -99,7 +99,7 @@ const Disease_Data = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>관심있는 의약품</Text>
+      <Text style={styles.title}>관심있는 질환</Text>
       <ScrollView>
         <View style={styles.row}>
           {shuffledInterests.map((interest, index) => {
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Medicine_Data;
+export default Disease_Data;
 
 // 서버로 데이터 전송 준비
 // const diseaseInterests = await AsyncStorage.getItem('diseaseInterests');

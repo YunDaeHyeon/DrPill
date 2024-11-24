@@ -3,7 +3,7 @@ import {ToastAndroid} from 'react-native';
 import {login, getProfile} from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const showToast = message => {
+const showToast = (message: string) => {
   ToastAndroid.showWithGravity(
     message,
     ToastAndroid.SHORT,
@@ -13,14 +13,6 @@ const showToast = message => {
 
 export const Guest_PopUp = async (navigation): Promise<void> => {
   try {
-    // 모든 사용자 관련 정보 삭제
-    await Promise.all([
-      AsyncStorage.removeItem('userProfile'),
-      AsyncStorage.removeItem('userInfo'),
-      AsyncStorage.removeItem('diseaseInterests'),
-      AsyncStorage.removeItem('medicineInterests'),
-    ]);
-
     // Toast 메시지 출력
     ToastAndroid.showWithGravity(
       '게스트 계정으로 로그인되었습니다.',

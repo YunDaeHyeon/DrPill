@@ -9,6 +9,9 @@ import {
   TextInput,
   Text,
   ScrollView,
+  Alert,
+  BackHandler,
+  ToastAndroid,
 } from 'react-native';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar';
@@ -20,7 +23,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Main = ({navigation}) => {
   const [text, setText] = useState('');
   const [selectedOption, setSelectedOption] = useState('효능');
-  const [interestMedicine, setInterestMedicine] = useState([]);
+  const [interestDisease, setInterestDisease] = useState([]);
+  const [backPressedOnce, setBackPressedOnce] = useState(false); // 뒤로가기 버튼 상태
 
   const placeholderText = {
     효능: '효능을 입력하세요',
@@ -31,18 +35,63 @@ const Main = ({navigation}) => {
 
   useEffect(() => {
     const callInterestMedicine = async () => {
-      const interest_medicine = await AsyncStorage.getItem('medicineInterests');
-      const clean_data = interest_medicine.replace(/[\[\]"]+/g, '');
+      const interest_disease = await AsyncStorage.getItem('diseaseInterests');
+      const clean_data = interest_disease.replace(/[\[\]"]+/g, '');
       const array_data = clean_data?.split(',');
       const result = array_data.map((item, index) => ({
         id: index + 1,
         name: item.trim(),
       }));
       console.log('결과 : ', result);
-      setInterestMedicine(result);
+      setInterestDisease(result);
     };
+
+    const backAction = () => {
+      if (backPressedOnce) {
+        // 두 번째 뒤로가기가 감지되면 Alert 표시
+        Alert.alert(
+          '앱 종료',
+          '정말 앱을 종료하시겠습니까?',
+          [
+            {
+              text: '취소',
+              onPress: () => null, // 아무 동작도 하지 않음
+              style: 'cancel',
+            },
+            {
+              text: '확인',
+              onPress: () => BackHandler.exitApp(), // 앱 종료
+            },
+          ],
+          {cancelable: true}, // Alert 바깥을 눌러도 닫히지 않게 설정
+        );
+        return true;
+      }
+
+      // 첫 번째 뒤로가기: 메시지 표시 및 상태 업데이트
+      setBackPressedOnce(true);
+      ToastAndroid.show(
+        '뒤로가기를 한 번 더 누르면 앱 종료 안내가 표시됩니다.',
+        ToastAndroid.SHORT,
+      );
+
+      // 일정 시간 후 상태 초기화
+      setTimeout(() => {
+        setBackPressedOnce(false);
+      }, 2000); // 2초
+
+      return true; // 기본 동작 방지
+    };
+
+    // 뒤로가기 이벤트 리스너 등록
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
     callInterestMedicine();
-  }, []);
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => backHandler.remove();
+  }, [backPressedOnce]);
 
   // 검색
   /*
@@ -125,7 +174,7 @@ const Main = ({navigation}) => {
         <Text style={Styles.main_font}>질환 종류</Text>
         <ScrollView style={Styles.medicine_container}>
           <View style={Styles.sub_container}>
-            {interestMedicine.map(item => (
+            {interestDisease.map(item => (
               <TouchableOpacity
                 key={item.id}
                 activeOpacity={0.7}
