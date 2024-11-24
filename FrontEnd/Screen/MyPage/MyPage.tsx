@@ -4,7 +4,7 @@ import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
-import {handleTestComponent} from '../../Function/Navigation';
+import {handleLogoutDeleteScreen} from '../../Function/Navigation';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
@@ -38,7 +38,14 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <Image source={require('../../Image/bell.png')} style={Styles.bell} />
+          <TouchableOpacity
+            onPress={() => handleLogoutDeleteScreen(navigation)}>
+            <Image
+              source={require('../../Image/settings.png')}
+              style={Styles.settings}
+            />
+          </TouchableOpacity>
+
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
@@ -80,7 +87,7 @@ const MyPage = ({navigation}) => {
 
             <Text
               style={Styles.setting_button_text}
-              onPress={() => handleTestComponent(navigation)}>
+              onPress={() => handleLogoutDeleteScreen(navigation)}>
               로그아웃/회원탈퇴
             </Text>
           </TouchableOpacity>
@@ -152,14 +159,6 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  setting_text_view: {
-    width: 48,
-    height: 38,
-    marginLeft: 47,
-    marginTop: 64,
-    backgroundColor: 'violet',
-  },
-
   setting_text: {
     fontSize: 30,
     fontWeight: 'bold',
@@ -186,10 +185,12 @@ const Styles = StyleSheet.create({
     left: 40,
   },
 
-  bell: {
+  settings: {
     position: 'absolute',
-    right: 30,
-    marginTop: 52,
+    right: 35,
+    marginTop: -33,
+    width: 35,
+    height: 35,
   },
 });
 
