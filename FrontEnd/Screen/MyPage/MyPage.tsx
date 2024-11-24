@@ -38,7 +38,13 @@ const MyPage = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.topbar}>
           <Text style={Styles.page_text}>계정</Text>
-          <Image source={require('../../Image/bell.png')} style={Styles.bell} />
+          <TouchableOpacity onPress={() => handleTestComponent(navigation)}>
+            <Image
+              source={require('../../Image/settings.png')}
+              style={Styles.settings}
+            />
+          </TouchableOpacity>
+
           <View style={Styles.profile_view}>
             <View style={Styles.profile_image_view}>
               <Image
@@ -152,14 +158,6 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  setting_text_view: {
-    width: 48,
-    height: 38,
-    marginLeft: 47,
-    marginTop: 64,
-    backgroundColor: 'violet',
-  },
-
   setting_text: {
     fontSize: 30,
     fontWeight: 'bold',
@@ -186,10 +184,10 @@ const Styles = StyleSheet.create({
     left: 40,
   },
 
-  bell: {
+  settings: {
     position: 'absolute',
-    right: 30,
-    marginTop: 52,
+    right: 35,
+    marginTop: -30,
   },
 });
 
