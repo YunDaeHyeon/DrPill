@@ -21,9 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // 화면의 가로 크기 가져오기
 const screenWidth = Dimensions.get('window').width;
 
-//Pilllibrary 컴포넌트 정의
 const PillLibrary = ({navigation}) => {
-  // 데이터 상태
   const [selectedItem, setSelectedItem] = useState(null);
   const [favoriteMedicine, setFavoriteMedicine] = useState([]); // 즐겨찾기 데이터
 
@@ -34,8 +32,16 @@ const PillLibrary = ({navigation}) => {
   };
 
   // 모달창 닫기
-  const modelCloseListener = () => {
+  const modalCloseListener = () => {
     setSelectedItem(null);
+  };
+
+  // 즐겨찾기 상태 변경 핸들러
+  const handleFavoriteStatusChange = updatedItem => {
+    const updatedMedicine = favoriteMedicine.map(item =>
+      item.itemSeq === updatedItem.itemSeq ? updatedItem : item,
+    );
+    setFavoriteMedicine(updatedMedicine); // 상태 동기화
   };
 
   // 관심 의약품 호출
@@ -46,7 +52,11 @@ const PillLibrary = ({navigation}) => {
       const response = await axios.get(
         `${Config.AUTH_SERVER_URL}/favorite-get?uid=${uid}`,
       );
-      setFavoriteMedicine(response.data); // 서버로부터 받은 데이터를 상태에 저장
+      const updatedData = response.data.map(item => ({
+        ...item,
+        isFavorite: true, // 항상 초기값은 즐겨찾기로 설정
+      }));
+      setFavoriteMedicine(updatedData);
     } catch (error) {
       console.error('서버로부터 응답이 실패하였습니다. : ', error);
     }
@@ -64,8 +74,9 @@ const PillLibrary = ({navigation}) => {
         <ScrollView style={Styles.contain_controller}>
           <View style={Styles.library_contain_view}>
             {favoriteMedicine.map(item => (
+              // PillLibrary 컴포넌트 내 수정
               <TouchableOpacity
-                key={item.itemSeq} // itemSeq를 고유 키로 사용
+                key={item.itemSeq}
                 style={Styles.library_contain}
                 onPress={() => modalOpenListener(item.itemSeq)}>
                 <Image
@@ -76,7 +87,12 @@ const PillLibrary = ({navigation}) => {
                   }
                   style={Styles.like_medicine_image}
                 />
-                <PillBox />
+                <View style={Styles.heart_icon_touch_view}>
+                  <MedicineListBox
+                    selectedItem={item}
+                    onFavoriteStatusChange={handleFavoriteStatusChange}
+                  />
+                </View>
               </TouchableOpacity>
             ))}
           </View>
@@ -85,7 +101,8 @@ const PillLibrary = ({navigation}) => {
       <InfoModal
         visible={!!selectedItem}
         selectedItem={selectedItem}
-        onClose={modelCloseListener}
+        onFavoriteStatusChange={handleFavoriteStatusChange}
+        onClose={modalCloseListener}
       />
       <NavigationBar navigation={navigation} />
     </>
@@ -99,13 +116,12 @@ const Styles = StyleSheet.create({
     alignItems: 'center', // 가로 중앙 정렬
   },
 
-  //약 도서관 글씨
+  // 약 도서관 글씨
   pilllibrary_font: {
     position: 'absolute',
     marginTop: 31,
     left: 30,
     fontSize: 30,
-
     color: 'black',
   },
 
@@ -115,19 +131,9 @@ const Styles = StyleSheet.create({
     marginBottom: '5%',
   },
 
-  // 스크롤뷰
-  scrollview_contain: {
-    marginTop: '25%',
-    backgroundColor: 'white',
-    width: '105%',
-    height: '84%',
-    flex: 1,
-  },
-
   // 약 카드 컨테이너 (부모)
   library_contain_view: {
     width: 328,
-    height: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -140,6 +146,7 @@ const Styles = StyleSheet.create({
     height: 143,
     backgroundColor: 'white',
     justifyContent: 'center',
+    alignItems: 'center', // 자식 요소를 가로 세로 중앙 정렬
     borderWidth: 1,
     borderColor: '#D9D9D9',
     borderRadius: 20,
@@ -148,18 +155,18 @@ const Styles = StyleSheet.create({
     margin: 10,
   },
 
-  //찜한 약 사진
+  // 찜한 약 사진
   like_medicine_image: {
-    width: 140,
-    height: 140,
-    position: 'absolute',
+    width: 143, // 부모 컨테이너 안에 맞게 크기 조정
+    height: 143,
     borderRadius: 20,
   },
 
-  //하트 아이콘 터치뷰
+  // 하트 아이콘 터치뷰
   heart_icon_touch_view: {
-    marginLeft: 105,
-    marginBottom: 90,
+    position: 'absolute',
+    top: 10, // 카드 안에서 위쪽에 고정
+    right: 10, // 카드 안에서 오른쪽에 고정
   },
 });
 

@@ -19,12 +19,6 @@ import InfoModal from '../../Function/InfoModal';
 
 //검색
 const MedicineList = ({navigation, medicineName, category}) => {
-  if (category) {
-    console.log('검색해서 넘어온 결과입니다. : ', medicineName);
-  } else {
-    console.log('관심분야에서 선택한 결과입니다. ', medicineName);
-  }
-
   const medicineListContext = useContext(MedicineListContext);
   if (!medicineListContext) {
     throw new Error(
@@ -32,13 +26,11 @@ const MedicineList = ({navigation, medicineName, category}) => {
     );
   }
 
-  //
-  const {text, setText, isListOpen, toggleListOpen} = medicineListContext;
+  const {text, setText} = medicineListContext;
   const [loading, setLoading] = useState(false);
-  const [filteredData, setFilteredData] = useState([]); //약 이미지, 이름 표시
-  const [selectedItem, setSelectedItem] = useState(null); // 선택된 항목 상태
-  const [modalVisible, setModalVisible] = useState(false); // 모달 상태
-  // 정렬을 위한 State
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const [arrayItem, setArrayItem] = useState([]);
   const [filterChange, setFilterChange] = useState(true);
 
@@ -46,92 +38,68 @@ const MedicineList = ({navigation, medicineName, category}) => {
   useEffect(() => {
     const fetchMedicineData = async () => {
       setLoading(true);
-
-      if (category) {
-        try {
-          const response = await axios.get(
-            `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
-              `serviceKey=${Config.React_APP_API_KEY}&` +
-              `numOfRows=30&` +
-              `${category}=${medicineName}&` +
-              `type=json`,
-          );
-          const data = response.data.body.items || [];
-          setArrayItem(data);
-          setFilteredData(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        // 관심분야에서 선택했을 때
-        try {
-          const response = await axios.get(
-            `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
-              `serviceKey=${Config.React_APP_API_KEY}&` +
-              `numOfRows=30&` +
-              `efcyQesitm=${medicineName}&` +
-              `type=json`,
-          );
-
-          const data = response.data.body.items || [];
-          setArrayItem(data);
-          setFilteredData(data); //화면에 그려짐
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        } finally {
-          setLoading(false);
-        }
+      try {
+        const endpoint = category
+          ? `${Config.React_APP_API_KEY}&${category}=${medicineName}`
+          : `${Config.React_APP_API_KEY}&efcyQesitm=${medicineName}`;
+        const response = await axios.get(
+          `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?serviceKey=${endpoint}&numOfRows=30&type=json`,
+        );
+        const data = response.data.body.items || [];
+        setArrayItem(data);
+        setFilteredData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMedicineData();
-  }, []);
+  }, [category, medicineName]);
 
   // 모달 열기
   const openModal = item => {
-    setSelectedItem(item); // 선택된 데이터를 저장
-    setModalVisible(true); // 모달 열기
+    const updatedItem = filteredData.find(
+      medicine => medicine.itemSeq === item.itemSeq,
+    );
+    setSelectedItem(updatedItem || item);
+    setModalVisible(true);
   };
 
   // 모달 닫기
   const closeModal = () => {
-    setSelectedItem(null); // 선택된 데이터를 초기화
-    setModalVisible(false); // 모달 닫기
+    setSelectedItem(null);
+    setModalVisible(false);
   };
 
-  //정렬된 상태로 시작
+  // 즐겨찾기 상태 업데이트
+  const handleFavoriteStatusChange = updatedItem => {
+    const updatedFilteredData = filteredData.map(item =>
+      item.itemSeq === updatedItem.itemSeq ? updatedItem : item,
+    );
+    setFilteredData(updatedFilteredData);
+    setSelectedItem(updatedItem);
+  };
+
+  // 데이터 정렬 (가나다순 시작)
   useEffect(() => {
-    const firstChange = () => {
-      // 가나다
+    if (arrayItem.length > 0) {
       const sortedData = [...arrayItem].sort((a, b) =>
         a.itemName.localeCompare(b.itemName, 'ko'),
       );
       setFilteredData(sortedData);
-    };
-
-    if (arrayItem.length > 0) {
-      firstChange();
     }
   }, [arrayItem]);
 
-  //필터 체인지
+  // 필터 체인지
   const changeFilter = () => {
-    let sortedData;
-    if (filterChange) {
-      // 이미지 유무 정렬
-      sortedData = [...arrayItem].sort((a, b) => {
-        if (!a.itemImage && b.itemImage) return 1; // 사진 없을 때 뒤로
-        if (a.itemImage && !b.itemImage) return -1; // 사진 있으면 앞으로
-        return 0;
-      });
-    } else {
-      // 가나다순
-      sortedData = [...arrayItem].sort((a, b) =>
-        a.itemName.localeCompare(b.itemName, 'ko'),
-      );
-    }
+    const sortedData = [...arrayItem].sort((a, b) => {
+      if (filterChange) {
+        return !a.itemImage && b.itemImage ? 1 : -1;
+      }
+      return a.itemName.localeCompare(b.itemName, 'ko');
+    });
     setFilteredData(sortedData);
     setFilterChange(!filterChange);
   };
@@ -165,7 +133,7 @@ const MedicineList = ({navigation, medicineName, category}) => {
 
         {loading ? (
           <ActivityIndicator size="large" color="#b4b4b4" />
-        ) : filteredData && filteredData.length > 0 ? (
+        ) : filteredData.length > 0 ? (
           <ScrollView contentContainerStyle={Styles.medicineList}>
             {filteredData.map((item, index) => (
               <View key={index} style={Styles.medicineItem}>
@@ -194,16 +162,16 @@ const MedicineList = ({navigation, medicineName, category}) => {
               alignItems: 'center',
               backgroundColor: 'white',
             }}>
-            <CustomText style={{fontSize: 20}}>
+            <CustomText style={{fontSize: 25, color: 'grey'}}>
               조회된 약이 없습니다. :/
             </CustomText>
           </View>
         )}
-
         <InfoModal
-          visible={modalVisible} // 모달 상태 전달
-          selectedItem={selectedItem} // 선택된 데이터 전달
-          onClose={closeModal} // 닫기 함수 전달
+          visible={modalVisible}
+          selectedItem={selectedItem}
+          onFavoriteStatusChange={handleFavoriteStatusChange}
+          onClose={closeModal}
         />
       </View>
 
