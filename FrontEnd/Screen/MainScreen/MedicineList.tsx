@@ -177,6 +177,8 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
+    borderColor: 'blue',
+    borderWidth: 1,
   },
   modalThdContainer: {
     width: '100%',
