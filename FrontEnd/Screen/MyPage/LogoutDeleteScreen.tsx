@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
@@ -66,21 +66,21 @@ const LogoutDeleteScreen = () => {
           <View style={styles.mainModalContainer}>
             <View style={styles.mainModalSubContainer}>
               <Text style={styles.mainModalTitle}>설정</Text>
-              <Pressable
+              <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() => openConfirmModal('logout')}>
                 <Text style={styles.logoutButtonText}>로그아웃</Text>
-              </Pressable>
-              <Pressable
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() => openConfirmModal('delete')}>
                 <Text style={styles.deleteButtonText}>회원 탈퇴</Text>
-              </Pressable>
-              <Pressable
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={styles.mainModalCancelButton}
                 onPress={goBackToPreviousScreen}>
                 <Text style={commonStyles.cancelButtonText}>닫기</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -101,22 +101,22 @@ const LogoutDeleteScreen = () => {
               <Text style={styles.confirmModalMessage}>
                 {actionType === 'logout'
                   ? '정말 로그아웃 하시겠습니까?'
-                  : '회원 정보를 삭제하고 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.'}
+                  : '회원 정보를 삭제하고 탈퇴하시겠습니까? \n 이 작업은 되돌릴 수 없습니다.'}
               </Text>
               <View style={styles.confirmModalButtons}>
-                <Pressable
+                <TouchableOpacity
                   style={styles.confirmModalCancelButton}
                   onPress={goBackToPreviousScreen}>
                   <Text style={commonStyles.cancelButtonText}>취소</Text>
-                </Pressable>
-                <Pressable
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={styles.confirmModalConfirmButton}
                   onPress={() => {
                     if (actionType === 'logout') handleLogout();
                     if (actionType === 'delete') handleAccountDeletion();
                   }}>
                   <Text style={styles.confirmButtonText}>확인</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
