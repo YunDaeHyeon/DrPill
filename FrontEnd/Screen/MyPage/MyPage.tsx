@@ -7,9 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
 import {handleLogoutDeleteScreen} from '../../Function/Navigation';
-import {MedicineListContext} from '../../Function/MainListContext';
-import AudioTts from './audiotts';
-AudioTts;
 
 const MyPage = ({navigation}) => {
   const goToAccount = () => {
