@@ -13,6 +13,12 @@ const MedicineCheck = ({navigation, route}: any) => {
         <Image source={require('../../Image/home.png')} />
       </TouchableOpacity>
 
+      <View style={styles.greyBox}>
+        <CustomText style={styles.checktext}>
+          상세정보 확인을 위해 이미지를 선택해주세요 :)
+        </CustomText>
+      </View>
+
       <View style={styles.row1}>
         <TouchableOpacity>
           <View style={styles.Medicine1}>
@@ -60,7 +66,6 @@ const MedicineCheck = ({navigation, route}: any) => {
           </View>
         </TouchableOpacity>
       </View>
-      <CustomText>상세정보를 확인을 위해 이미지를 선택해주세요</CustomText>
     </View>
   );
 };
@@ -74,16 +79,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '90%',
-    marginLeft: 20,
-    marginTop: 220,
+    marginLeft: '5%',
+    marginTop: '10%',
     backgroundColor: 'white',
   },
   row2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '90%',
-    marginLeft: 20,
-    marginTop: 60,
+    marginLeft: '5%',
+    marginTop: '20%',
     backgroundColor: 'white',
   },
   Medicine1: {
@@ -120,9 +125,26 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   back: {
-    position: 'absolute',
-    left: 30,
-    marginTop: 70,
+    width: '8%',
+    left: '6%',
+    marginTop: '10%',
+  },
+
+  checktext: {
+    fontSize: 16,
+  },
+
+  greyBox: {
+    backgroundColor: '#efefef',
+    marginTop: '26%',
+    width: '80%',
+    height: '5%',
+    marginLeft: '10%',
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: 'grey',
   },
 });
 

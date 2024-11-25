@@ -116,7 +116,7 @@ const MedicineList = ({navigation, medicineName, category}) => {
             style={Styles.search_text}
             onChangeText={setText}
             value={text}
-            placeholder={'약의 이름을 입력해주세요'}
+            placeholder={'찾을 약을 검색해주세요'}
             placeholderTextColor={'#C0E3FD'}
           />
         </View>
