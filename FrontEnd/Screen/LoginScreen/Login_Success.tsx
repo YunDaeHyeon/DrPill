@@ -54,13 +54,13 @@ export const Kakao_PopUp = async (): Promise<boolean> => {
     } else {
       // 프로필 데이터가 없으면 로그인 실패 처리
       console.error('프로필 데이터를 가져오지 못했습니다.');
-      showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+      showToast('로그인에 실패했습니다.\n 다시 시도해주세요.');
       return false;
     }
   } catch (error) {
     // 로그인 실패 또는 프로필 가져오기 실패
     console.error('로그인 실패 또는 네트워크 오류:', error);
-    showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+    showToast('로그인에 실패했습니다.\n 다시 시도해주세요.');
     return false; // 실패 시 false 반환
   }
 };

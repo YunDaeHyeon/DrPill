@@ -72,7 +72,7 @@ const UserInfoPage = () => {
 
   return (
     <View style={styles.container}>
-      <CustomText style={styles.title}>사용자 초기 설정</CustomText>
+      <CustomText style={styles.title}>회원 가입</CustomText>
 
       <TextInput
         value={nickname}
