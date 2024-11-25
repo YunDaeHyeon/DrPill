@@ -10,7 +10,6 @@ import {
   Dimensions, // 화면 크기 정보 가져오기
 } from 'react-native';
 import CustomText from '../../Function/CustomText';
-import {PillBox} from '../../Function/Like';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config'; // 환경 변수 관리
 import {MedicineListBox} from '../../Function/ListLike';
@@ -74,28 +73,44 @@ const PillLibrary = ({navigation}) => {
         <CustomText style={Styles.pilllibrary_font}>약 도서관</CustomText>
         <ScrollView style={Styles.contain_controller}>
           <View style={Styles.library_contain_view}>
-            {favoriteMedicine.map(item => (
-              // PillLibrary 컴포넌트 내 수정
-              <TouchableOpacity
-                key={item.itemSeq}
-                style={Styles.library_contain}
-                onPress={() => modalOpenListener(item.itemSeq)}>
-                <Image
-                  source={
-                    item.itemImage
-                      ? {uri: item.itemImage}
-                      : require('../../Image/medicinelibrary.png')
-                  }
-                  style={Styles.like_medicine_image}
-                />
-                <View style={Styles.heart_icon_touch_view}>
-                  <MedicineListBox
-                    selectedItem={item}
-                    onFavoriteStatusChange={handleFavoriteStatusChange}
+            {favoriteMedicine.length > 0 ? (
+              favoriteMedicine.map(item => (
+                // PillLibrary 컴포넌트 내 수정
+                <TouchableOpacity
+                  key={item.itemSeq}
+                  style={Styles.library_contain}
+                  onPress={() => modalOpenListener(item.itemSeq)}>
+                  <Image
+                    source={
+                      item.itemImage
+                        ? {uri: item.itemImage}
+                        : require('../../Image/medicinelibrary.png')
+                    }
+                    style={Styles.like_medicine_image}
                   />
-                </View>
-              </TouchableOpacity>
-            ))}
+                  <View style={Styles.heart_icon_touch_view}>
+                    <MedicineListBox
+                      selectedItem={item}
+                      onFavoriteStatusChange={handleFavoriteStatusChange}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  marginTop: '80%',
+                  alignItems: 'center',
+                  backgroundColor: 'white',
+                }}>
+                <CustomText
+                  style={{fontSize: 25, color: 'grey', textAlign: 'center'}}>
+                  저장된 약이 없습니다 :/{'\n'}약을 추가해주세요.
+                </CustomText>
+              </View>
+            )}
           </View>
         </ScrollView>
       </View>
