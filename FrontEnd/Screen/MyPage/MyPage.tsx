@@ -71,7 +71,6 @@ const MyPage = ({navigation}) => {
               style={Styles.setting_button_icon}
             />
             <CustomText style={Styles.setting_button_text}>
-              {' '}
               오디오 기능
             </CustomText>
           </TouchableOpacity>
@@ -84,21 +83,7 @@ const MyPage = ({navigation}) => {
               style={Styles.setting_button_icon}
             />
             <CustomText style={Styles.setting_button_text}>
-              {' '}
               사용자 관심 질환
-            </CustomText>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={Styles.setting_touch}>
-            <Image
-              source={require('../../Image/cloud-01.png')}
-              style={Styles.setting_button_icon}
-            />
-
-            <CustomText
-              style={Styles.setting_button_text}
-              onPress={() => handleLogoutDeleteScreen(navigation)}>
-              로그아웃/회원탈퇴
             </CustomText>
           </TouchableOpacity>
         </View>
