@@ -14,7 +14,6 @@ import {Kakao_PopUp} from './Login_Success';
 
 const Login = () => {
   const navigation = useNavigation();
-
   const [loading, setLoading] = useState(false);
 
   const showToast = (message: string) => {

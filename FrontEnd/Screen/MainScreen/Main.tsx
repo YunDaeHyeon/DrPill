@@ -8,9 +8,6 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Alert,
-  BackHandler,
-  ToastAndroid,
 } from 'react-native';
 import CustomText from '../../Function/CustomText.tsx';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';
@@ -24,7 +21,6 @@ const Main = ({navigation}) => {
   const [text, setText] = useState('');
   const [selectedOption, setSelectedOption] = useState('효능');
   const [interestDisease, setInterestDisease] = useState([]);
-  const [backPressedOnce, setBackPressedOnce] = useState(false); // 뒤로가기 버튼 상태
 
   const placeholderText = {
     효능: '효능을 입력하세요',
@@ -46,52 +42,8 @@ const Main = ({navigation}) => {
       setInterestDisease(result);
     };
 
-    const backAction = () => {
-      if (backPressedOnce) {
-        // 두 번째 뒤로가기가 감지되면 Alert 표시
-        Alert.alert(
-          '앱 종료',
-          '정말 앱을 종료하시겠습니까?',
-          [
-            {
-              text: '취소',
-              onPress: () => null, // 아무 동작도 하지 않음
-              style: 'cancel',
-            },
-            {
-              text: '확인',
-              onPress: () => BackHandler.exitApp(), // 앱 종료
-            },
-          ],
-          {cancelable: true}, // Alert 바깥을 눌러도 닫히지 않게 설정
-        );
-        return true;
-      }
-
-      // 첫 번째 뒤로가기: 메시지 표시 및 상태 업데이트
-      setBackPressedOnce(true);
-      ToastAndroid.show(
-        '뒤로가기를 한 번 더 누르면 앱 종료 안내가 표시됩니다.',
-        ToastAndroid.SHORT,
-      );
-
-      // 일정 시간 후 상태 초기화
-      setTimeout(() => {
-        setBackPressedOnce(false);
-      }, 2000); // 2초
-
-      return true; // 기본 동작 방지
-    };
-
-    // 뒤로가기 이벤트 리스너 등록
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
     callInterestMedicine();
-    // 컴포넌트 언마운트 시 리스너 제거
-    return () => backHandler.remove();
-  }, []);
+  }, []); // 의존성 배열 비움
 
   // 검색
   /*
