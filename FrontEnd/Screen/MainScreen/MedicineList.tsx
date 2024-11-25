@@ -136,28 +136,29 @@ const MedicineList = ({navigation, medicineName, category}) => {
         ) : filteredData.length > 0 ? (
           <ScrollView contentContainerStyle={Styles.medicineList}>
             {filteredData.map((item, index) => (
-              <View key={index} style={Styles.medicineItem}>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => openModal(item)}>
+              <TouchableOpacity
+                key={index}
+                style={Styles.medicineItem}
+                onPress={() => openModal(item)}>
+                <View>
                   <Image
                     source={{
                       uri: item.itemImage || 'https://via.placeholder.com/100',
                     }}
                     style={Styles.medicineImage}
                   />
-                </TouchableOpacity>
+                </View>
                 <CustomText style={Styles.medicineText}>
                   {item.itemName}
                 </CustomText>
-              </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         ) : (
           <View
             style={{
               width: '100%',
-              height: '80%',
+              height: '75%',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: 'white',
