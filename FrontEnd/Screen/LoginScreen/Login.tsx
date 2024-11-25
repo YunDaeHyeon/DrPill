@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,6 +7,8 @@ import {
   ToastAndroid,
   ActivityIndicator,
   Image,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
@@ -14,8 +16,57 @@ import {Kakao_PopUp} from './Login_Success';
 
 const Login = () => {
   const navigation = useNavigation();
-
   const [loading, setLoading] = useState(false);
+  const backPressedOnceRef = useRef(false); // 뒤로가기 버튼 상태 관리
+  const backTimeoutRef = useRef<NodeJS.Timeout | null>(null); // 타이머 관리
+
+  // 뒤로가기 로직
+  useEffect(() => {
+    const backAction = () => {
+      if (backPressedOnceRef.current) {
+        Alert.alert(
+          '앱 종료',
+          '정말 앱을 종료하시겠습니까?',
+          [
+            {text: '취소', onPress: () => null, style: 'cancel'},
+            {text: '확인', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: true},
+        );
+        return true;
+      }
+
+      backPressedOnceRef.current = true;
+      ToastAndroid.show(
+        '뒤로가기를 한 번 더 누르면 앱 종료 안내가 표시됩니다.',
+        ToastAndroid.SHORT,
+      );
+
+      // 타이머 설정
+      if (backTimeoutRef.current) {
+        clearTimeout(backTimeoutRef.current);
+      }
+      backTimeoutRef.current = setTimeout(() => {
+        backPressedOnceRef.current = false; // 상태 초기화
+      }, 2000);
+
+      return true; // 기본 동작 방지
+    };
+
+    // BackHandler 이벤트 등록
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    // 컴포넌트 언마운트 시 리스너 및 타이머 제거
+    return () => {
+      backHandler.remove();
+      if (backTimeoutRef.current) {
+        clearTimeout(backTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const showToast = (message: string) => {
     ToastAndroid.showWithGravity(
