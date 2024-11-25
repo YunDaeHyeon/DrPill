@@ -109,7 +109,7 @@ const UserInfoPage = () => {
         <DateTimePicker
           mode="date"
           display="spinner"
-          value={birthdate ? new Date(birthdate) : new Date()}
+          value={birthdate ? new Date(birthdate) : new Date(2000, 0, 1)}
           onChange={(event, selectedDate) => {
             setShowDatePicker(false);
             if (selectedDate) {
