@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Button,
 } from 'react-native';
 import CustomText from '../../Function/CustomText.tsx';
 import {handleMedicineInfo} from '../../Function/Navigation.tsx';

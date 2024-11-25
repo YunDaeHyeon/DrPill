@@ -71,7 +71,7 @@ export const MedicineListBox = ({selectedItem, onFavoriteStatusChange}) => {
   };
 
   return loading ? (
-    <ActivityIndicator size="small" color="#0000ff" />
+    <ActivityIndicator size="small" color="#b4b4b4" />
   ) : (
     <TouchableOpacity onPress={showConfirmationAlert} style={styles.heart}>
       <Image
