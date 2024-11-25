@@ -56,6 +56,7 @@ const PillLibrary = ({navigation}) => {
         ...item,
         isFavorite: true, // 항상 초기값은 즐겨찾기로 설정
       }));
+      console.log('약도서관 호출');
       setFavoriteMedicine(updatedData);
     } catch (error) {
       console.error('서버로부터 응답이 실패하였습니다. : ', error);

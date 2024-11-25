@@ -13,7 +13,7 @@ import {MedicineListBox} from './ListLike';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
-
+import {playTTS, stopTTS} from '../initializeTtsListeners';
 const InfoModal = ({
   visible,
   selectedItem,
@@ -24,13 +24,53 @@ const InfoModal = ({
 
   useEffect(() => {
     if (visible && selectedItem) {
-      setUpdatedSelectedItem(selectedItem); // 모달이 열릴 때 최신 데이터 설정
+      setUpdatedSelectedItem(selectedItem);
+
+      // [수정!!] 즐겨찾기 여부 확인 후 onGPT 실행
+      if (selectedItem.isFavorite) {
+        const onGPT = async () => {
+          try {
+            const response = await axios.post(
+              'https://api.openai.com/v1/chat/completions',
+              {
+                model: 'gpt-3.5-turbo',
+                messages: [
+                  {
+                    role: 'user',
+                    content:
+                      `약에 대한 효능과 주의사항을 너에게 보내면 한 문장으로 요약해줘.` +
+                      `효능 : ${selectedItem.efcyQesitm}, 주의사항 : ${selectedItem.atpnQesitm}`,
+                  },
+                ],
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${Config.DRPILL_CHATGPT}`,
+                  'Content-Type': 'application/json',
+                },
+              },
+            );
+
+            const data = response.data.choices[0].message.content;
+            playTTS(data);
+          } catch (error) {
+            console.error('Error:', error.response?.data || error.message);
+            throw new Error('API 요청 실패');
+          }
+        };
+        onGPT();
+      }
     }
   }, [visible, selectedItem]);
 
   if (!updatedSelectedItem) {
     return null; // 데이터가 준비되지 않았을 때는 아무것도 렌더링하지 않음
   }
+
+  const handleModalClose = () => {
+    stopTTS(); // TTS 중지
+    onClose(); // 부모에서 전달된 onClose 호출
+  };
 
   return (
     <Modal
@@ -100,7 +140,9 @@ const InfoModal = ({
               </CustomText>
             </View>
           </ScrollView>
-          <TouchableOpacity style={Styles.modalCloseBtn} onPress={onClose}>
+          <TouchableOpacity
+            style={Styles.modalCloseBtn}
+            onPress={handleModalClose}>
             <CustomText style={Styles.modalCloseBtnText}>닫기</CustomText>
           </TouchableOpacity>
         </View>
