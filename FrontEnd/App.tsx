@@ -24,6 +24,7 @@ import LogoutDeleteScreen from './Screen/MyPage/LogoutDeleteScreen.tsx';
 import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
 import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
 import AudioTts from './Screen/MyPage/audiotts.tsx';
+import {VoiceProvider} from './Function/VoiceProvider.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -77,93 +78,95 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <MedicineListProvider>
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{
-            gestureEnabled: true,
-            gestureDirection: 'horizontal',
-            animation: 'slide_from_right', // 오른쪽에서 왼쪽으로 전환 설정
-          }}>
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{headerShown: false}}
-          />
+    <VoiceProvider>
+      <NavigationContainer>
+        <MedicineListProvider>
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              gestureEnabled: true,
+              gestureDirection: 'horizontal',
+              animation: 'slide_from_right', // 오른쪽에서 왼쪽으로 전환 설정
+            }}>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="Main"
-            component={Main}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="Main"
+              component={Main}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="MedicineInfo"
-            component={MedicineInfo}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="MedicineInfo"
+              component={MedicineInfo}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="FindMedicine"
-            component={FindMedicine}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="FindMedicine"
+              component={FindMedicine}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="PillLibrary"
-            component={PillLibrary}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="PillLibrary"
+              component={PillLibrary}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="MyPage"
-            component={MyPage}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="MyPage"
+              component={MyPage}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="Gallery"
-            component={Gallery}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="Gallery"
+              component={Gallery}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="CameraCapture"
-            component={CameraCapture}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="CameraCapture"
+              component={CameraCapture}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="MedicineCheck"
-            component={MedicineCheck}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="MedicineCheck"
+              component={MedicineCheck}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="LogoutDeleteScreen"
-            component={LogoutDeleteScreen}
-            options={{headerShown: false}}
-          />
+            <Stack.Screen
+              name="LogoutDeleteScreen"
+              component={LogoutDeleteScreen}
+              options={{headerShown: false}}
+            />
 
-          <Stack.Screen
-            name="Disease_Data"
-            component={Disease_Data}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="UserInfoPage"
-            component={UserInfoPage}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="AudioTts"
-            component={AudioTts}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </MedicineListProvider>
-    </NavigationContainer>
+            <Stack.Screen
+              name="Disease_Data"
+              component={Disease_Data}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="UserInfoPage"
+              component={UserInfoPage}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="AudioTts"
+              component={AudioTts}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </MedicineListProvider>
+      </NavigationContainer>
+    </VoiceProvider>
   );
 };
 

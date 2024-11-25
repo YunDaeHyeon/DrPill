@@ -13,20 +13,25 @@ import {
   stopTTS,
 } from '../../initializeTtsListeners';
 import CustomText from '../../Function/CustomText';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AudioTts = ({navigation}) => {
   const [isModalVisible, setIsModalVisible] = useState(true); // 모달 항상 열림 상태
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handlePlayTTS = async () => {
-    const textToSpeak = '안녕하세요, 음성 기능이 실행되었습니다.';
+    const textToSpeak = '음성 설정을 실행합니다.';
+    initializeTtsListeners();
+    await AsyncStorage.setItem('check-voice', 'true');
+    console.log('음성 설정 상태 : ', await AsyncStorage.getItem('check-voice'));
     await playTTS(textToSpeak);
-    setIsPlaying(true);
+    setShowModal(true);
   };
 
-  const handleStopTTS = () => {
-    stopTTS();
-    setIsPlaying(false);
+  const handleStopTTS = async () => {
+    const textToSpeak = '음성 설정을 종료합니다.';
+    await AsyncStorage.setItem('check-voice', 'false');
+    console.log('음성 설정 상태 : ', await AsyncStorage.getItem('check-voice'));
   };
 
   const closeModal = () => {
@@ -34,30 +39,24 @@ const AudioTts = ({navigation}) => {
     navigation.goBack(); // 이전 화면으로 돌아가기
   };
 
-  useEffect(() => {
-    initializeTtsListeners();
-  }, []);
-
   return (
     <Modal visible={isModalVisible} transparent={true} animationType="fade">
       <View style={commonStyles.modalOverlay}>
         <View style={styles.mainModalContainer}>
           <View style={styles.mainModalSubContainer}>
-            <CustomText style={styles.mainModalTitle}>음성 기능</CustomText>
+            <CustomText style={styles.mainModalTitle}>
+              음성 기능 설정
+            </CustomText>
             <TouchableOpacity
               style={styles.mainModalButton}
-              onPress={handlePlayTTS}
-              disabled={isPlaying}>
-              <CustomText style={styles.logoutButtonText}>
-                {isPlaying ? '실행 중...' : '실행'}
-              </CustomText>
+              onPress={handlePlayTTS}>
+              <CustomText style={styles.logoutButtonText}>On</CustomText>
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={handleStopTTS}
-              disabled={!isPlaying}
               style={styles.mainModalButton}>
-              <CustomText style={styles.deleteButtonText}>실행 종료</CustomText>
+              <CustomText style={styles.deleteButtonText}>Off</CustomText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -70,6 +69,30 @@ const AudioTts = ({navigation}) => {
           </View>
         </View>
       </View>
+
+      <Modal
+        visible={showModal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowModal(!showModal)}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <CustomText style={styles.modalText}>읽어주기 시작!</CustomText>
+            <CustomText style={styles.modalMessage}>
+              이제부터 즐겨찾기 한 약을 요약해요! {'\n'}
+              요약한 약의 내용을 약선생이 읽어드려요🙂
+            </CustomText>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setShowModal(!showModal)} // 버튼 클릭 시 모달 닫기
+            >
+              <CustomText style={styles.modalButtonText}>
+                네, 이해했습니다.
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </Modal>
   );
 };
@@ -134,6 +157,40 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     color: '#3499E2',
+  },
+
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalMessage: {
+    fontSize: 16,
+    textAlign: 'left',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#3499E2',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 
