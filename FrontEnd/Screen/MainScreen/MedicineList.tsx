@@ -16,7 +16,6 @@ import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config';
 import axios from 'axios';
 import InfoModal from '../../Function/InfoModal';
-import {stopTTS} from '../../initializeTtsListeners';
 
 //검색
 const MedicineList = ({navigation, medicineName, category}) => {
@@ -34,6 +33,7 @@ const MedicineList = ({navigation, medicineName, category}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [arrayItem, setArrayItem] = useState([]);
   const [filterChange, setFilterChange] = useState(true);
+  const [originalData, setOriginalData] = useState([]); // 원본 데이터 저장
 
   // 데이터 가져오기
   useEffect(() => {
@@ -50,18 +50,18 @@ const MedicineList = ({navigation, medicineName, category}) => {
 
         if (response.data?.body?.items) {
           const data = response.data.body.items;
-          setArrayItem(data);
-          setFilteredData(data);
+          setOriginalData(data); // 원본 데이터 저장
+          setFilteredData(data); // 초기 정렬 후 데이터 설정
         } else {
           console.warn('API 응답에 items가 없습니다:', response.data);
-          setArrayItem([]);
+          setOriginalData([]);
           setFilteredData([]);
         }
       } catch (error) {
         if (error.response) {
-          console.error('API 요청 오류:', error.response.data);
+          console.log('API 요청 오류:', error.response.data);
         } else {
-          console.error('네트워크 오류 또는 기타 문제:', error.message);
+          console.log('네트워크 오류 또는 기타 문제:', error.message);
         }
       } finally {
         setLoading(false);
@@ -70,6 +70,47 @@ const MedicineList = ({navigation, medicineName, category}) => {
 
     fetchMedicineData();
   }, [category, medicineName]);
+
+  // 정렬 함수
+  const sortData = (data, sortByAlphabet) => {
+    if (sortByAlphabet) {
+      // 가나다순
+      return [...data].sort((a, b) =>
+        a.itemName.localeCompare(b.itemName, 'ko'),
+      );
+    } else {
+      // 이미지 여부
+      return [...data].sort((a, b) => {
+        if (!a.itemImage && b.itemImage) return 1; // 이미지 없는 항목 뒤로
+        if (a.itemImage && !b.itemImage) return -1; // 이미지 있는 항목 앞으로
+        return 0;
+      });
+    }
+  };
+
+  // 실시간 검색 필터링
+  const handleSearch = text => {
+    setText(text); // TextInput의 상태 업데이트
+    const lowercasedText = text.toLowerCase();
+
+    const filtered = originalData.filter(item => {
+      return (
+        item.itemName?.toLowerCase().includes(lowercasedText) || // 의약품 이름 검색
+        item.entpName?.toLowerCase().includes(lowercasedText) || // 제조사 검색
+        item.efcyQesitm?.toLowerCase().includes(lowercasedText) || // 효능 검색
+        item.atpnQesitm?.toLowerCase().includes(lowercasedText) // 주의사항 검색
+      );
+    });
+
+    setFilteredData(sortData(filtered, filterChange)); // 현재 정렬 상태에 따라 정렬
+  };
+
+  // 필터 변경 (정렬 순서 변경)
+  const changeFilter = () => {
+    const newFilterChange = !filterChange;
+    setFilterChange(newFilterChange);
+    setFilteredData(sortData(filteredData, newFilterChange)); // 필터 상태에 따라 정렬
+  };
 
   // 모달 열기
   const openModal = item => {
@@ -84,9 +125,6 @@ const MedicineList = ({navigation, medicineName, category}) => {
   const closeModal = () => {
     setSelectedItem(null);
     setModalVisible(false);
-    if (selectedItem.isFavorite) {
-      stopTTS();
-    }
   };
 
   // 즐겨찾기 상태 업데이트
@@ -96,28 +134,6 @@ const MedicineList = ({navigation, medicineName, category}) => {
     );
     setFilteredData(updatedFilteredData);
     setSelectedItem(updatedItem);
-  };
-
-  // 데이터 정렬 (가나다순 시작)
-  useEffect(() => {
-    if (arrayItem.length > 0) {
-      const sortedData = [...arrayItem].sort((a, b) =>
-        a.itemName.localeCompare(b.itemName, 'ko'),
-      );
-      setFilteredData(sortedData);
-    }
-  }, [arrayItem]);
-
-  // 필터 체인지
-  const changeFilter = () => {
-    const sortedData = [...arrayItem].sort((a, b) => {
-      if (filterChange) {
-        return !a.itemImage && b.itemImage ? 1 : -1;
-      }
-      return a.itemName.localeCompare(b.itemName, 'ko');
-    });
-    setFilteredData(sortedData);
-    setFilterChange(!filterChange);
   };
 
   return (
@@ -130,10 +146,10 @@ const MedicineList = ({navigation, medicineName, category}) => {
           />
           <TextInput
             style={Styles.search_text}
-            onChangeText={setText}
             value={text}
-            placeholder={'찾을 약을 검색해주세요'}
+            onChangeText={handleSearch} // 실시간 검색 이벤트 연결
             placeholderTextColor={'#C0E3FD'}
+            placeholder="검색할 내용을 입력하세요."
           />
         </View>
 
@@ -148,7 +164,10 @@ const MedicineList = ({navigation, medicineName, category}) => {
         </TouchableOpacity>
 
         {loading ? (
-          <ActivityIndicator size="large" color="#b4b4b4" />
+          <>
+            <ActivityIndicator size="large" color="#b4b4b4" />
+            <CustomText>검색중...</CustomText>
+          </>
         ) : filteredData.length > 0 ? (
           <ScrollView contentContainerStyle={Styles.medicineList}>
             {filteredData.map((item, index) => (
@@ -227,7 +246,7 @@ const Styles = StyleSheet.create({
   search_text: {
     //검색창 글씨
     marginLeft: 70,
-    fontSize: 18,
+    fontSize: 15,
     color: 'black',
   },
   sort_filter: {
