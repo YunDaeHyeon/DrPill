@@ -18,12 +18,12 @@ export const initializeTtsListeners = async () => {
   );
 
   // 스피킹 레이트 설정 (0.01 ~ 0.99, 1에 가까울수록 빠름)
-  Tts.setDefaultRate(0.8, true);
+  Tts.setDefaultRate(1, true);
 
   Tts.setIgnoreSilentSwitch('ignore');
 
   // 피치 설정 (0.5 ~ 2.0, 2에 가까울수록 음 높음)
-  Tts.setDefaultPitch(0.5);
+  Tts.setDefaultPitch(1.0);
 
   // TTS 이벤트 정의
   // TTS 시작

@@ -22,6 +22,7 @@ import {MedicineListProvider} from './Function/MainListContext.tsx';
 import LogoutDeleteScreen from './Screen/MyPage/LogoutDeleteScreen.tsx';
 import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
 import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
+import AudioTts from './Screen/MyPage/audiotts.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,11 @@ const App = () => {
           <Stack.Screen
             name="UserInfoPage"
             component={UserInfoPage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="AudioTts"
+            component={AudioTts}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
