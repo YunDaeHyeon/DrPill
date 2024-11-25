@@ -1,18 +1,14 @@
 //내 계정 화면입니다.
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
-// 커스텀 Text 컴포넌트
-import CustomText from '../../Function/CustomText';
+import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
 import {handleLogoutDeleteScreen} from '../../Function/Navigation';
+import AudioTts from './audiotts';
+import CustomText from '../../Function/CustomText';
 
 const MyPage = ({navigation}) => {
-  const goToAccount = () => {
-    navigation.navigate('goAccount');
-  };
-
   const [nickname, setNickname] = useState('GUEST');
   const [profileImage, setProfileImage] = useState(
     '../../Image/사람_프로필.png',
@@ -63,7 +59,7 @@ const MyPage = ({navigation}) => {
                 style={Styles.profile_image}
               />
             </View>
-            <CustomText style={Styles.user_name}>{nickname}</CustomText>
+            <Text style={Styles.user_name}>{nickname}</Text>
           </View>
         </View>
 
@@ -78,6 +74,7 @@ const MyPage = ({navigation}) => {
               style={Styles.setting_button_icon}
             />
             <CustomText style={Styles.setting_button_text}>
+              {' '}
               오디오 기능
             </CustomText>
           </TouchableOpacity>

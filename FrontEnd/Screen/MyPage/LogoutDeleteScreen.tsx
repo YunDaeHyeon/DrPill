@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import CustomText from '../../Function/CustomText';
 
 const LogoutDeleteScreen = () => {
   const [isMainModalVisible, setIsMainModalVisible] = useState(false);
@@ -65,21 +66,27 @@ const LogoutDeleteScreen = () => {
         <View style={commonStyles.modalOverlay}>
           <View style={styles.mainModalContainer}>
             <View style={styles.mainModalSubContainer}>
-              <Text style={styles.mainModalTitle}>설정</Text>
+              <CustomText style={styles.mainModalTitle}>설정</CustomText>
               <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() => openConfirmModal('logout')}>
-                <Text style={styles.logoutButtonText}>로그아웃</Text>
+                <CustomText style={styles.logoutButtonText}>
+                  로그아웃
+                </CustomText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() => openConfirmModal('delete')}>
-                <Text style={styles.deleteButtonText}>회원 탈퇴</Text>
+                <CustomText style={styles.deleteButtonText}>
+                  회원 탈퇴
+                </CustomText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.mainModalCancelButton}
                 onPress={goBackToPreviousScreen}>
-                <Text style={commonStyles.cancelButtonText}>닫기</Text>
+                <CustomText style={commonStyles.cancelButtonText}>
+                  닫기
+                </CustomText>
               </TouchableOpacity>
             </View>
           </View>
@@ -95,14 +102,14 @@ const LogoutDeleteScreen = () => {
         <View style={commonStyles.modalOverlay}>
           <View style={styles.confirmModalContainer}>
             <View style={styles.confirmModalSubContainer}>
-              <Text style={styles.confirmModalTitle}>
+              <CustomText style={styles.confirmModalTitle}>
                 {actionType === 'logout' ? '로그아웃 확인' : '회원 탈퇴 확인'}
-              </Text>
-              <Text style={styles.confirmModalMessage}>
+              </CustomText>
+              <CustomText style={styles.confirmModalMessage}>
                 {actionType === 'logout'
                   ? '정말 로그아웃 하시겠습니까?'
                   : '회원 정보를 삭제하고 탈퇴하시겠습니까? \n 이 작업은 되돌릴 수 없습니다.'}
-              </Text>
+              </CustomText>
               <View style={styles.confirmModalButtons}>
                 <TouchableOpacity
                   style={styles.confirmModalCancelButton}
