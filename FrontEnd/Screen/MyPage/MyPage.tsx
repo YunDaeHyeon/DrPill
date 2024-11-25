@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
 import {handleLogoutDeleteScreen} from '../../Function/Navigation';
-import {MedicineListContext} from '../../Function/MainListContext';
 
 const MyPage = ({navigation}) => {
   const [nickname, setNickname] = useState('GUEST');
