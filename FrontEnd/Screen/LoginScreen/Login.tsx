@@ -27,38 +27,34 @@ const Login = () => {
   const handleKakaoLogin = async () => {
     console.log('카카오 로그인 클릭!!!!');
     setLoading(true);
+
     try {
-      const storedUserProfile = await AsyncStorage.getItem('userProfile');
-      const existingProfile = storedUserProfile
-        ? JSON.parse(storedUserProfile)
-        : null;
-
-      const isSuccess = await Kakao_PopUp();
-      if (isSuccess) {
-        const newProfile = await AsyncStorage.getItem('userProfile');
-        if (newProfile) {
-          const {nickname: newNickname, email: newEmail} =
-            JSON.parse(newProfile);
-          console.log('기존 데이터:', existingProfile);
-          console.log('새 데이터:', {newNickname, newEmail});
-
-          if (
-            existingProfile &&
-            existingProfile.nickname === newNickname &&
-            existingProfile.email === newEmail
-          ) {
-            console.log('프로필 일치. 메인 페이지로 이동합니다.');
-            navigation.navigate('Main');
-          } else {
-            console.log('프로필 불일치. 회원가입 페이지로 이동합니다.');
-            navigation.navigate('UserInfoPage'); // 회원가입 페이지로 이동
-          }
-        }
-      } else {
-        showToast('카카오 로그인 실패. 다시 시도해주세요.');
+      // AsyncStorage에서 userId 확인
+      const storedUserId = await AsyncStorage.getItem('userId');
+      if (storedUserId) {
+        console.log(
+          `userId(${storedUserId})가 이미 존재합니다. 메인 페이지로 이동합니다.`,
+        );
+        navigation.navigate('Main');
+        return;
       }
+
+      // userId가 없을 경우 카카오 로그인 진행
+      const isSuccess = await Kakao_PopUp(); //카카오 팝업 함수 실행 이후 값 저장
+      console.log('Kakao_PopUp 호출 결과:', isSuccess);
+
+      // 값이 = true가 아니면 다시 시도
+      if (!isSuccess) {
+        showToast('카카오 로그인 실패.\n 다시 시도해주세요.');
+        return;
+      }
+
+      // 로그인 성공 시 회원가입 페이지로 이동
+      showToast('회원가입 페이지로 이동합니다.');
+      navigation.navigate('UserInfoPage');
     } catch (error) {
       console.error('로그인 중 오류:', error);
+      showToast('로그인 중 문제가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -69,7 +65,7 @@ const Login = () => {
     try {
       await AsyncStorage.clear(); // 모든 데이터 삭제
       showToast('게스트 계정으로 로그인되었습니다.');
-      navigation.navigate('Disease_Data'); // 메인 페이지로 이동
+      navigation.navigate('Main'); // 메인 페이지로 이동
     } catch (error) {
       console.error('게스트 로그인 중 오류:', error);
     } finally {
