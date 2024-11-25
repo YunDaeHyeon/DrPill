@@ -16,6 +16,7 @@ import {NavigationBar} from '../Commonness/NavigationBar';
 import Config from 'react-native-config';
 import axios from 'axios';
 import InfoModal from '../../Function/InfoModal';
+import {stopTTS} from '../../initializeTtsListeners';
 
 //검색
 const MedicineList = ({navigation, medicineName, category}) => {
@@ -39,17 +40,29 @@ const MedicineList = ({navigation, medicineName, category}) => {
     const fetchMedicineData = async () => {
       setLoading(true);
       try {
-        const endpoint = category
-          ? `${Config.React_APP_API_KEY}&${category}=${medicineName}`
-          : `${Config.React_APP_API_KEY}&efcyQesitm=${medicineName}`;
-        const response = await axios.get(
-          `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?serviceKey=${endpoint}&numOfRows=30&type=json`,
-        );
-        const data = response.data.body.items || [];
-        setArrayItem(data);
-        setFilteredData(data);
+        const queryParam = category
+          ? `${category}=${medicineName}`
+          : `efcyQesitm=${medicineName}`;
+        const endpoint = `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?serviceKey=${Config.React_APP_API_KEY}&${queryParam}&numOfRows=30&type=json`;
+        console.log('endpoint:', endpoint);
+
+        const response = await axios.get(endpoint);
+
+        if (response.data?.body?.items) {
+          const data = response.data.body.items;
+          setArrayItem(data);
+          setFilteredData(data);
+        } else {
+          console.warn('API 응답에 items가 없습니다:', response.data);
+          setArrayItem([]);
+          setFilteredData([]);
+        }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        if (error.response) {
+          console.error('API 요청 오류:', error.response.data);
+        } else {
+          console.error('네트워크 오류 또는 기타 문제:', error.message);
+        }
       } finally {
         setLoading(false);
       }
@@ -71,6 +84,9 @@ const MedicineList = ({navigation, medicineName, category}) => {
   const closeModal = () => {
     setSelectedItem(null);
     setModalVisible(false);
+    if (selectedItem.isFavorite) {
+      stopTTS();
+    }
   };
 
   // 즐겨찾기 상태 업데이트
