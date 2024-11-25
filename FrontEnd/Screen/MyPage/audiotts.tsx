@@ -12,6 +12,7 @@ import {
   playTTS,
   stopTTS,
 } from '../../initializeTtsListeners';
+import CustomText from '../../Function/CustomText';
 
 const AudioTts = ({navigation}) => {
   const [isModalVisible, setIsModalVisible] = useState(true); // 모달 항상 열림 상태
@@ -35,31 +36,54 @@ const AudioTts = ({navigation}) => {
 
   return (
     <Modal visible={isModalVisible} transparent={true} animationType="fade">
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>음성 기능</Text>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={handlePlayTTS}
-            disabled={isPlaying}>
-            <Text style={styles.buttonText}>
-              {isPlaying ? '실행 중...' : '실행'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.actionButton, {backgroundColor: '#FF5555'}]}
-            onPress={handleStopTTS}
-            disabled={!isPlaying}>
-            <Text style={styles.buttonText}>실행 종료</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Text style={styles.buttonText}>닫기</Text>
-          </TouchableOpacity>
+      <View style={commonStyles.modalOverlay}>
+        <View style={styles.mainModalContainer}>
+          <View style={styles.mainModalSubContainer}>
+            <CustomText style={styles.mainModalTitle}>음성 기능</CustomText>
+
+            <TouchableOpacity style={styles.mainModalButton}>
+              <TouchableOpacity onPress={handlePlayTTS} disabled={isPlaying}>
+                <CustomText style={styles.logoutButtonText}>
+                  {isPlaying ? '실행 중...' : '실행'}
+                </CustomText>
+              </TouchableOpacity>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleStopTTS}
+              disabled={!isPlaying}
+              style={styles.mainModalButton}>
+              <CustomText style={styles.deleteButtonText}>실행 종료</CustomText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.mainModalCancelButton}
+              onPress={closeModal}>
+              <CustomText style={commonStyles.cancelButtonText}>
+                닫기
+              </CustomText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
   );
 };
+
+const commonStyles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+  cancelButtonText: {
+    color: '#555',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+});
 
 const styles = StyleSheet.create({
   modalOverlay: {
@@ -68,38 +92,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  modalContainer: {
-    width: '80%',
+  mainModalContainer: {
+    width: '75%',
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 20,
     alignItems: 'center',
+    padding: 20,
+    height: '28%',
   },
-  modalTitle: {
-    fontSize: 20,
+  mainModalSubContainer: {
+    width: '100%',
+    flex: 1,
+  },
+  mainModalTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  actionButton: {
-    width: '100%',
+  mainModalButton: {
+    backgroundColor: 'white',
     paddingVertical: 15,
-    marginVertical: 5,
-    backgroundColor: '#3499E2',
+    borderTopColor: '#EAEAEA',
+    borderTopWidth: 1,
     alignItems: 'center',
-    borderRadius: 5,
-  },
-  closeButton: {
     width: '100%',
-    paddingVertical: 15,
-    marginTop: 10,
-    backgroundColor: '#555',
-    alignItems: 'center',
-    borderRadius: 5,
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
+  mainModalCancelButton: {
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#EAEAEA',
+    backgroundColor: 'white',
+    width: '100%',
+    alignItems: 'center',
+  },
+  logoutButtonText: {
+    color: 'red',
+  },
+  deleteButtonText: {
+    color: '#3499E2',
   },
 });
 

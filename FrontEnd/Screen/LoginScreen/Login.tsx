@@ -2,19 +2,18 @@ import React, {useState} from 'react';
 import {
   View,
   TouchableOpacity,
-  Text,
   StyleSheet,
   ToastAndroid,
   ActivityIndicator,
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomText from '../../Function/CustomText';
 import {useNavigation} from '@react-navigation/native';
 import {Kakao_PopUp} from './Login_Success';
 
 const Login = () => {
   const navigation = useNavigation();
-
   const [loading, setLoading] = useState(false);
 
   const showToast = (message: string) => {
@@ -26,6 +25,7 @@ const Login = () => {
   };
 
   const handleKakaoLogin = async () => {
+    console.log('카카오 로그인 클릭!!!!');
     setLoading(true);
     try {
       const storedUserProfile = await AsyncStorage.getItem('userProfile');
@@ -82,7 +82,7 @@ const Login = () => {
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#b4b4b4" />
-          <Text style={styles.loadingText}>로딩 중...</Text>
+          <CustomText style={styles.loadingText}>로딩 중...</CustomText>
         </View>
       ) : (
         <>
@@ -103,7 +103,9 @@ const Login = () => {
                 source={require('../../Image/kakaologo.png')}
                 style={styles.login_logo}
               />
-              <Text style={styles.black_text}>카카오 계정으로 로그인</Text>
+              <CustomText style={styles.black_text}>
+                카카오계정으로 시작하기
+              </CustomText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -114,7 +116,9 @@ const Login = () => {
                 source={require('../../Image/guestlogo.png')}
                 style={styles.login_logo}
               />
-              <Text style={styles.white_text}>게스트 계정으로 로그인</Text>
+              <CustomText style={styles.white_text}>
+                게스트 계정으로 시작하기
+              </CustomText>
             </TouchableOpacity>
           </View>
         </>

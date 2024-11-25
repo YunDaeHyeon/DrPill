@@ -28,10 +28,14 @@ export const goAccount = (navigation: NavigationProp<any>) => {
 export const handleMedicineInfo = (
   navigation: NavigationProp<any>,
   text: String,
+  queryField?: String,
 ) => {
   console.log(text);
   navigation.dispatch(
-    CommonActions.navigate('MedicineInfo', {medicineName: text}),
+    CommonActions.navigate('MedicineInfo', {
+      medicineName: text,
+      category: queryField,
+    }),
   );
 };
 
