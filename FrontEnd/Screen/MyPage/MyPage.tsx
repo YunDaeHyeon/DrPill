@@ -8,8 +8,14 @@ import {NavigationBar} from '../Commonness/NavigationBar';
 import {initializeTtsListeners, playTTS} from '../../initializeTtsListeners';
 import {handleLogoutDeleteScreen} from '../../Function/Navigation';
 import {MedicineListContext} from '../../Function/MainListContext';
+import AudioTts from './audiotts';
+AudioTts;
 
 const MyPage = ({navigation}) => {
+  const goToAccount = () => {
+    navigation.navigate('goAccount');
+  };
+
   const [nickname, setNickname] = useState('GUEST');
   const [profileImage, setProfileImage] = useState(
     '../../Image/사람_프로필.png',
@@ -33,6 +39,7 @@ const MyPage = ({navigation}) => {
     };
 
     loadData();
+    initializeTtsListeners(); // TTS 초기화 (한 번만 실행)
   }, []);
 
   return (
@@ -64,8 +71,11 @@ const MyPage = ({navigation}) => {
         </View>
 
         <View style={Styles.middle_bar}>
-          <CustomText style={Styles.setting_text}>설정</CustomText>
-          <TouchableOpacity style={Styles.setting_touch}>
+          <CustomText style={Styles.setting_text}>맞춤 설정</CustomText>
+
+          <TouchableOpacity
+            style={Styles.setting_touch}
+            onPress={() => navigation.navigate('AudioTts')}>
             <Image
               source={require('../../Image/mic.png')}
               style={Styles.setting_button_icon}
