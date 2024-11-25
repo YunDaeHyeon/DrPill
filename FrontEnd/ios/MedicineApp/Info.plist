@@ -22,16 +22,16 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>KAKAO_APP_KEY</key>
+	<string>dde8d3e5d50bef3dafc368f6d40c8239</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaodde8d3e5d50bef3dafc368f6d40c8239</string>
+		<string>kakaolink</string>
+		<string>kakaokompassauth</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-  <key>KAKAO_APP_KEY</key>
-  <string>dde8d3e5d50bef3dafc368f6d40c8239</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-      <string>kakaodde8d3e5d50bef3dafc368f6d40c8239</string>
-      <string>kakaolink</string>
-      <string>kakaokompassauth</string>
-  </array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -47,17 +47,25 @@
 	<string>We need permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Jua-Regular.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

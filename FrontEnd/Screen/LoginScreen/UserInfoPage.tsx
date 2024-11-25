@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
+import CustomText from '../../Function/CustomText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
@@ -72,7 +72,7 @@ const UserInfoPage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>사용자 초기 설정</Text>
+      <CustomText style={styles.title}>사용자 초기 설정</CustomText>
 
       <TextInput
         value={nickname}
@@ -100,16 +100,16 @@ const UserInfoPage = () => {
       <TouchableOpacity
         style={styles.dateButton}
         onPress={() => setShowDatePicker(true)}>
-        <Text style={styles.dateText}>
+        <CustomText style={styles.dateText}>
           {birthdate ? `생년월일: ${birthdate}` : '생년월일 선택'}
-        </Text>
+        </CustomText>
       </TouchableOpacity>
 
       {showDatePicker && (
         <DateTimePicker
           mode="date"
           display="spinner"
-          value={birthdate ? new Date(birthdate) : new Date()}
+          value={birthdate ? new Date(birthdate) : new Date(2000, 0, 1)}
           onChange={(event, selectedDate) => {
             setShowDatePicker(false);
             if (selectedDate) {
@@ -120,7 +120,7 @@ const UserInfoPage = () => {
       )}
 
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveUserInfo}>
-        <Text style={styles.saveButtonText}>저장</Text>
+        <CustomText style={styles.saveButtonText}>저장</CustomText>
       </TouchableOpacity>
     </View>
   );

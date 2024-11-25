@@ -1,17 +1,37 @@
-// PillModal.js
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Modal,
   View,
-  Text,
   Image,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
+import CustomText from './CustomText';
 import {MedicineListBox} from './ListLike';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
-const InfoModal = ({visible, selectedItem, onClose}) => {
+const InfoModal = ({
+  visible,
+  selectedItem,
+  onClose,
+  onFavoriteStatusChange,
+}) => {
+  const [updatedSelectedItem, setUpdatedSelectedItem] = useState(selectedItem);
+
+  useEffect(() => {
+    if (visible && selectedItem) {
+      setUpdatedSelectedItem(selectedItem); // 모달이 열릴 때 최신 데이터 설정
+    }
+  }, [visible, selectedItem]);
+
+  if (!updatedSelectedItem) {
+    return null; // 데이터가 준비되지 않았을 때는 아무것도 렌더링하지 않음
+  }
+
   return (
     <Modal
       visible={visible}
@@ -20,61 +40,68 @@ const InfoModal = ({visible, selectedItem, onClose}) => {
       onRequestClose={onClose}>
       <View style={Styles.modalMainContainer}>
         <View style={Styles.modalSubContainer}>
-          <MedicineListBox />
+          <MedicineListBox
+            selectedItem={updatedSelectedItem}
+            onFavoriteStatusChange={newItem => {
+              setUpdatedSelectedItem(newItem); // 모달 상태 업데이트
+              onFavoriteStatusChange(newItem); // 부모 컴포넌트로 전달
+            }}
+          />
           <View style={Styles.modalbox}>
-            <Text style={Styles.modalTitle}>
-              {selectedItem?.itemName || '약 이름'}
-            </Text>
+            <CustomText style={Styles.modalTitle}>
+              {updatedSelectedItem?.itemName || '약 이름'}
+            </CustomText>
             <View style={Styles.imagecontainer}>
               <Image
                 source={{
                   uri:
-                    selectedItem?.itemImage ||
+                    updatedSelectedItem?.itemImage ||
                     'https://via.placeholder.com/150',
                 }}
                 style={Styles.libraryimage}
               />
             </View>
           </View>
-
           <ScrollView style={Styles.modalThdContainer}>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능</Text>
-              <Text>{selectedItem?.efcyQesitm || '정보 없음'}</Text>
-            </View>
-
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>주의사항</Text>
-            </View>
-
-            <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>부작용</Text>
+              <CustomText style={Styles.infoTitle}>업체명</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {updatedSelectedItem?.entpName || '정보가 없어요 :('}
+              </CustomText>
             </View>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
+              <CustomText style={Styles.infoTitle}>효능</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {updatedSelectedItem?.efcyQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
+              <CustomText style={Styles.infoTitle}>사용법</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {updatedSelectedItem?.useMethodQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>효능효과</Text>
-              <Text style={Styles.infoContent}>
-                {selectedItem?.usege || '감기의 제증상 완화'}
-              </Text>
+              <CustomText style={Styles.infoTitle}>주의사항</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {updatedSelectedItem?.atpnQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
-
             <View style={Styles.infoBox}>
-              <Text style={Styles.infoTitle}>보관 방법</Text>
+              <CustomText style={Styles.infoTitle}>부작용</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {updatedSelectedItem?.seQesitm || '정보가 없어요 :('}
+              </CustomText>
+            </View>
+            <View style={Styles.infoBox}>
+              <CustomText style={Styles.infoTitle}>보관방법</CustomText>
+              <CustomText style={Styles.infoContent}>
+                {updatedSelectedItem?.depositMethodQesitm || '정보가 없어요 :('}
+              </CustomText>
             </View>
           </ScrollView>
           <TouchableOpacity style={Styles.modalCloseBtn} onPress={onClose}>
-            <Text style={Styles.modalCloseBtnText}>닫기</Text>
+            <CustomText style={Styles.modalCloseBtnText}>닫기</CustomText>
           </TouchableOpacity>
         </View>
       </View>
@@ -126,12 +153,12 @@ const Styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 5,
   },
   infoContent: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#555',
   },
   modalCloseBtn: {

@@ -5,11 +5,15 @@ import {MedicineListProvider} from '../../Function/MainListContext'; // 경로�
 import MedicineList from './MedicineList';
 
 const MedicineInfo = ({route, navigation}) => {
-  const {medicineName} = route.params; // 전달된 medicineName을 받습니다.
+  const {medicineName, category} = route.params; // 전달된 medicineName을 받습니다.
 
   return (
     <MedicineListProvider>
-      <MedicineList medicineName={medicineName} navigation={navigation} />
+      <MedicineList
+        medicineName={medicineName}
+        navigation={navigation}
+        category={category}
+      />
     </MedicineListProvider>
   );
 };

@@ -5,22 +5,20 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Text,
-  Modal,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import CustomText from '../../Function/CustomText';
 import {MedicineListContext} from '../../Function/MainListContext';
 
 import {NavigationBar} from '../Commonness/NavigationBar';
-import {MedicineListBox} from '../../Function/ListLike';
 
 import Config from 'react-native-config';
 import axios from 'axios';
 import InfoModal from '../../Function/InfoModal';
 
-const MedicineList = ({navigation, medicineName}) => {
-  console.log('전송 성공', medicineName);
+//검색
+const MedicineList = ({navigation, medicineName, category}) => {
   const medicineListContext = useContext(MedicineListContext);
   if (!medicineListContext) {
     throw new Error(
@@ -28,26 +26,27 @@ const MedicineList = ({navigation, medicineName}) => {
     );
   }
 
-  const {text, setText, isListOpen, toggleListOpen} = medicineListContext;
+  const {text, setText} = medicineListContext;
   const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null); // 선택된 항목 상태
-  const [modalVisible, setModalVisible] = useState(false); // 모달 상태
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [arrayItem, setArrayItem] = useState([]);
+  const [filterChange, setFilterChange] = useState(true);
 
   // 데이터 가져오기
   useEffect(() => {
     const fetchMedicineData = async () => {
       setLoading(true);
       try {
+        const endpoint = category
+          ? `${Config.React_APP_API_KEY}&${category}=${medicineName}`
+          : `${Config.React_APP_API_KEY}&efcyQesitm=${medicineName}`;
         const response = await axios.get(
-          `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?` +
-            `serviceKey=${Config.React_APP_API_KEY}&` +
-            `numOfRows=30&` +
-            `efcyQesitm=${medicineName}&` +
-            `type=json`,
+          `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?serviceKey=${endpoint}&numOfRows=30&type=json`,
         );
-
         const data = response.data.body.items || [];
+        setArrayItem(data);
         setFilteredData(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -57,18 +56,52 @@ const MedicineList = ({navigation, medicineName}) => {
     };
 
     fetchMedicineData();
-  }, []);
+  }, [category, medicineName]);
 
   // 모달 열기
   const openModal = item => {
-    setSelectedItem(item); // 선택된 데이터를 저장
-    setModalVisible(true); // 모달 열기
+    const updatedItem = filteredData.find(
+      medicine => medicine.itemSeq === item.itemSeq,
+    );
+    setSelectedItem(updatedItem || item);
+    setModalVisible(true);
   };
 
   // 모달 닫기
   const closeModal = () => {
-    setSelectedItem(null); // 선택된 데이터를 초기화
-    setModalVisible(false); // 모달 닫기
+    setSelectedItem(null);
+    setModalVisible(false);
+  };
+
+  // 즐겨찾기 상태 업데이트
+  const handleFavoriteStatusChange = updatedItem => {
+    const updatedFilteredData = filteredData.map(item =>
+      item.itemSeq === updatedItem.itemSeq ? updatedItem : item,
+    );
+    setFilteredData(updatedFilteredData);
+    setSelectedItem(updatedItem);
+  };
+
+  // 데이터 정렬 (가나다순 시작)
+  useEffect(() => {
+    if (arrayItem.length > 0) {
+      const sortedData = [...arrayItem].sort((a, b) =>
+        a.itemName.localeCompare(b.itemName, 'ko'),
+      );
+      setFilteredData(sortedData);
+    }
+  }, [arrayItem]);
+
+  // 필터 체인지
+  const changeFilter = () => {
+    const sortedData = [...arrayItem].sort((a, b) => {
+      if (filterChange) {
+        return !a.itemImage && b.itemImage ? 1 : -1;
+      }
+      return a.itemName.localeCompare(b.itemName, 'ko');
+    });
+    setFilteredData(sortedData);
+    setFilterChange(!filterChange);
   };
 
   return (
@@ -88,39 +121,61 @@ const MedicineList = ({navigation, medicineName}) => {
           />
         </View>
 
-        <View>
+        <TouchableOpacity onPress={changeFilter} style={Styles.sort_filter}>
           <Image
-            source={require('../../Image/filter.png')}
-            style={Styles.sort_filter}
+            source={
+              filterChange
+                ? require('../../Image/filter.png')
+                : require('../../Image/filterimage.png')
+            }
           />
-        </View>
+        </TouchableOpacity>
+
         {loading ? (
           <ActivityIndicator size="large" color="#b4b4b4" />
-        ) : (
+        ) : filteredData.length > 0 ? (
           <ScrollView contentContainerStyle={Styles.medicineList}>
             {filteredData.map((item, index) => (
-              <View key={index} style={Styles.medicineItem}>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => openModal(item)}>
+              <TouchableOpacity
+                key={index}
+                style={Styles.medicineItem}
+                onPress={() => openModal(item)}>
+                <View>
                   <Image
                     source={{
                       uri: item.itemImage || 'https://via.placeholder.com/100',
                     }}
                     style={Styles.medicineImage}
                   />
-                </TouchableOpacity>
-                <Text style={Styles.medicineText}>{item.itemName}</Text>
-              </View>
+                </View>
+                <CustomText style={Styles.medicineText}>
+                  {item.itemName}
+                </CustomText>
+              </TouchableOpacity>
             ))}
           </ScrollView>
+        ) : (
+          <View
+            style={{
+              width: '100%',
+              height: '75%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'white',
+            }}>
+            <CustomText style={{fontSize: 25, color: 'grey'}}>
+              조회된 약이 없습니다. :/
+            </CustomText>
+          </View>
         )}
         <InfoModal
-          visible={modalVisible} // 모달 상태 전달
-          selectedItem={selectedItem} // 선택된 데이터 전달
-          onClose={closeModal} // 닫기 함수 전달
+          visible={modalVisible}
+          selectedItem={selectedItem}
+          onFavoriteStatusChange={handleFavoriteStatusChange}
+          onClose={closeModal}
         />
       </View>
+
       <NavigationBar navigation={navigation} />
     </>
   );
@@ -161,7 +216,7 @@ const Styles = StyleSheet.create({
   },
   sort_filter: {
     //필터 아이콘
-    left: '38%',
+    left: '40%',
     marginTop: 16,
   },
 
@@ -284,9 +339,9 @@ const Styles = StyleSheet.create({
   medicineText: {
     fontSize: 16,
     marginLeft: 7,
-    marginTop: '9%',
+    marginTop: '8%',
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
   },
 });
 
