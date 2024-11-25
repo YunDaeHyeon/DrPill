@@ -1,7 +1,8 @@
 //네비게이션
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {BackHandler, ToastAndroid, Alert} from 'react-native';
 
 import Login from './Screen/LoginScreen/Login.tsx'; //로그인 화면
 
@@ -26,6 +27,54 @@ import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const backPressedOnceRef = useRef(false);
+  const backTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (backPressedOnceRef.current) {
+        Alert.alert(
+          '앱 종료',
+          '정말 앱을 종료하시겠습니까?',
+          [
+            {text: '취소', onPress: () => null, style: 'cancel'},
+            {text: '확인', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: true},
+        );
+        return true;
+      }
+
+      backPressedOnceRef.current = true;
+      ToastAndroid.show(
+        '뒤로가기를 한 번 더 누르면 앱이 종료됩니다',
+        ToastAndroid.SHORT,
+      );
+
+      if (backTimeoutRef.current) {
+        clearTimeout(backTimeoutRef.current);
+      }
+
+      backTimeoutRef.current = setTimeout(() => {
+        backPressedOnceRef.current = false;
+      }, 2000);
+
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+      if (backTimeoutRef.current) {
+        clearTimeout(backTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <NavigationContainer>
       <MedicineListProvider>
