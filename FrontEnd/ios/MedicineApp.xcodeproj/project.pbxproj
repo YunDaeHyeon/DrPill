@@ -8,33 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MedicineAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MedicineAppTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-MedicineApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-MedicineApp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		5C7387D2DFE940FC96AFC8DA /* Jua-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-MedicineApp-MedicineAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedicineApp-MedicineAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		D7603E7B2CF39D72008D6BCC /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E7A2CF39D72008D6BCC /* RxKakaoSDK */; };
-		D7603E7D2CF39D72008D6BCC /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E7C2CF39D72008D6BCC /* RxKakaoSDKAuth */; };
-		D7603E7F2CF39D72008D6BCC /* RxKakaoSDKCert in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E7E2CF39D72008D6BCC /* RxKakaoSDKCert */; };
-		D7603E812CF39D72008D6BCC /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E802CF39D72008D6BCC /* RxKakaoSDKCommon */; };
-		D7603E832CF39D72008D6BCC /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E822CF39D72008D6BCC /* RxKakaoSDKFriend */; };
-		D7603E852CF39D72008D6BCC /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E842CF39D72008D6BCC /* RxKakaoSDKShare */; };
-		D7603E872CF39D72008D6BCC /* RxKakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E862CF39D72008D6BCC /* RxKakaoSDKTalk */; };
-		D7603E892CF39D72008D6BCC /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E882CF39D72008D6BCC /* RxKakaoSDKUser */; };
-		D7603E8C2CF39D8E008D6BCC /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E8B2CF39D8E008D6BCC /* KakaoSDK */; };
-		D7603E8E2CF39D8E008D6BCC /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E8D2CF39D8E008D6BCC /* KakaoSDKAuth */; };
-		D7603E902CF39D8E008D6BCC /* KakaoSDKCert in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E8F2CF39D8E008D6BCC /* KakaoSDKCert */; };
-		D7603E922CF39D8E008D6BCC /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E912CF39D8E008D6BCC /* KakaoSDKCertCore */; };
-		D7603E942CF39D8E008D6BCC /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E932CF39D8E008D6BCC /* KakaoSDKCommon */; };
-		D7603E962CF39D8E008D6BCC /* KakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E952CF39D8E008D6BCC /* KakaoSDKFriend */; };
-		D7603E982CF39D8E008D6BCC /* KakaoSDKFriendCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E972CF39D8E008D6BCC /* KakaoSDKFriendCore */; };
-		D7603E9A2CF39D8E008D6BCC /* KakaoSDKNavi in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E992CF39D8E008D6BCC /* KakaoSDKNavi */; };
-		D7603E9C2CF39D8E008D6BCC /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E9B2CF39D8E008D6BCC /* KakaoSDKShare */; };
-		D7603E9E2CF39D8E008D6BCC /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E9D2CF39D8E008D6BCC /* KakaoSDKTalk */; };
-		D7603EA02CF39D8E008D6BCC /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = D7603E9F2CF39D8E008D6BCC /* KakaoSDKTemplate */; };
-		D7603EA22CF39D8E008D6BCC /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = D7603EA12CF39D8E008D6BCC /* KakaoSDKUser */; };
+		85438A69AB2CEA90AB7682BB /* libPods-MedicineApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07639F475FAB74F6AEA1C1F8 /* libPods-MedicineApp.a */; };
+		9F8CBEDE12ADD42426334EFA /* libPods-MedicineApp-MedicineAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B65B27F220BB285E874D733 /* libPods-MedicineApp-MedicineAppTests.a */; };
 		FC7AECAE83A346B04EFB6E55 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D6F34ECCE427B038883DD899 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +32,7 @@
 		00E356EE1AD99517003FC87E /* MedicineAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedicineAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* MedicineAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedicineAppTests.m; sourceTree = "<group>"; };
+		07639F475FAB74F6AEA1C1F8 /* libPods-MedicineApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedicineApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* MedicineApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedicineApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MedicineApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = MedicineApp/AppDelegate.mm; sourceTree = "<group>"; };
@@ -59,15 +40,17 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MedicineApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MedicineApp/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = MedicineApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedicineApp-MedicineAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedicineApp-MedicineAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-MedicineApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp.debug.xcconfig"; path = "Target Support Files/Pods-MedicineApp/Pods-MedicineApp.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-MedicineApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp.release.xcconfig"; path = "Target Support Files/Pods-MedicineApp/Pods-MedicineApp.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-MedicineApp-MedicineAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp-MedicineAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-MedicineApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedicineApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		572BC392F13745CDC40F83CE /* Pods-MedicineApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp.release.xcconfig"; path = "Target Support Files/Pods-MedicineApp/Pods-MedicineApp.release.xcconfig"; sourceTree = "<group>"; };
+		7CDE305CA6ACAF21C61039AC /* Pods-MedicineApp-MedicineAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp-MedicineAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MedicineApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp-MedicineAppTests.release.xcconfig"; path = "Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		8B65B27F220BB285E874D733 /* libPods-MedicineApp-MedicineAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedicineApp-MedicineAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3143E23667F4179B8AD1A37 /* Pods-MedicineApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp.debug.xcconfig"; path = "Target Support Files/Pods-MedicineApp/Pods-MedicineApp.debug.xcconfig"; sourceTree = "<group>"; };
 		D6F34ECCE427B038883DD899 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MedicineApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D77818F02CF8583C0062CE0F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D77818F22CF858530062CE0F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D77818F42CF8585A0062CE0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F169608DFF5338BCEC5AD228 /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedicineApp-MedicineAppTests.release.xcconfig"; path = "Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		F5DBAA5D4EC04A928740E4D8 /* Jua-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jua-Regular.ttf"; path = "../assets/fonts/Jua-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-MedicineApp-MedicineAppTests.a in Frameworks */,
+				9F8CBEDE12ADD42426334EFA /* libPods-MedicineApp-MedicineAppTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,27 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7603E7D2CF39D72008D6BCC /* RxKakaoSDKAuth in Frameworks */,
-				D7603E8C2CF39D8E008D6BCC /* KakaoSDK in Frameworks */,
-				D7603E832CF39D72008D6BCC /* RxKakaoSDKFriend in Frameworks */,
-				D7603E902CF39D8E008D6BCC /* KakaoSDKCert in Frameworks */,
-				D7603E812CF39D72008D6BCC /* RxKakaoSDKCommon in Frameworks */,
-				D7603EA02CF39D8E008D6BCC /* KakaoSDKTemplate in Frameworks */,
-				0C80B921A6F3F58F76C31292 /* libPods-MedicineApp.a in Frameworks */,
-				D7603E7B2CF39D72008D6BCC /* RxKakaoSDK in Frameworks */,
-				D7603E8E2CF39D8E008D6BCC /* KakaoSDKAuth in Frameworks */,
-				D7603E9A2CF39D8E008D6BCC /* KakaoSDKNavi in Frameworks */,
-				D7603E962CF39D8E008D6BCC /* KakaoSDKFriend in Frameworks */,
-				D7603E9E2CF39D8E008D6BCC /* KakaoSDKTalk in Frameworks */,
-				D7603E942CF39D8E008D6BCC /* KakaoSDKCommon in Frameworks */,
-				D7603E872CF39D72008D6BCC /* RxKakaoSDKTalk in Frameworks */,
-				D7603E892CF39D72008D6BCC /* RxKakaoSDKUser in Frameworks */,
-				D7603E982CF39D8E008D6BCC /* KakaoSDKFriendCore in Frameworks */,
-				D7603E852CF39D72008D6BCC /* RxKakaoSDKShare in Frameworks */,
-				D7603EA22CF39D8E008D6BCC /* KakaoSDKUser in Frameworks */,
-				D7603E7F2CF39D72008D6BCC /* RxKakaoSDKCert in Frameworks */,
-				D7603E922CF39D8E008D6BCC /* KakaoSDKCertCore in Frameworks */,
-				D7603E9C2CF39D8E008D6BCC /* KakaoSDKShare in Frameworks */,
+				85438A69AB2CEA90AB7682BB /* libPods-MedicineApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,9 +117,12 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D77818F42CF8585A0062CE0F /* CoreGraphics.framework */,
+				D77818F22CF858530062CE0F /* Foundation.framework */,
+				D77818F02CF8583C0062CE0F /* UIKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-MedicineApp.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedicineApp-MedicineAppTests.a */,
+				07639F475FAB74F6AEA1C1F8 /* libPods-MedicineApp.a */,
+				8B65B27F220BB285E874D733 /* libPods-MedicineApp-MedicineAppTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -196,10 +162,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-MedicineApp.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-MedicineApp.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-MedicineApp-MedicineAppTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */,
+				A3143E23667F4179B8AD1A37 /* Pods-MedicineApp.debug.xcconfig */,
+				572BC392F13745CDC40F83CE /* Pods-MedicineApp.release.xcconfig */,
+				7CDE305CA6ACAF21C61039AC /* Pods-MedicineApp-MedicineAppTests.debug.xcconfig */,
+				F169608DFF5338BCEC5AD228 /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -211,12 +177,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "MedicineAppTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				677DCE10E9313AF657E140A2 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				545DE0C00962F1B6B17B1348 /* [CP] Embed Pods Frameworks */,
+				8B7A61C6FDC08736A7EFB68F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -232,13 +198,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MedicineApp" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				1991106EDD2CAB86BAD65682 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				CFB874D936B255AE6543C31A /* [CP] Embed Pods Frameworks */,
+				1032CA3CAA490FDC6405709E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -275,10 +241,6 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
-			packageReferences = (
-				D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
-				D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -327,46 +289,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		1032CA3CAA490FDC6405709E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MedicineApp-MedicineAppTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		1991106EDD2CAB86BAD65682 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -388,7 +328,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+		545DE0C00962F1B6B17B1348 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,24 +345,29 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+		677DCE10E9313AF657E140A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MedicineApp-MedicineAppTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		8B7A61C6FDC08736A7EFB68F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -437,6 +382,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedicineApp-MedicineAppTests/Pods-MedicineApp-MedicineAppTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFB874D936B255AE6543C31A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedicineApp/Pods-MedicineApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -472,7 +434,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-MedicineApp-MedicineAppTests.debug.xcconfig */;
+			baseConfigurationReference = 7CDE305CA6ACAF21C61039AC /* Pods-MedicineApp-MedicineAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -499,7 +461,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */;
+			baseConfigurationReference = F169608DFF5338BCEC5AD228 /* Pods-MedicineApp-MedicineAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -523,13 +485,15 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-MedicineApp.debug.xcconfig */;
+			baseConfigurationReference = A3143E23667F4179B8AD1A37 /* Pods-MedicineApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DDKTWTC6NA;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = MedicineApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -546,18 +510,21 @@
 				PRODUCT_NAME = MedicineApp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				"SYSTEM_FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-MedicineApp.release.xcconfig */;
+			baseConfigurationReference = 572BC392F13745CDC40F83CE /* Pods-MedicineApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DDKTWTC6NA;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = MedicineApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -573,6 +540,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.wkuproject.MedicineApp;
 				PRODUCT_NAME = MedicineApp;
 				SWIFT_VERSION = 5.0;
+				"SYSTEM_FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -768,128 +736,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.23.0;
-			};
-		};
-		D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.23.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D7603E7A2CF39D72008D6BCC /* RxKakaoSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDK;
-		};
-		D7603E7C2CF39D72008D6BCC /* RxKakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKAuth;
-		};
-		D7603E7E2CF39D72008D6BCC /* RxKakaoSDKCert */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKCert;
-		};
-		D7603E802CF39D72008D6BCC /* RxKakaoSDKCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKCommon;
-		};
-		D7603E822CF39D72008D6BCC /* RxKakaoSDKFriend */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKFriend;
-		};
-		D7603E842CF39D72008D6BCC /* RxKakaoSDKShare */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKShare;
-		};
-		D7603E862CF39D72008D6BCC /* RxKakaoSDKTalk */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKTalk;
-		};
-		D7603E882CF39D72008D6BCC /* RxKakaoSDKUser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E792CF39D72008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKUser;
-		};
-		D7603E8B2CF39D8E008D6BCC /* KakaoSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDK;
-		};
-		D7603E8D2CF39D8E008D6BCC /* KakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKAuth;
-		};
-		D7603E8F2CF39D8E008D6BCC /* KakaoSDKCert */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKCert;
-		};
-		D7603E912CF39D8E008D6BCC /* KakaoSDKCertCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKCertCore;
-		};
-		D7603E932CF39D8E008D6BCC /* KakaoSDKCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKCommon;
-		};
-		D7603E952CF39D8E008D6BCC /* KakaoSDKFriend */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKFriend;
-		};
-		D7603E972CF39D8E008D6BCC /* KakaoSDKFriendCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKFriendCore;
-		};
-		D7603E992CF39D8E008D6BCC /* KakaoSDKNavi */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKNavi;
-		};
-		D7603E9B2CF39D8E008D6BCC /* KakaoSDKShare */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKShare;
-		};
-		D7603E9D2CF39D8E008D6BCC /* KakaoSDKTalk */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKTalk;
-		};
-		D7603E9F2CF39D8E008D6BCC /* KakaoSDKTemplate */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKTemplate;
-		};
-		D7603EA12CF39D8E008D6BCC /* KakaoSDKUser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7603E8A2CF39D8E008D6BCC /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKUser;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

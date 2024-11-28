@@ -168,7 +168,6 @@ const Styles = StyleSheet.create({
 
   setting_button_text: {
     fontSize: 22,
-
     color: 'black',
     left: 15,
   },
