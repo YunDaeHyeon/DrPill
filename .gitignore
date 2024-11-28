@@ -75,3 +75,9 @@ yarn-error.log
 
 /AI/env
 /AI/.env
+
+
+#env
+.env
+/FrontEnd/vendor
+/AI/__pycache__

@@ -1,240 +1,173 @@
-//알레르기 목록 화면입니다.
-import {useState} from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Text,
-} from 'react-native';
+//네비게이션
+import React, {useEffect, useRef} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {BackHandler, ToastAndroid, Alert} from 'react-native';
 
-const AllergyInfo = () => {
-  const [text, setText] = useState('');
+import Login from './Screen/LoginScreen/Login.tsx'; //로그인 화면
+
+import Main from './Screen/MainScreen/Main.tsx'; // 어플 메인 화면
+import MedicineInfo from './Screen/MainScreen/MedicineInfo.tsx'; // 알레르기 약 상세정보 화면
+
+import CameraCapture from './Screen/Camera/CameraCapture.tsx'; // 카메라 메인화면
+import FindMedicine from './Screen/Camera/Find_Medicine.tsx'; // 찾은 약 정보화면
+import Gallery from './Screen/Camera/Gallery.tsx'; //갤러리
+import MedicineCheck from './Screen/Camera/Medicine_Check.tsx';
+import DetectedImages from './Screen/Camera/DetectedImage.tsx'; //찍은 약 감지
+
+import PillLibrary from './Screen/Medicinie_Library/Pill_Library.tsx'; // 약 도서관 화면
+
+import MyPage from './Screen/MyPage/MyPage.tsx'; // 마이페이지 화면
+import {MedicineListProvider} from './Function/MainListContext.tsx';
+
+import LogoutDeleteScreen from './Screen/MyPage/LogoutDeleteScreen.tsx';
+import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
+import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
+import AudioTts from './Screen/MyPage/audiotts.tsx';
+import {VoiceProvider} from './Function/VoiceProvider.tsx';
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  const backPressedOnceRef = useRef(false);
+  const backTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (backPressedOnceRef.current) {
+        Alert.alert(
+          '앱 종료',
+          '정말 앱을 종료하시겠습니까?',
+          [
+            {text: '취소', onPress: () => null, style: 'cancel'},
+            {text: '확인', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: true},
+        );
+        return true;
+      }
+
+      backPressedOnceRef.current = true;
+      ToastAndroid.show(
+        '뒤로가기를 한 번 더 누르면 앱이 종료됩니다',
+        ToastAndroid.SHORT,
+      );
+
+      if (backTimeoutRef.current) {
+        clearTimeout(backTimeoutRef.current);
+      }
+
+      backTimeoutRef.current = setTimeout(() => {
+        backPressedOnceRef.current = false;
+      }, 2000);
+
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+      if (backTimeoutRef.current) {
+        clearTimeout(backTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <>
-      <View style={Styles.container}>
-        <View style={Styles.searchbox}>
-          <Image
-            source={require('./Image/돋보기.png')}
-            style={Styles.search_icon}
-          />
-          <TextInput
-            style={Styles.search_text}
-            onChangeText={newText => setText(newText)}
-            placeholder="               알레르기"
-            placeholderTextColor={'#C0E3FD'}
-          />
-        </View>
-
-        <View>
-          <Image
-            source={require('./Image/filter.png')}
-            style={Styles.sort_filter}
-          />
-        </View>
-
-        <View style={Styles.allergycontain_view}>
-          <View style={Styles.allergyview_1}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain}
+    <VoiceProvider>
+      <NavigationContainer>
+        <MedicineListProvider>
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              gestureEnabled: true,
+              gestureDirection: 'horizontal',
+              animation: 'slide_from_right', // 오른쪽에서 왼쪽으로 전환 설정
+            }}>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: false}}
             />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain3}
+            <Stack.Screen
+              name="Main"
+              component={Main}
+              options={{headerShown: false}}
             />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
-          </View>
 
-          <View style={Styles.allergyview_2}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain2}
+            <Stack.Screen
+              name="MedicineInfo"
+              component={MedicineInfo}
+              options={{headerShown: false}}
             />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={Styles.allergy_contain4}
+            <Stack.Screen
+              name="FindMedicine"
+              component={FindMedicine}
+              options={{headerShown: false}}
             />
-            <Text style={Styles.allergycontain_text}>베아제</Text>
-          </View>
-        </View>
-      </View>
 
-      <View style={Styles.navigation_bar}>
-        <TouchableOpacity activeOpacity={0.7}>
-          <Image
-            source={require('./Image/메뉴바_홈.png')}
-            style={Styles.home_icon}
-          />
-        </TouchableOpacity>
+            <Stack.Screen
+              name="PillLibrary"
+              component={PillLibrary}
+              options={{headerShown: false}}
+            />
 
-        <TouchableOpacity>
-          <Image
-            source={require('./Image/메뉴바_카메라.png')}
-            style={Styles.camera_icon}
-          />
-        </TouchableOpacity>
+            <Stack.Screen
+              name="MyPage"
+              component={MyPage}
+              options={{headerShown: false}}
+            />
 
-        <TouchableOpacity>
-          <Image
-            source={require('./Image/메뉴바_도서관.png')}
-            style={Styles.library_icon}
-          />
-        </TouchableOpacity>
+            <Stack.Screen
+              name="Gallery"
+              component={Gallery}
+              options={{headerShown: false}}
+            />
 
-        <TouchableOpacity>
-          <Image
-            source={require('./Image/메뉴바_계정.png')}
-            style={Styles.account_icon}
-          />
-        </TouchableOpacity>
-      </View>
-    </>
+            <Stack.Screen
+              name="CameraCapture"
+              component={CameraCapture}
+              options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+              name="MedicineCheck"
+              component={MedicineCheck}
+              options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+              name="LogoutDeleteScreen"
+              component={LogoutDeleteScreen}
+              options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+              name="Disease_Data"
+              component={Disease_Data}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="UserInfoPage"
+              component={UserInfoPage}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="AudioTts"
+              component={AudioTts}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </MedicineListProvider>
+      </NavigationContainer>
+    </VoiceProvider>
   );
 };
 
-const Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-  },
-
-  searchbox: {
-    //검색창 박스
-    borderColor: '#EAEAEA',
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 317,
-    height: 57,
-    backgroundColor: 'white',
-    marginTop: 50,
-    elevation: 10,
-    shadowColor: 'grey',
-    justifyContent: 'center',
-  },
-
-  navigation_bar: {
-    //메뉴바
-    bottom: 0,
-    right: 0,
-    flexDirection: 'row',
-    verticalAlign: 'bottom',
-    backgroundColor: 'white',
-    borderColor: '#EAEAEA',
-    borderWidth: 1,
-    height: 95,
-    width: '100%',
-    alignItems: 'center',
-  },
-
-  home_icon: {
-    //메뉴바 홈 아이콘
-    marginTop: 10,
-    marginLeft: 40,
-  },
-
-  camera_icon: {
-    //메뉴바 카메라 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  library_icon: {
-    //메뉴바 도서관 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  account_icon: {
-    //메뉴바 계정 아이콘
-    marginTop: 10,
-    marginLeft: 53,
-  },
-
-  search_icon: {
-    //검색 돋보기 아이콘
-    position: 'absolute',
-    marginLeft: 35,
-  },
-
-  search_text: {
-    //검색창 글씨
-    marginLeft: 70,
-    fontSize: 18,
-    color: 'black',
-  },
-
-  allergycontain_view: {
-    //알레르기 박스 뷰
-    width: 330,
-    height: 400,
-    marginTop: 25,
-    marginLeft: 5,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-
-  allergyview_1: {
-    //알레르기 왼쪽 뷰
-    width: 180,
-  },
-
-  allergyview_2: {
-    //알레르기 오른쪽 뷰
-    width: 145,
-  },
-
-  allergy_contain: {
-    //알레르기 박스
-    width: 143,
-    height: 145,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergy_contain2: {
-    width: 143,
-    height: 145,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergy_contain3: {
-    width: 145,
-    height: 145,
-    marginTop: 15,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergy_contain4: {
-    width: 145,
-    height: 145,
-    marginTop: 15,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-  },
-
-  allergycontain_text: {
-    //알레르기 텍스트
-    marginTop: 12,
-    fontSize: 20,
-    fontFamily: 'Jua',
-    fontWeight: 'bold',
-  },
-
-  sort_filter: {
-    //필터 아이콘
-    left: '38%',
-    marginTop: 16,
-  },
-});
-
-export default AllergyInfo;
+export default App;

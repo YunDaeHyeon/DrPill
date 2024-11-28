@@ -1,240 +1,234 @@
+/* eslint-disable react/react-in-jsx-scope */
 //메인 화면입니다.
-import { useState } from "react";
-import { StyleSheet, Image, View, TouchableOpacity, TextInput, Text } from "react-native";
+import {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  Image,
+  View,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Button,
+} from 'react-native';
+import CustomText from '../../Function/CustomText.tsx';
+import {handleMedicineInfo} from '../../Function/Navigation.tsx';
+import {NavigationBar} from '../Commonness/NavigationBar';
+import Config from 'react-native-config';
+import axios from 'axios';
+import {Picker} from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Main = () => {
+const Main = ({navigation}) => {
   const [text, setText] = useState('');
+  const [selectedOption, setSelectedOption] = useState('효능');
+  const [interestDisease, setInterestDisease] = useState([]);
 
-    return (
-        <>
-            <View style={Styles.container}>
+  const placeholderText = {
+    효능: '효능을 입력하세요',
+    질환: '질환을 입력하세요',
+    제품명: '제품을 입력하세요',
+    제조사: '제조사를 입력하세요',
+  };
 
-              <View style={Styles.searchbox}>
-                <Image source={require('../../Image/돋보기.png')} style={Styles.search_icon}/>
-                <TextInput
-                  style={Styles.search_text}
-                  onChangeText={newText => setText(newText)}
-                  placeholder="약의 이름을 입력해주세요"
-                  placeholderTextColor={'#C0E3FD'} />
-              </View>
-              
-              
-              <View style={
-                {
-                  position: 'absolute',
-                  marginTop: 141,
-                  left: 29,
-                  }
-                }>
-                <Text style={{fontSize: 20, fontFamily: 'Jua', fontWeight: 'bold'}}>약품종류</Text>
-              </View>
+  useEffect(() => {
+    const callInterestMedicine = async () => {
+      const interest_disease = await AsyncStorage.getItem('diseaseInterests');
+      const clean_data = interest_disease.replace(/[\[\]"]+/g, '');
+      const array_data = clean_data?.split(',');
+      const result = array_data.map((item, index) => ({
+        id: index + 1,
+        name: item.trim(),
+      }));
+      console.log('결과 : ', result);
+      setInterestDisease(result);
+    };
 
-              <View style={Styles.menubutton_view}>
+    callInterestMedicine();
+  }, []); // 의존성 배열 비움
 
-                  <View style={Styles.menubutton_1}>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      style={
-                        {
-                          width: 152,
-                          height: 88,
-                          borderWidth: 1,
-                          borderColor: '#D9D9D9',
-                          borderRadius: 10,
-                          elevation: 15,
-                          shadowColor: 'grey',
-                          backgroundColor: 'white',
-                          justifyContent: 'center'
-                        }
-                      }>
-                      <Image source={require('../../Image/소화제_아이콘.png')} style={Styles.menu_icon}/>
-                      <Text style={Styles.menu_text}>소화제</Text>
-                    </TouchableOpacity>
+  // 검색
+  /*
+    [요청변수]
+    entpName : 업체 이름
+    itemName : 약 이름
+    efcyQesitm : 약 효능
+    useMethodQesitm : 사용법
 
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.menubutton_style}>
-                      <Image source={require('../../Image/감기약_아이콘.png')} style={Styles.menu_icon}/>
-                      <Text style={Styles.menu_text}>감기약</Text>
-                    </TouchableOpacity>
+    [응답변수]
+    totalCount : 전체 결과 수
+    entpName : 업체명
+    itemName : 제품명
+    itemSeq : 품목기준코드
+    efcyQesitm : 약의 효능
+    useMethodQesitm : 약의 사용법
+    atpnQesitm : 약의 주의사항
+    seQesitm : 약의 부작용
+    depositMethodQesitm : 약의 보관법
+  */
+  const onSearchMedicineHandler = async text => {
+    try {
+      let queryField = '';
+      if (selectedOption === '효능' || selectedOption === '질환') {
+        queryField = 'efcyQesitm';
+      } else if (selectedOption === '제조사') {
+        queryField = 'entpName';
+      } else if (selectedOption === '제품명') {
+        queryField = 'itemName';
+      } else {
+        throw new Error('다시 검색해 주세요');
+      }
+      handleMedicineInfo(navigation, text, queryField);
+    } catch (error) {
+      console.error('에러 발생: ', error.message);
+    }
+  };
 
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.menubutton_style}>
-                     <Image source={require('../../Image/비타민_아이콘.png')} style={Styles.menu_icon}/>
-                     <Text style={Styles.menu_text}>비타민</Text>
-                    </TouchableOpacity>
-                  </View>
+  return (
+    <>
+      <View style={Styles.container}>
+        <View style={Styles.searchbox}>
+          <Picker
+            selectedValue={selectedOption}
+            onValueChange={itemValue => setSelectedOption(itemValue)}
+            style={Styles.search_select}>
+            <Picker.Item label="효능" value="효능" />
+            <Picker.Item label="질환" value="질환" />
+            <Picker.Item label="제품명" value="제품명" />
+            <Picker.Item label="제조사" value="제조사" />
+          </Picker>
 
-                  <View style={Styles.menubutton_2}>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      style={
-                        {
-                          width: 152,
-                          height: 88,
-                          marginLeft: 6,
-                          borderWidth: 1,
-                          borderColor: '#D9D9D9',
-                          borderRadius: 10,
-                          elevation: 15,
-                          shadowColor: 'grey',
-                          backgroundColor: 'white',
-                          justifyContent: 'center'
-                        }
-                      } >
-                      <Image source={require('../../Image/진통제_아이콘.png')} style={Styles.menu_icon}/>
-                      <Text style={Styles.menu_text}>진통제</Text>
-                    </TouchableOpacity>
+          <TextInput
+            style={Styles.search_text}
+            onChangeText={newText => setText(newText)}
+            placeholder={placeholderText[selectedOption]} // 선택된 옵션에 따른 placeholder
+            placeholderTextColor={'#C0E3FD'}
+          />
 
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.menubutton_style2}>
-                      <Image source={require('../../Image/알레르기_아이콘.png')} style={Styles.menu_icon}/>
-                      <Text style={{marginLeft:'18%', fontSize:20, fontWeight: 'bold'}}>알레르기</Text>
-                    </TouchableOpacity>
+          <TouchableOpacity onPress={() => onSearchMedicineHandler(text)}>
+            <Image
+              source={require('../../Image/searchicon.png')}
+              style={Styles.search_icon}
+            />
+          </TouchableOpacity>
+        </View>
 
-                    <TouchableOpacity activeOpacity={0.7} style={Styles.menubutton_style2}>
-                      <Image source={require('../../Image/소염제_아이콘.png')} style={Styles.menu_icon}/>
-                      <Text style={Styles.menu_text}>소염제</Text>
-                    </TouchableOpacity>
-                  </View>
-              </View>
-            </View>
-
-
-            <View style={Styles.navigation_bar}>
-             <TouchableOpacity activeOpacity={0.7}>
-                <Image source={require('../../Image/메뉴바_홈.png')} style={Styles.home_icon}/>
+        <CustomText style={Styles.main_font}>질환 종류</CustomText>
+        <ScrollView style={Styles.medicine_container}>
+          <View style={Styles.sub_container}>
+            {interestDisease.map(item => (
+              <TouchableOpacity
+                key={item.id}
+                activeOpacity={0.7}
+                style={Styles.menubutton_style}
+                onPress={() => handleMedicineInfo(navigation, item.name)}>
+                <Image
+                  source={require('../../Image/pillicon.png')}
+                  style={Styles.menu_icon}
+                />
+                <CustomText style={Styles.menu_text}>{item.name}</CustomText>
               </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
 
-              <TouchableOpacity>
-              <Image source={require('../../Image/메뉴바_카메라.png')} style={Styles.camera_icon}/>
-              </TouchableOpacity>
+      <NavigationBar navigation={navigation} />
+    </>
+  );
+};
 
-              <TouchableOpacity>
-              <Image source={require('../../Image/메뉴바_도서관.png')} style={Styles.library_icon}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-              <Image source={require('../../Image/메뉴바_계정.png')} style={Styles.account_icon}/>
-              </TouchableOpacity>
-            </View>
-
-        </>
-    )
-}
-
+// 스타일 정의
 const Styles = StyleSheet.create({
+  // 전체 화면 컨테이너 스타일
   container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center'
+    flex: 1, // 화면 전체를 차지
+    backgroundColor: 'white', // 배경 흰색
+    alignItems: 'center', // 자식 요소들을 수평으로 가운데 정렬
   },
 
-  searchbox: {                                //검색창 박스
+  searchbox: {
+    flexDirection: 'row', // 가로 정렬
+    alignItems: 'center', // 세로 정렬
     borderColor: '#EAEAEA',
     borderWidth: 1,
     borderRadius: 30,
-    width : 317,
-    height : 57,
+    width: '90%',
+    height: 57,
     backgroundColor: 'white',
-    marginTop: 50,
+    marginTop: 35,
     elevation: 10,
     shadowColor: 'grey',
-    justifyContent : 'center'
+    fontSize: 10,
+  },
+  search_select: {
+    width: '30%', // 드롭박스 너비
+    marginLeft: 10, // 드롭박스와 검색창 간격
+    color: 'black',
+    fontFamily: 'Jua-Regular',
+  },
+  search_text: {
+    flex: 1, // 남은 공간을 모두 사용
+    fontSize: 15,
+    color: 'black',
+    textAlign: 'left',
+    paddingHorizontal: 10,
+    fontFamily: 'Jua-Regular',
+  },
+  search_icon: {
+    width: 24,
+    height: 24,
+    marginRight: 15,
   },
 
-  navigation_bar: {                         //메뉴바
-    bottom: 0,
-    right: 0,
-    flexDirection: 'row',
-    verticalAlign: 'bottom',
-    backgroundColor: 'white',
-    borderColor: '#EAEAEA',
-    borderWidth : 1,
-    height: 95,
+  // 타이틀
+  main_font: {
+    position: 'absolute',
+    marginTop: 120,
+    left: 30,
+    fontSize: 24,
+    color: 'black',
+  },
+
+  medicine_container: {
+    width: '90%',
+    marginTop: '20%',
+    marginBottom: '5%',
+  },
+
+  sub_container: {
     width: '100%',
-    alignItems: 'center'
-  },
-
-  home_icon: {                            //메뉴바 홈 아이콘
-    marginTop: 10,
-    marginLeft: 40
-  },
-
-  camera_icon: {                        //메뉴바 카메라 아이콘
-    marginTop: 10,
-    marginLeft: 53
-  },
-
-  library_icon: {                      //메뉴바 도서관 아이콘
-    marginTop: 10,
-    marginLeft: 53
-  },
-
-  account_icon: {                     //메뉴바 계정 아이콘
-    marginTop: 10,
-    marginLeft: 53
-  },
-
-  search_icon: {                      //검색 돋보기 아이콘
-    position: 'absolute',
-    marginLeft: 35
-  },
-
-  search_text: {                     //검색창 글씨
-    marginLeft: 70,
-    fontSize: 18,
-    color: 'black'
-  },
-
-  menubutton_view: {              //메뉴상자 뷰
-    width: 321,
-    height: 306,
-    marginTop: 80,
-    flexDirection: 'row'
-  },
-
-  menubutton_1: {               //메뉴상자 왼쪽
-    width: 163
-  },
-
-  menubutton_2: {             //메뉴상자 오른쪽
-    width: 163
-  },
-
-  menubutton_style: {           //메뉴상자 왼쪽 박스 
-    width: 152,
-    height: 88,
-    marginTop: 20,
-    borderWidth: 1,
-    borderColor: '#D9D9D9',
-    borderRadius: 10,
-    elevation: 15,
-    shadowColor: 'grey',
+    height: '100%',
+    flexDirection: 'row', // 중요
+    flexWrap: 'wrap', // 중요
+    justifyContent: 'center',
     backgroundColor: 'white',
-    justifyContent: 'center'
   },
 
-  menubutton_style2: {            //메뉴상자 오른쪽 박스    
-    width: 152,
-    height: 88,
-    marginTop: 20,
-    marginLeft: 6,
-    borderWidth: 1,
+  // 개별 메뉴 버튼 스타일
+  menubutton_style: {
+    width: '43%', // 부모 뷰의 너비를 가득 채움
+    height: 70,
+    backgroundColor: 'white',
+    justifyContent: 'center', // 내부 콘텐츠 수직 정렬
+    borderWidth: 1, // 테두리 두께
     borderColor: '#D9D9D9',
     borderRadius: 10,
-    elevation: 15,
-    shadowColor: 'grey',
-    backgroundColor: 'white', 
-    justifyContent: 'center'
+    shadowColor: 'black',
+    elevation: 2,
+    alignItems: 'center', // 내부 콘텐츠 수평 정렬
+    margin: 10,
   },
 
-  menu_icon: {                   //메뉴상자 아이콘
-    position: 'absolute',
-    marginLeft: '70%'
+  //메튜 버튼의 아이콘 스타일
+  menu_icon: {
+    marginBottom: 3, // 아이콘과 텍스트 사이
   },
 
-  menu_text: {                    //메뉴상자 텍스트
-    marginLeft:'25%',
-    fontSize:20,
-    fontWeight: 'bold'
-  }
-})
+  menu_text: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
 
 export default Main;

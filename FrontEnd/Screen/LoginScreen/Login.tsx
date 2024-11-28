@@ -1,124 +1,189 @@
-import { TouchableOpacity, Image, StyleSheet, Text, View } from "react-native";
-import { Google_PopUp, Apple_PopUp, Kakao_PopUp, Guest_PopUp } from "./Login_Success";
+import React, {useState} from 'react';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ToastAndroid,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomText from '../../Function/CustomText';
+import {useNavigation} from '@react-navigation/native';
+import {Kakao_PopUp} from './Login_Success';
 
 const Login = () => {
-  return(
-    <>
-      <View style={Styles.container}>
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
-        <View style={Styles.appicon}>
-          <Image source={require('../../Image/AppLogo.png')} />
-          <Image source={require('../../Image/AppName.png')} style={Styles.appname} />
+  const showToast = (message: string) => {
+    ToastAndroid.showWithGravity(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  };
+
+  const handleKakaoLogin = async () => {
+    console.log('카카오 로그인 클릭!!!!');
+    setLoading(true);
+
+    try {
+      // AsyncStorage에서 userId 확인
+      const storedUserId = await AsyncStorage.getItem('userId');
+      if (storedUserId) {
+        console.log(
+          `userId(${storedUserId})가 이미 존재합니다. 메인 페이지로 이동합니다.`,
+        );
+        navigation.navigate('Main');
+        return;
+      }
+
+      // userId가 없을 경우 카카오 로그인 진행
+      const isSuccess = await Kakao_PopUp(); //카카오 팝업 함수 실행 이후 값 저장
+      console.log('Kakao_PopUp 호출 결과:', isSuccess);
+
+      // 값이 = true가 아니면 다시 시도
+      if (!isSuccess) {
+        showToast('카카오 로그인 실패.\n 다시 시도해주세요.');
+        return;
+      }
+
+      // 로그인 성공 시 회원가입 페이지로 이동
+      showToast('회원가입 페이지로 이동합니다.');
+      navigation.navigate('UserInfoPage');
+    } catch (error) {
+      console.error('로그인 중 오류:', error);
+      showToast('로그인 중 문제가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    setLoading(true);
+    try {
+      await AsyncStorage.clear(); // 모든 데이터 삭제
+      showToast('게스트 계정으로 로그인되었습니다.');
+      navigation.navigate('Main'); // 메인 페이지로 이동
+    } catch (error) {
+      console.error('게스트 로그인 중 오류:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#b4b4b4" />
+          <CustomText style={styles.loadingText}>로딩 중...</CustomText>
         </View>
+      ) : (
+        <>
+          <View style={styles.appicon}>
+            <Image source={require('../../Image/AppLogo.png')} />
+            <Image
+              source={require('../../Image/AppName.png')}
+              style={styles.appname}
+            />
+          </View>
 
-        <View style={Styles.button_view}>
-         <TouchableOpacity style={Styles.googleButton} activeOpacity={0.7} onPress={Google_PopUp}>
-          <Image source={require('../../Image/googlelogo.png')} style={Styles.login_logo}/>
-          <Text style={Styles.black_text}>구글 계정으로 로그인</Text>
-         </TouchableOpacity>
+          <View style={styles.button_view}>
+            <TouchableOpacity
+              style={styles.kakaoButton}
+              activeOpacity={0.7}
+              onPress={handleKakaoLogin}>
+              <Image
+                source={require('../../Image/kakaologo.png')}
+                style={styles.login_logo}
+              />
+              <CustomText style={styles.black_text}>
+                카카오계정으로 시작하기
+              </CustomText>
+            </TouchableOpacity>
 
-         <TouchableOpacity style={Styles.appleButton} activeOpacity={0.7} onPress={Apple_PopUp}>
-          <Image source={require('../../Image/applelogo.png')} style={Styles.login_logo}/>
-          <Text style={Styles.white_text}>애플 계정으로 로그인</Text>
-         </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.guestButton}
+              activeOpacity={0.7}
+              onPress={handleGuestLogin}>
+              <Image
+                source={require('../../Image/guestlogo.png')}
+                style={styles.login_logo}
+              />
+              <CustomText style={styles.white_text}>
+                게스트 계정으로 시작하기
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+    </View>
+  );
+};
 
-         <TouchableOpacity style={Styles.kakaoButton} activeOpacity={0.7} onPress={Kakao_PopUp}>
-          <Image source={require('../../Image/kakaologo.png')} style={Styles.login_logo}/>
-          <Text style={Styles.black_text}>카카오 계정으로 로그인</Text>
-         </TouchableOpacity>
-
-         <TouchableOpacity style={Styles.guestButton} activeOpacity={0.7} onPress={Guest_PopUp}>
-          <Image source={require('../../Image/guestlogo.png')} style={Styles.login_logo}/>
-          <Text style={Styles.white_text}>게스트 계정으로 로그인</Text>
-         </TouchableOpacity>
-        </View>
-
-      </View>
-      
-    </>
-  )
-}
-
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      backgroundColor: 'white'
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
-
-  appname: {                          //약선생
-    marginTop: 12,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-
-  appicon: {                         //앱로고
-    marginTop: '30%',
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: 'black',
+  },
+  appicon: {
+    marginTop: '50%',
     alignItems: 'center',
     justifyContent: 'center',
     width: 128,
-    height: 180
+    height: 180,
   },
-
-  button_view: {                    //로그인 버튼 뷰
-    marginTop: 70
+  appname: {
+    marginTop: 12,
   },
-
-  googleButton: {                   //구글 로그인 버튼
-    height : 47,
-    width : 324,
-    borderWidth: 1,
-    borderRadius: 21,
-    borderColor: 'black',
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }, 
-
-  appleButton: {                        //애플 로그인 버튼
+  button_view: {
+    marginTop: 80,
+  },
+  kakaoButton: {
     marginTop: 25,
-    height : 47,
-    width : 324,
-    borderRadius: 21,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-   
-  kakaoButton: {                       //카카오 로그인 버튼
-    marginTop: 25,
-    height : 47,
-    width : 324,
+    height: 47,
+    width: 324,
     borderRadius: 21,
     backgroundColor: '#FEE500',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-
-  guestButton: {                        //게스트 로그인 버튼
+  guestButton: {
     marginTop: 25,
-    height : 47,
-    width : 324,
+    height: 47,
+    width: 324,
     borderRadius: 21,
     backgroundColor: '#3AA8F8',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-
-  black_text: {                               //로그인 검은 글씨 설정
+  black_text: {
     fontSize: 15,
     color: 'black',
-    fontFamily: 'Jua',
+    fontWeight: 'bold',
   },
-
-  white_text: {                               //로그인 하얀 글씨 설정
+  white_text: {
     fontSize: 15,
     color: 'white',
-    fontFamily: 'Jua'
+    fontWeight: 'bold',
   },
-  
-  login_logo: {                               //로그인 버튼 각각의 로고
+  login_logo: {
     position: 'absolute',
     right: '80%',
   },
-})
+});
 
 export default Login;
