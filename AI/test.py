@@ -2,15 +2,11 @@ import os
 import numpy as np
 import cv2
 import math
-# 배경 제거
 from rembg import remove
-
-# 객체 검출 모델
 from inference_sdk import InferenceHTTPClient
-# 환경변수
 from dotenv import load_dotenv
-# 이미지
 from PIL import Image
+import pytesseract  # OCR 라이브러리
 
 # 환경변수 로드
 load_dotenv()
@@ -23,164 +19,117 @@ CLIENT = InferenceHTTPClient(
 path = "./test_img1.jpg"
 result = CLIENT.infer(path, model_id="wku-drug-detection/3")
 
-# 색상 이름 및 RGB 값 매핑
-COLOR_NAMES = {
-    "빨강": (0, 0, 255),
-    "주황": (0, 165, 255),
-    "노랑": (0, 255, 255),
-    "연두": (0, 255, 0),
-    "초록": (0, 128, 0),
-    "청록": (0, 255, 255),
-    "파랑": (255, 0, 0),
-    "남색": (128, 0, 128),
-    "보라": (255, 0, 255),
-    "자주": (255, 0, 255),
-    "갈색": (42, 42, 165),
-    "회색": (128, 128, 128),
-    "검정": (0, 0, 0),
-    "흰색": (255, 255, 255),
-    "투명": (0, 0, 0)
+# HSV 범위 기반 색상 매핑
+COLOR_RANGES = {
+    "Red": [(0, 50, 50), (10, 255, 255)],
+    "Orange": [(11, 50, 50), (25, 255, 255)],
+    "Yellow": [(26, 50, 50), (35, 255, 255)],
+    "Light Green": [(36, 50, 50), (70, 255, 255)],
+    "Green": [(71, 50, 50), (85, 255, 255)],
+    "Blue": [(86, 50, 50), (130, 255, 255)],
+    "Purple": [(131, 50, 50), (160, 255, 255)],
+    "White": [(0, 0, 200), (180, 20, 255)],
+    "Black": [(0, 0, 0), (180, 255, 50)]
 }
 
-# 색상 매핑
-def select_color(bgr_value):
-    min_distance = float('inf')  # 초기 최소 거리값 무한
-    select_color_name = None
+# HSV 범위를 기반으로 색상 선택
+def select_color_by_hsv(image, mask=None):
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    if mask is not None:
+        hsv_image = cv2.bitwise_and(hsv_image, hsv_image, mask=mask)
 
-    for color_name, rgb_value in COLOR_NAMES.items():
-        distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(bgr_value, rgb_value)]))
-        if distance < min_distance:
-            min_distance = distance
-            select_color_name = color_name
+    # 픽셀마다 색상 범위를 확인
+    pixels = hsv_image.reshape(-1, 3)
+    color_counts = {color: 0 for color in COLOR_RANGES.keys()}
+    for pixel in pixels:
+        for color_name, (lower, upper) in COLOR_RANGES.items():
+            if all(lower[i] <= pixel[i] <= upper[i] for i in range(3)):
+                color_counts[color_name] += 1
+                break
 
-    return select_color_name
+    # 가장 많은 픽셀 수를 가진 색상 반환
+    sorted_colors = sorted(color_counts.items(), key=lambda x: x[1], reverse=True)
+    return sorted_colors[0][0] if sorted_colors[0][1] > 0 else "Unknown"
 
-# 약 평균 색상
-def get_average_color(image, mask=None):
-    mean_color = cv2.mean(image, mask=mask)[:3]
-    return tuple(int(val) for val in mean_color)
-
-def detect_shape(image):
-    # 이미지 복사본 생성
+# 약 모양 감지
+def detect_shape(image, mask=None, visualize=False):
     image_copy = image.copy()
-
-    # 그레이스케일 변환
     imgray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    # 가우시안 블러 적용 (노이즈 제거 목적)
+    if mask is not None:
+        imgray = cv2.bitwise_and(imgray, imgray, mask=mask)
     blur = cv2.GaussianBlur(imgray, (5, 5), 0)
-
-    # 스레시홀드 적용하여 이진화 이미지 생성
-    _, thr = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY_INV)
-
-    # 컨투어 찾기 (이미지 내 객체 기준)
+    _, thr = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(thr, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     for cont in contours:
-        # 작은 노이즈나 불필요한 작은 컨투어 무시
-        if cv2.contourArea(cont) < 100:
+        if cv2.contourArea(cont) < 500:
             continue
-
-        # 근사화된 컨투어 구하기
         epsilon = 0.02 * cv2.arcLength(cont, True)
         approx = cv2.approxPolyDP(cont, epsilon, True)
-
-        # 컨투어 그리기
-        cv2.drawContours(image_copy, [approx], -1, (0, 255, 0), 3)
-
-        # 꼭지점 수에 따라 모양 판단
         vertex_count = len(approx)
-        shape_label = "Unknown"
-        if vertex_count == 3:
-            shape_label = "Triangle"
-        elif vertex_count == 4:
-            # 사각형 판단 (정사각형 또는 직사각형)
-            x, y, w, h = cv2.boundingRect(approx)
-            aspect_ratio = w / float(h)
-            shape_label = "Square" if 0.95 <= aspect_ratio <= 1.05 else "Rectangle"
-        elif vertex_count == 5:
-            shape_label = "Pentagon"
-        elif vertex_count == 6:
-            shape_label = "Hexagon"
-        elif vertex_count > 6:
-            shape_label = "Circle"
+        x, y, w, h = cv2.boundingRect(approx)
+        aspect_ratio = w / float(h)
 
-        # 컨투어의 중심점 찾기
-        mmt = cv2.moments(cont)
-        if mmt['m00'] != 0:
-            cx = int(mmt['m10'] / mmt['m00'])
-            cy = int(mmt['m01'] / mmt['m00'])
-            # 중심점에 도형 이름 출력
-            cv2.putText(image_copy, shape_label, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        label = (
+            "Circle" if vertex_count >= 8 and 0.9 <= aspect_ratio <= 1.1 else
+            "Ellipse" if vertex_count >= 8 else
+            "Rectangle" if vertex_count == 4 and aspect_ratio > 1.05 else
+            "Square" if vertex_count == 4 else
+            "Other"
+        )
 
-    # 결과 표시
-    cv2.imshow('Detected Shapes', image_copy)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+        if visualize:
+            cv2.drawContours(image_copy, [approx], -1, (0, 255, 0), 2)
+            mmt = cv2.moments(cont)
+            if mmt['m00'] != 0:
+                cx = int(mmt['m10'] / mmt['m00'])
+                cy = int(mmt['m01'] / mmt['m00'])
+                cv2.putText(image_copy, label, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
 
-# result에 'predictions' 필드가 있는지, 그 값이 존재하는지 확인한다.
+        return label, image_copy
+
+    return "Unknown", image_copy
+
+# 객체 검출 및 시각화
 if 'predictions' in result and isinstance(result['predictions'], list):
     predictions = result['predictions']
-
-    # 이미지 열기
     image = Image.open(path)
+    full_image_cv = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
-    # 모델에서 넘어온 객체 감지 결과값 파싱 후 리스트에 저장
-    detections = []
     for idx, prediction in enumerate(predictions):
         x_center = prediction['x']
         y_center = prediction['y']
         width = prediction['width']
         height = prediction['height']
-        label = prediction['class']
 
-        # 좌상단과 우하단 좌표 계산
-        top_left_x = x_center - (width / 2)
-        top_left_y = y_center - (height / 2)
-        bottom_right_x = x_center + (width / 2)
-        bottom_right_y = y_center + (height / 2)
+        top_left_x = int(x_center - (width / 2))
+        top_left_y = int(y_center - (height / 2))
+        bottom_right_x = int(x_center + (width / 2))
+        bottom_right_y = int(y_center + (height / 2))
 
-        # 바운딩 박스를 좌상단과 우하단 좌표로 변환
-        box = [top_left_x, top_left_y, bottom_right_x, bottom_right_y]
-
-        # 감지된 객체 정보 추가
-        detections.append({"label": label, "box": box})
-
-        # 이미지를 바운딩 박스 크기로 자르기
         cropped_img = image.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
-
-        # 잘라낸 이미지를 새로운 파일로 저장 (이때 저장되는 이미지 형식은 'RGBA'이다.)
         background_crop_img = remove(np.array(cropped_img))
         background_crop_img = Image.fromarray(background_crop_img)
 
-        # RGBA 모드인 이미지를 유지하여 저장
-        background_crop_img.save(f"./cropped_{label}_{idx}.png")
-
-        # RGBA 이미지에서 알파 채널 추출 (배경을 제외한 부분만)
         rgba_image = np.array(background_crop_img)
-        alpha_channel = rgba_image[:, :, 3]  # 알파 채널 추출
-
-        # 투명도가 있는 영역을 제외하는 마스크 생성 (투명도가 0인 영역만 제외)
+        alpha_channel = rgba_image[:, :, 3]
         mask = alpha_channel > 0
-
-        # BGR 이미지로 변환 (RGBA에서 BGR로)
         background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
 
-        # 평균 색상 계산 (배경 제외)
-        average_color = get_average_color(background_cropped_img_cv, mask.astype(np.uint8) * 255)
+        # HSV 범위 기반 색상 분석
+        color_name = select_color_by_hsv(background_cropped_img_cv, mask.astype(np.uint8) * 255)
 
-        # BGR 값으로 색상 이름 탐색
-        color_name = select_color(average_color)
-        print(f"약 {label}의 평균 색상: {color_name}")
+        # 모양 분석
+        shape, visualization = detect_shape(background_cropped_img_cv, mask.astype(np.uint8) * 255, visualize=True)
+        cv2.imwrite(f"visualized_shape_{idx}.png", visualization)
 
-        # 약 모양 분석 결과
-        shape = detect_shape(background_cropped_img_cv)
-        print(f"약 {label}의 모양: {shape}")
+        print(f"Object {idx}:")
+        print(f"  - Shape: {shape}")
+        print(f"  - Color: {color_name}")
+        print("-" * 30)
 
-    # 감지된 객체 출력
-    if not detections:
-        print("감지된 약이 없습니다.")
-    else:
-        print(detections)
+    cv2.imshow("Full Image Visualization", full_image_cv)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 else:
-    print("알 수 없는 오류 발생. (predictions 값이 존재하지 않습니다.)")
+    print("No objects detected.")

@@ -158,3 +158,6 @@ def detect_and_crop():
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5001, debug=True)
+
+        path = "./test_img1.jpg"
+result = CLIENT.infer(path, model_id="wku-drug-detection/3")
