@@ -102,10 +102,8 @@ const MedicineCheck = ({navigation, route}: any) => {
         </View>
       </View>
 
-      {/* NavigationBar */}
       <NavigationBar navigation={navigation} />
 
-      {/* EditImageModal */}
       <EditImageModal
         visible={modalVisible}
         image={selectedImage}
