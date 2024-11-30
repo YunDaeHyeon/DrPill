@@ -23,42 +23,76 @@ CLIENT = InferenceHTTPClient(
 
 app = Flask(__name__)
 
-# 색상 이름 및 RGB 값 매핑
-COLOR_NAMES = {
-    "빨강": (0, 0, 255),
-    "주황": (0, 165, 255),
-    "노랑": (0, 255, 255),
-    "연두": (0, 255, 0),
-    "초록": (0, 128, 0),
-    "청록": (0, 255, 255),
-    "파랑": (255, 0, 0),
-    "남색": (128, 0, 128),
-    "보라": (255, 0, 255),
-    "자주": (255, 0, 255),
-    "갈색": (42, 42, 165),
-    "회색": (128, 128, 128),
-    "검정": (0, 0, 0),
-    "흰색": (255, 255, 255),
-    "투명": (0, 0, 0)
+# HSV 범위 기반 색상 매핑
+COLOR_RANGES = {
+    "Red": [(0, 50, 50), (10, 255, 255)],
+    "Orange": [(11, 50, 50), (25, 255, 255)],
+    "Yellow": [(26, 50, 50), (35, 255, 255)],
+    "Light Green": [(36, 50, 50), (70, 255, 255)],
+    "Green": [(71, 50, 50), (85, 255, 255)],
+    "Blue": [(86, 50, 50), (130, 255, 255)],
+    "Purple": [(131, 50, 50), (160, 255, 255)],
+    "White": [(0, 0, 200), (180, 20, 255)],
+    "Black": [(0, 0, 0), (180, 255, 50)]
 }
 
-# 색상 매핑
-def select_color(bgr_value):
-    min_distance = float('inf')  # 초기 최소 거리값 무한
-    select_color_name = None
+# HSV 범위를 기반으로 색상 선택
+def select_color_by_hsv(image, mask=None):
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    if mask is not None:
+        hsv_image = cv2.bitwise_and(hsv_image, hsv_image, mask=mask)
 
-    for color_name, rgb_value in COLOR_NAMES.items():
-        distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(bgr_value, rgb_value)]))
-        if distance < min_distance:
-            min_distance = distance
-            select_color_name = color_name
+    # 픽셀마다 색상 범위를 확인
+    pixels = hsv_image.reshape(-1, 3)
+    color_counts = {color: 0 for color in COLOR_RANGES.keys()}
+    for pixel in pixels:
+        for color_name, (lower, upper) in COLOR_RANGES.items():
+            if all(lower[i] <= pixel[i] <= upper[i] for i in range(3)):
+                color_counts[color_name] += 1
+                break
 
-    return select_color_name
+    # 가장 많은 픽셀 수를 가진 색상 반환
+    sorted_colors = sorted(color_counts.items(), key=lambda x: x[1], reverse=True)
+    return sorted_colors[0][0] if sorted_colors[0][1] > 0 else "Unknown"
 
-# 평균 색상 산출
-def get_average_color(image, mask=None):
-    mean_color = cv2.mean(image, mask=mask)[:3]
-    return tuple(int(val) for val in mean_color)
+# 약 모양 감지
+def detect_shape(image, mask=None, visualize=False):
+    image_copy = image.copy()
+    imgray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    if mask is not None:
+        imgray = cv2.bitwise_and(imgray, imgray, mask=mask)
+    blur = cv2.GaussianBlur(imgray, (5, 5), 0)
+    _, thr = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY)
+    contours, _ = cv2.findContours(thr, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for cont in contours:
+        if cv2.contourArea(cont) < 500:
+            continue
+        epsilon = 0.02 * cv2.arcLength(cont, True)
+        approx = cv2.approxPolyDP(cont, epsilon, True)
+        vertex_count = len(approx)
+        x, y, w, h = cv2.boundingRect(approx)
+        aspect_ratio = w / float(h)
+
+        label = (
+            "Circle" if vertex_count >= 8 and 0.9 <= aspect_ratio <= 1.1 else
+            "Ellipse" if vertex_count >= 8 else
+            "Rectangle" if vertex_count == 4 and aspect_ratio > 1.05 else
+            "Square" if vertex_count == 4 else
+            "Other"
+        )
+
+        if visualize:
+            cv2.drawContours(image_copy, [approx], -1, (0, 255, 0), 2)
+            mmt = cv2.moments(cont)
+            if mmt['m00'] != 0:
+                cx = int(mmt['m10'] / mmt['m00'])
+                cy = int(mmt['m01'] / mmt['m00'])
+                cv2.putText(image_copy, label, (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+
+        return label, image_copy
+
+    return "Unknown", image_copy
 
 @app.route('/')
 def hello_world():
@@ -102,43 +136,34 @@ def detect_and_crop():
 
             # 이미지를 바운딩 박스 크기로 자르기
             cropped_img = image.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
-
-            # 잘라낸 이미지를 새로운 파일로 저장 (이때 저장되는 이미지 형식은 'RGBA'이다.)
             background_crop_img = remove(np.array(cropped_img))
             background_crop_img = Image.fromarray(background_crop_img)
 
-            # RGBA 이미지에서 알파 채널 추출 (배경을 제외한 부분만)
             rgba_image = np.array(background_crop_img)
-            alpha_channel = rgba_image[:, :, 3]  # 알파 채널 추출
-
-            # 투명도가 있는 영역을 제외하는 마스크 생성 (투명도가 0인 영역만 제외)
+            alpha_channel = rgba_image[:, :, 3]
             mask = alpha_channel > 0
 
-            # BGR 이미지로 변환 (RGBA에서 BGR로)
             background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
 
-            # 평균 색상 계산 (배경 제외)
-            average_color = get_average_color(background_cropped_img_cv, mask.astype(np.uint8) * 255)
+            # HSV 색상 분석
+            color_name = select_color_by_hsv(background_cropped_img_cv, mask.astype(np.uint8) * 255)
 
-            # BGR 값으로 색상 이름 탐색
-            color_name = select_color(average_color)
-
+            # 모양 분석
+            shape = detect_shape(background_cropped_img_cv, mask.astype(np.uint8) * 255)
 
             # 잘라낸 이미지를 base64로 인코딩
             img_byte_io = BytesIO()
             cropped_img.save(img_byte_io, format='PNG')
             img_byte_io.seek(0)
 
-            # 전달을 위해 인코딩 변환
             img_base64 = base64.b64encode(img_byte_io.getvalue()).decode('utf-8')
 
-            # 이미지를 리스트에 추가 (색상 정보도 함께 포함)
+            # 응답 데이터에 추가
             base64_images.append({
                 "label": label,
                 "image": img_base64,
-                "color": color_name,  # 색상 이름 추가
-                "shape": "원형",
-                "descript": "WKU"
+                "color": color_name,
+                "shape": shape
             })
     
         # 감지된 객체 출력
@@ -158,6 +183,3 @@ def detect_and_crop():
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5001, debug=True)
-
-        path = "./test_img1.jpg"
-result = CLIENT.infer(path, model_id="wku-drug-detection/3")
