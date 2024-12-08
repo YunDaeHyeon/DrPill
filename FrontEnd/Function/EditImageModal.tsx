@@ -40,21 +40,21 @@ const EditImageModal = ({
           )}
 
           {/* 데이터 수정 입력 */}
-          <CustomText style={styles.label}>Shape:</CustomText>
+          <CustomText style={styles.label}>모양:</CustomText>
           <TextInput
             style={styles.input}
             value={shape}
             onChangeText={onShapeChange}
           />
 
-          <CustomText style={styles.label}>Color:</CustomText>
+          <CustomText style={styles.label}>색상:</CustomText>
           <TextInput
             style={styles.input}
             value={color}
             onChangeText={onColorChange}
           />
 
-          <CustomText style={styles.label}>Description:</CustomText>
+          <CustomText style={styles.label}>각인:</CustomText>
           <TextInput
             style={styles.input}
             value={descript}
