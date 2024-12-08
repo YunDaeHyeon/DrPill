@@ -73,7 +73,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center', // 모달을 바닥에 위치시킴
+    // justifyContent: 'center', // 모달을 바닥에 위치시킴
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경 어둡게
   },
 
