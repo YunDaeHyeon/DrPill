@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { User } from './entities/user.entity';
 import { Medicine } from './entities/medicine.entity';
 import { UserMedicine } from './entities/userMedicine.entity';
+import { PillInfo } from './entities/pill.entity';
 
 @Module({
   imports: [
@@ -25,10 +26,11 @@ import { UserMedicine } from './entities/userMedicine.entity';
           User, // 사용자
           UserMedicine, // 사용자-의약품 관계
           Medicine, // 의약품
+          PillInfo, // 의약품 정보
         ], // 모든 엔티티 추가
       }),
     }),
-    TypeOrmModule.forFeature([User, UserMedicine, Medicine]), // TypeORM이 관리할 엔티티 추가
+    TypeOrmModule.forFeature([User, UserMedicine, Medicine, PillInfo]), // TypeORM이 관리할 엔티티 추가
   ],
   controllers: [AppController],
   providers: [AppService],
