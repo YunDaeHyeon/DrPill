@@ -153,6 +153,7 @@ const CameraCapture = ({navigation}) => {
     setLoading(true);
 
     try {
+      //
       const response = await fetch(
         'http://ec2-43-203-17-224.ap-northeast-2.compute.amazonaws.com:5000/upload-image',
         {
