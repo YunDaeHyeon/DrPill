@@ -223,7 +223,7 @@ def detect_and_crop():
 
         # 모양 분석
         print(" - 모양 분석 진행 중")
-        shape = detect_shape(background_cropped_img_cv, mask.astype(np.uint8) * 255)
+        shape, _ = detect_shape(background_cropped_img_cv, mask.astype(np.uint8) * 255)  # 수정: 이미지 반환 제거
         print(f" - 감지된 모양: {shape}")
 
         # 잘라낸 이미지를 base64로 인코딩
@@ -239,7 +239,7 @@ def detect_and_crop():
             "image": img_base64,
             "color": color_name,
             "shape": shape,
-            "text": related_text,
+            "descript": related_text,
         })
 
     # 감지된 객체 출력
@@ -249,9 +249,9 @@ def detect_and_crop():
     else:
         print(f"총 {len(detections)}개의 객체가 감지되었습니다.")
         return jsonify({
-            "detections": detections,
-            "images": base64_images
+            "detections": detections,  # 그대로 JSON 직렬화 가능
+            "images": base64_images  # JSON 직렬화 가능
         }), 200
 
 if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5001, debug=True)
+        app.run(host='0.0.0.0', port=5000, debug=True)
