@@ -1,4 +1,5 @@
 import cv2, os
+import io
 from flask import Flask, request, jsonify
 import numpy as np
 from io import BytesIO
@@ -135,46 +136,68 @@ def hello_world():
 
 @app.route('/upload-image', methods=['POST'])
 def detect_and_crop():
+    print("Step 1: 이미지 업로드 요청 처리 시작")
+    
     # 이미지 파일 불러오기
-    file = request.files['photo']  # 이미지 파일 이름: 'photo'
-    # FireStorage로 받아온 이미지를 PIL 이미지로 변환
-    image = Image.open(file.stream)
+    file = request.files.get('photo')  # 이미지 파일 이름: 'photo'
+    if not file:
+        print("Error: 이미지 파일이 전달되지 않음")
+        return jsonify({"message": "이미지 파일이 전달되지 않았습니다."}), 400
+    
+    print("Step 2: 업로드된 파일 변환 중")
+    try:
+        image = Image.open(file.stream)
+    except Exception as e:
+        print(f"Error: 이미지 열기 실패 - {e}")
+        return jsonify({"message": "이미지를 열 수 없습니다."}), 400
 
-    # 모델 예측 호출
-    result = CLIENT.infer(image, model_id="wku-drug-detection/3")
-    # result에 'predictions' 필드가 있는지, 그 값이 존재하는지 확인한다.
-    if 'predictions' in result and isinstance(result['predictions'], list):
-        predictions = result['predictions']
+    print("Step 3: Roboflow 모델 호출 시작")
+    try:
+        result = CLIENT.infer(image, model_id="wku-drug-detection/3")
+    except Exception as e:
+        print(f"Error: Roboflow 모델 호출 실패 - {e}")
+        return jsonify({"message": "객체 감지 중 오류 발생"}), 500
 
-        # 모델에서 넘어온 객체 감지 결과값 파싱 후 리스트에 저장
-        detections = []
-        # 응답을 위한 리스트
-        base64_images = []
-        for idx, prediction in enumerate(predictions):
-            x_center = prediction['x']
-            y_center = prediction['y']
-            width = prediction['width']
-            height = prediction['height']
-            label = prediction['class']
+    if 'predictions' not in result or not isinstance(result['predictions'], list):
+        print("Error: Roboflow 모델 호출 결과가 유효하지 않음")
+        return jsonify({"message": "객체 감지 결과가 유효하지 않습니다."}), 400
 
-            # 좌상단과 우하단 좌표 계산
-            top_left_x = int(x_center - (width / 2))
-            top_left_y = int(y_center - (height / 2))
-            bottom_right_x = int(x_center + (width / 2))
-            bottom_right_y = int(y_center + (height / 2))
+    print(f"Step 4: 객체 감지 완료 - 총 {len(result['predictions'])}개 객체 감지")
+    
+    # 모델에서 넘어온 객체 감지 결과값 파싱 후 리스트에 저장
+    detections = []
+    base64_images = []
 
-            # 바운딩 박스를 좌상단과 우하단 좌표로 변환
-            box = [top_left_x, top_left_y, bottom_right_x, bottom_right_y]
+    for idx, prediction in enumerate(result['predictions']):
+        print(f"Processing object {idx+1}/{len(result['predictions'])}")
+        
+        x_center = prediction['x']
+        y_center = prediction['y']
+        width = prediction['width']
+        height = prediction['height']
+        label = prediction['class']
 
-            # 감지된 객체 정보 추가
-            detections.append({"label": label, "box": box})
+        # 좌상단과 우하단 좌표 계산
+        top_left_x = int(x_center - (width / 2))
+        top_left_y = int(y_center - (height / 2))
+        bottom_right_x = int(x_center + (width / 2))
+        bottom_right_y = int(y_center + (height / 2))
 
-            # 이미지를 바운딩 박스 크기로 자르기
-            cropped_img = image.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
-            background_crop_img = remove(np.array(cropped_img))
-            background_crop_img = Image.fromarray(background_crop_img)
+        print(f" - 객체 좌표: Top Left ({top_left_x}, {top_left_y}), Bottom Right ({bottom_right_x}, {bottom_right_y})")
 
-            # Google Vision 텍스트 추출
+        # 바운딩 박스를 좌상단과 우하단 좌표로 변환
+        box = [top_left_x, top_left_y, bottom_right_x, bottom_right_y]
+        detections.append({"label": label, "box": box})
+
+        # 이미지를 바운딩 박스 크기로 자르기
+        print(" - 객체 크롭 및 배경 제거 진행 중")
+        cropped_img = image.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
+        background_crop_img = remove(np.array(cropped_img))
+        background_crop_img = Image.fromarray(background_crop_img)
+
+        # Google Vision 텍스트 추출
+        print(" - Google Vision API를 사용한 텍스트 추출 중")
+        try:
             cropped_img_bytes = io.BytesIO()
             background_crop_img.save(cropped_img_bytes, format='PNG')
             cropped_img_bytes = cropped_img_bytes.getvalue()
@@ -182,52 +205,53 @@ def detect_and_crop():
             vision_image = vision.Image(content=cropped_img_bytes)
             response = client.text_detection(image=vision_image)
             texts = response.text_annotations
-
-            rgba_image = np.array(background_crop_img)
-            alpha_channel = rgba_image[:, :, 3]
-            mask = alpha_channel > 0
-
-            background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
-
-            # HSV 색상 분석
-            color_name = select_color_by_hsv(background_cropped_img_cv, mask.astype(np.uint8) * 255)
-
-            # 모양 분석
-            shape = detect_shape(background_cropped_img_cv, mask.astype(np.uint8) * 255)
-
-            # 객체별 텍스트 출력
             related_text = texts[0].description if texts else "No text detected"
+        except Exception as e:
+            print(f"Error: Google Vision API 호출 실패 - {e}")
+            related_text = "텍스트 추출 실패"
 
-            # 잘라낸 이미지를 base64로 인코딩
-            img_byte_io = BytesIO()
-            cropped_img.save(img_byte_io, format='PNG')
-            img_byte_io.seek(0)
+        print(f" - 추출된 텍스트: {related_text}")
 
-            img_base64 = base64.b64encode(img_byte_io.getvalue()).decode('utf-8')
+        # HSV 색상 분석
+        print(" - HSV 색상 분석 진행 중")
+        rgba_image = np.array(background_crop_img)
+        alpha_channel = rgba_image[:, :, 3]
+        mask = alpha_channel > 0
+        background_cropped_img_cv = cv2.cvtColor(np.array(background_crop_img.convert('RGB')), cv2.COLOR_RGB2BGR)
+        color_name = select_color_by_hsv(background_cropped_img_cv, mask.astype(np.uint8) * 255)
+        print(f" - 감지된 색상: {color_name}")
 
-            # 응답 데이터에 추가
-            base64_images.append({
-                "label": label,
-                "image": img_base64,
-                "color": color_name,
-                "shape": shape,
-                "text" : related_text,
-            })
-    
-        # 감지된 객체 출력
-        if not detections:
-            print("감지된 약이 없습니다.")
-            return jsonify({"message": "검출된 약이 존재하지 않습니다."}), 400
-        else:
-            # 감지된 이미지와 객체 정보 JSON으로 응답
-            return jsonify({
-                "detections": detections,
-                "images": base64_images
-            }), 200
-            print(detections)
+        # 모양 분석
+        print(" - 모양 분석 진행 중")
+        shape = detect_shape(background_cropped_img_cv, mask.astype(np.uint8) * 255)
+        print(f" - 감지된 모양: {shape}")
+
+        # 잘라낸 이미지를 base64로 인코딩
+        print(" - 객체 이미지 Base64 인코딩 중")
+        img_byte_io = BytesIO()
+        cropped_img.save(img_byte_io, format='PNG')
+        img_byte_io.seek(0)
+        img_base64 = base64.b64encode(img_byte_io.getvalue()).decode('utf-8')
+
+        # 응답 데이터에 추가
+        base64_images.append({
+            "label": label,
+            "image": img_base64,
+            "color": color_name,
+            "shape": shape,
+            "text": related_text,
+        })
+
+    # 감지된 객체 출력
+    if not detections:
+        print("감지된 약이 없습니다.")
+        return jsonify({"message": "검출된 약이 존재하지 않습니다."}), 400
     else:
-        print("알 수 없는 오류 발생. (predictions 값이 존재하지 않습니다.)")
-        return jsonify({"message": "이미지를 처리하는 중 오류가 발생하였습니다."}), 500
+        print(f"총 {len(detections)}개의 객체가 감지되었습니다.")
+        return jsonify({
+            "detections": detections,
+            "images": base64_images
+        }), 200
 
 if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5001, debug=True)
