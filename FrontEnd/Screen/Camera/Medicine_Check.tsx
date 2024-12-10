@@ -11,7 +11,7 @@ import {
   Text,
 } from 'react-native';
 import CustomText from '../../Function/CustomText.tsx';
-import {goMain} from '../../Function/Navigation.tsx';
+import {goMain, handlePillInfoScreen} from '../../Function/Navigation.tsx';
 import {NavigationBar} from '../Commonness/NavigationBar.tsx';
 import EditImageModal from '../../Function/EditImageModal.tsx';
 
@@ -40,6 +40,7 @@ const MedicineCheck = ({navigation, route}: any) => {
               setColor(image.color || '');
               setDescript(image.descript || '');
               setModalVisible(true);
+              handlePillInfoScreen(navigation);
             },
           },
         ],
