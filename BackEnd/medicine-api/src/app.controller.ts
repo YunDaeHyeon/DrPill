@@ -31,4 +31,21 @@ export class AppController {
   getFavoriteMedicine(@Query('uid') uid: number) {
     return this.appService.getFavoriteMedicine(uid);
   }
+
+  // 촬영된 약 검색
+  @Post('/search-pill')
+  async searchPill(
+    @Body()
+    {
+      shape,
+      color,
+      descript,
+    }: {
+      shape: string;
+      color: string;
+      descript: string;
+    },
+  ) {
+    return this.appService.searchPill(shape, color, descript);
+  }
 }
