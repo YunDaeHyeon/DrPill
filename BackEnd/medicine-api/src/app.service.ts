@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Brackets, Repository } from 'typeorm';
+import { Brackets, Like, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserMedicine } from './entities/userMedicine.entity';
 import { Medicine } from './entities/medicine.entity';
 import { CreateMedicineDTO } from './dto/create-medicine.dto';
+import { PillInfo } from './entities/pill.entity';
 
 @Injectable()
 export class AppService {
@@ -19,6 +20,9 @@ export class AppService {
     // User - Medicine 엔티티(사용자-의약품 정의)
     @InjectRepository(UserMedicine)
     private umRepository: Repository<UserMedicine>,
+    // PillInfo 엔티티 (촬영된 의약품 정보 테이블)
+    @InjectRepository(PillInfo)
+    private readonly pillRepository: Repository<PillInfo>,
   ) {}
 
   getHello(): string {
@@ -112,5 +116,56 @@ export class AppService {
     });
 
     return medicines;
+  }
+
+  // POST /search-pill
+  async searchPill(shape: string, color: string, descript: string) {
+    const results = new Set<PillInfo>();
+
+    // 1. All three fields match
+    const threeFields = await this.pillRepository.find({
+      where: [
+        {
+          drugForm: Like(`%${shape}%`),
+          colorFront: Like(`%${color}%`),
+          imprintFront: Like(`%${descript}%`),
+        },
+      ],
+      take: 5,
+    });
+    threeFields.forEach((result) => results.add(result));
+    if (results.size >= 5) return Array.from(results);
+
+    // 2. Two fields match
+    if (results.size < 5) {
+      const twoFields = await this.pillRepository.find({
+        where: [
+          { drugForm: Like(`%${shape}%`), colorFront: Like(`%${color}%`) },
+          { drugForm: Like(`%${shape}%`), imprintFront: Like(`%${descript}%`) },
+          {
+            colorFront: Like(`%${color}%`),
+            imprintFront: Like(`%${descript}%`),
+          },
+        ],
+        take: 5 - results.size,
+      });
+      twoFields.forEach((result) => results.add(result));
+    }
+    if (results.size >= 5) return Array.from(results);
+
+    // 3. One field matches
+    if (results.size < 5) {
+      const oneField = await this.pillRepository.find({
+        where: [
+          { drugForm: Like(`%${shape}%`) },
+          { colorFront: Like(`%${color}%`) },
+          { imprintFront: Like(`%${descript}%`) },
+        ],
+        take: 5 - results.size,
+      });
+      oneField.forEach((result) => results.add(result));
+    }
+
+    return Array.from(results);
   }
 }
