@@ -79,7 +79,7 @@ const CameraCapture = ({navigation}) => {
           setCameraPermission(false);
       }
     } catch (error) {
-      console.error('카메라 권한 확인 중 오류 발생:', error);
+      console.log('카메라 권한 확인 중 오류 발생:', error);
       setCameraPermission(false);
     }
   };
@@ -171,7 +171,7 @@ const CameraCapture = ({navigation}) => {
         setDetectedImages(base64Images);
       } else {
         const result = await response.text();
-        console.warn('서버에서 예상치 못한 응답을 받았습니다: ', result);
+        console.log('서버에서 예상치 못한 응답을 받았습니다: ', result);
       }
 
       if (!response.ok) {
@@ -179,7 +179,7 @@ const CameraCapture = ({navigation}) => {
       }
       setLoading(false);
     } catch (error) {
-      console.error('서버로의 전송이 실패하였습니다. : ', error);
+      console.log('서버로의 전송이 실패하였습니다. : ', error);
     }
   };
 
