@@ -25,7 +25,6 @@ import Disease_Data from './Screen/LoginScreen/Disease_Data.tsx';
 import UserInfoPage from './Screen/LoginScreen/UserInfoPage.tsx';
 import AudioTts from './Screen/MyPage/audiotts.tsx';
 import {VoiceProvider} from './Function/VoiceProvider.tsx';
-import PillInfoScreen from './Screen/Camera/PillInfoScreen.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -162,11 +161,6 @@ const App = () => {
             <Stack.Screen
               name="AudioTts"
               component={AudioTts}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="PillInfoScreen"
-              component={PillInfoScreen}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

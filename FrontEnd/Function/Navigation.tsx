@@ -71,8 +71,3 @@ export const handleMedicineCheck = (navigation: NavigationProp<any>) => {
 export const handleLogoutDeleteScreen = (navigation: NavigationProp<any>) => {
   navigation.dispatch(CommonActions.navigate('LogoutDeleteScreen'));
 };
-
-// 사진 촬영으로 검출된 약
-export const handlePillInfoScreen = (navigation: NavigationProp<any>) => {
-  navigation.dispatch(CommonActions.navigate('PillInfoScreen'));
-};
