@@ -1,14 +1,25 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// 사용자 엔티티 (테이블) 정의
 
-@Entity('users')
-export class UserEntity{
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { UserMedicine } from './userMedicine.entity';
 
-    @PrimaryGeneratedColumn()
-    uid: number;
+@Entity('User')
+export class User {
+  @PrimaryGeneratedColumn()
+  uid: number;
 
-    @Column()
-    readonly email: string;
+  @Column()
+  email: string;
 
-    @Column()
-    readonly nickname: string;
+  @Column()
+  nickname: string;
+
+  @Column()
+  birthday: string;
+
+  @Column()
+  gender: string;
+
+  @OneToMany(() => UserMedicine, (userMedicine) => userMedicine.user)
+  userMedicines: UserMedicine[];
 }
