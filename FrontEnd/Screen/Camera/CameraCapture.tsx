@@ -1,13 +1,22 @@
 //카메라 화면입니다.
 import React, {useEffect, useState, useRef} from 'react';
-import {View, TouchableOpacity, Image, StyleSheet, Modal} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Modal,
+  Alert,
+  Linking,
+  Platform,
+} from 'react-native';
 import CustomText from '../../Function/CustomText';
 import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {handleGAllery} from '../../Function/Navigation';
 import CameraModal from './CameraModal';
 import DetectedImages from './DetectedImage';
-// 파일 시스템 접근
-import RNFS from 'react-native-fs';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions'; // react-native-permissions 라이브러리
+import {NavigationBar} from '../Commonness/NavigationBar';
 
 const backHome = (navigation: any) => {
   navigation.reset({
@@ -30,15 +39,47 @@ const CameraCapture = ({navigation}) => {
   const [loading, setLoading] = useState(false); // 로딩
   const [showModal, setShowModal] = useState(true); // 팝업 표시 여부 상태 추가
 
-  // 카메라 권한 확인 함수
+  // 카메라 권한 확인 및 요청 함수
   const checkCameraPermission = async () => {
-    const status = await Camera.getCameraPermissionStatus();
-    if (status === 'granted') {
-      setCameraPermission(true);
-    } else if (status === 'not-determined') {
-      const permission = await Camera.requestCameraPermission();
-      setCameraPermission(permission === 'authorized');
-    } else {
+    const permissionType =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.CAMERA
+        : PERMISSIONS.ANDROID.CAMERA;
+
+    try {
+      // 현재 권한 상태 확인
+      const status = await check(permissionType);
+      console.log('현재 카메라 권한 상태:', status);
+
+      switch (status) {
+        case RESULTS.GRANTED:
+          setCameraPermission(true); // 권한이 부여된 경우
+          break;
+        case RESULTS.DENIED:
+          // 권한이 거부된 경우 다시 요청
+          const requestStatus = await request(permissionType);
+          setCameraPermission(requestStatus === RESULTS.GRANTED);
+          break;
+        case RESULTS.BLOCKED:
+          // "다시 묻지 않음"으로 인해 차단된 경우
+          Alert.alert(
+            '카메라 권한 필요',
+            '카메라를 사용하려면 설정에서 권한을 활성화해주세요.',
+            [
+              {text: '취소', style: 'cancel'},
+              {
+                text: '설정으로 이동',
+                onPress: () => Linking.openSettings(),
+              },
+            ],
+          );
+          setCameraPermission(false);
+          break;
+        default:
+          setCameraPermission(false);
+      }
+    } catch (error) {
+      console.log('카메라 권한 확인 중 오류 발생:', error);
       setCameraPermission(false);
     }
   };
@@ -52,7 +93,11 @@ const CameraCapture = ({navigation}) => {
   if (cameraPermission === null) {
     return <CustomText>카메라 권한 확인 중...</CustomText>;
   } else if (!cameraPermission) {
-    return <CustomText>카메라 권한이 부여되지 않았습니다.</CustomText>;
+    return (
+      <CustomText>
+        카메라 권한이 부여되지 않았습니다. 설정에서 활성화해주세요.
+      </CustomText>
+    );
   }
 
   // 카메라 장치가 없는 경우
@@ -99,16 +144,16 @@ const CameraCapture = ({navigation}) => {
 
   // 서버로 이미지 전송
   const uploadPhoto = async (filePath: string) => {
-    // 이미지를 전송하기 위해선 이미지의 uri과 관련된 메타데이터를 POST방식, Body에 전송해야함.
     const payLoad = new FormData();
     payLoad.append('photo', {
       uri: filePath,
-      type: 'image/jpeg', // 이미지 타입
-      name: 'photo.jpg', // 서버로 보낼 이미지 이름
+      type: 'image/jpeg',
+      name: 'photo.jpg',
     });
     setLoading(true);
 
     try {
+      //
       const response = await fetch(
         'http://ec2-43-203-17-224.ap-northeast-2.compute.amazonaws.com:5000/upload-image',
         {
@@ -118,7 +163,6 @@ const CameraCapture = ({navigation}) => {
         },
       );
 
-      // 응답이 JSON일 경우 처리
       const contentType = response.headers.get('Content-Type');
       if (contentType && contentType.includes('application/json')) {
         const result = await response.json();
@@ -126,102 +170,101 @@ const CameraCapture = ({navigation}) => {
         const base64Images = result.images;
         setDetectedImages(base64Images);
       } else {
-        // JSON이 아닐 경우, 텍스트로 처리
         const result = await response.text();
-        console.warn('서버에서 예상치 못한 응답을 받았습니다: ', result);
+        console.log('서버에서 예상치 못한 응답을 받았습니다: ', result);
       }
 
-      //상태 코드 체크
       if (!response.ok) {
-        throw new Error('서버 오류: ${response.statusText}');
+        throw new Error(`서버 오류: ${response.statusText}`);
       }
       setLoading(false);
     } catch (error) {
-      console.error('서버로의 전송이 실패하였습니다. : ', error);
+      console.log('서버로의 전송이 실패하였습니다. : ', error);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.top_bar}></View>
+    <>
+      <View style={styles.container}>
+        <View style={styles.top_bar}></View>
 
-      {capturedPhoto ? (
-        <Image
-          source={{uri: capturedPhoto}}
-          style={styles.capturedImage} // 찍힌 사진을 표시
-        />
-      ) : (
-        <View style={styles.Camera_view}>
-          <Camera
-            style={{
-              height: 530,
-              width: '100%',
-              position: 'absolute',
-              top: 106,
-              left: 0,
-              right: 0,
-            }}
-            ref={camera} // 카메라 참조 설정
-            device={device}
-            isActive={true}
-            photo={true}
-            video={true}
+        {capturedPhoto ? (
+          <Image
+            source={{uri: capturedPhoto}}
+            style={styles.capturedImage} // 찍힌 사진을 표시
           />
-          <TouchableOpacity
-            style={styles.back_touch_view}
-            onPress={() => backHome(navigation)}>
-            <Image source={require('../../Image/back.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.gallery_touch_view}
-            onPress={() => handleGAllery(navigation)}>
-            <Image source={require('../../Image/gallery.png')} />
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <View style={styles.camera_navigation_bar}>
-        <TouchableOpacity activeOpacity={0.7} onPress={takePhoto}>
-          <Image source={require('../../Image/shutter.png')} />
-        </TouchableOpacity>
-      </View>
-
-      <CameraModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onConfirm={handleConfirm}
-        loading={loading} // 로딩 상태 전달
-      />
-
-      <Modal
-        visible={showModal}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setShowModal(false)}>
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <CustomText style={styles.modalText}>촬영 Tip</CustomText>
-            <CustomText style={styles.modalMessage}>
-              1. 밝은 곳에서 촬영해 주세요 {'\n'}
-              2. 초점을 잘 맞춰주세요 {'\n'}
-              3. 약의 글씨가 보이도록 촬영해 주세요{'\n'}
-              4. 약의 글씨가 거꾸로 되면 안 돼요!❌
-            </CustomText>
+        ) : (
+          <View style={styles.Camera_view}>
+            <Camera
+              style={{
+                height: 530,
+                width: '100%',
+                position: 'absolute',
+                top: 106,
+                left: 0,
+                right: 0,
+              }}
+              ref={camera}
+              device={device}
+              isActive={true}
+              photo={true}
+              video={true}
+            />
             <TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => setShowModal(false)} // 버튼 클릭 시 모달 닫기
-            >
-              <CustomText style={styles.modalButtonText}>
-                네, 이해했습니다.
-              </CustomText>
+              style={styles.back_touch_view}
+              onPress={() => backHome(navigation)}>
+              <Image source={require('../../Image/back.png')} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.gallery_touch_view}
+              onPress={() => handleGAllery(navigation)}>
+              <Image source={require('../../Image/gallery.png')} />
             </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
+        )}
 
-      <DetectedImages detectedImages={detectedImages} />
-    </View>
+        <View style={styles.camera_navigation_bar}>
+          <TouchableOpacity activeOpacity={0.7} onPress={takePhoto}>
+            <Image source={require('../../Image/shutter.png')} />
+          </TouchableOpacity>
+        </View>
+
+        <CameraModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onConfirm={handleConfirm}
+          loading={loading}
+        />
+
+        <Modal
+          visible={showModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setShowModal(false)}>
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <CustomText style={styles.modalText}>촬영 Tip</CustomText>
+              <CustomText style={styles.modalMessage}>
+                1. 밝은 곳에서 촬영해 주세요 {'\n'}
+                2. 초점을 잘 맞춰주세요 {'\n'}
+                3. 약의 글씨가 보이도록 촬영해 주세요{'\n'}
+                4. 약의 글씨가 거꾸로 되면 안 돼요!❌
+              </CustomText>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setShowModal(false)}>
+                <CustomText style={styles.modalButtonText}>
+                  네, 이해했습니다.
+                </CustomText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        <DetectedImages detectedImages={detectedImages} />
+      </View>
+      <NavigationBar navigation={navigation} />
+    </>
   );
 };
 
