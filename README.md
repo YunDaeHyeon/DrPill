@@ -272,4 +272,54 @@ Drpill
 # 프로젝트 주요 파일만 표시하였음.
 ```
 
----
+## 😄 팀원 소감
+
+<p align="center">
+
+<table style="table-layout: fixed; width: 100%;">
+  <tr>
+    <td align="center" style="width: 200px; height: 200px;">
+      <img src="https://avatars.githubusercontent.com/u/62231651?v=4" width="150" height="150"/>
+      <br/>
+      <strong>Daehyeon Yun</strong><br/>
+      <a href="https://github.com/YunDaeHyeon">@YunDaeHyeon</a>
+    </td>
+    <td align="center" style="width: 200px; height: 200px;">
+      <img src="https://avatars.githubusercontent.com/u/89891115?v=4" width="150" height="150"/>
+      <br/>
+      <strong>YoungJae01</strong><br/>
+      <a href="https://github.com/YoungJae01">@YoungJae01</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" style="width: 200px; height: 100px; padding: 10px; vertical-align: top;">
+      군 전역 후 오랜만에 진행하는 팀 프로젝트이다 보니, 팀 운영과 진행에 있어 미숙함과 서투름이 다소 존재했던 것 같아요. 전반적인 프로젝트 관리와 팀원들의 일정 조율 등 평소 개발만 진행하다가 직접 PM 역할까지 병행해서 진행하니 역시 어렵다고 생각이 들었지만, 막상 뒤돌아보면 이 역시 성장할 수 있었던 계기로 작용한 것 같습니다. 실제 서비스 런칭을 위해 고려해야 할 법적, 물리적 요소들을 다시 한번 떠올리게 되었습니다. 올바른 협업이란 무엇인가라는 질문을 끊임없이 던지며 스스로의 기술 스택을 다시 한번 점검하는 시간이었습니다. 감사합니다.
+    </td>
+    <td align="center" style="width: 200px; height: 100px; padding: 10px; vertical-align: top;">
+      처음으로 React Native를 다루고, 협업을 경험하면서 카카오와 게스트 로그인, 그리고 회원가입 로직 개발을 맡아 진행했습니다. 초기에는 Context API와 Redux를 사용해 데이터를 관리할 계획이었지만, 본인의 기술적 한계와 시간 부족으로 인해 Async Storage를 활용하여 로그인부터 회원가입까지의 기능을 완성할 수 있었습니다. 협업을 처음 경험하다 보니 서투르거나 아쉬운 점도 많았지만, 그 과정에서 Git을 다루는 방법과 효과적으로 협업을 진행하는 법 등을 배우며 성취감과 즐거움을 느낄 수 있었습니다. 다음에는 더 다양한 기술, 예를 들어 이번에 사용하지 못한 Context API나 Redux를 도입하거나, 더 많은 역할을 맡아 발전된 방식으로 프로젝트를 진행해보고 싶습니다. 재미있었습니다!!
+    </td>
+  </tr>
+  <tr>
+    <td align="center" style="width: 200px; height: 200px;">
+      <img src="https://avatars.githubusercontent.com/u/82390197?v=4" width="150" height="150"/>
+      <br/>
+      <strong>봉가은</strong><br/>
+      <a href="https://github.com/pongaun">@pongaun</a>
+    </td>
+    <td align="center" style="width: 200px; height: 200px;">
+      <img src="https://avatars.githubusercontent.com/u/103913165?v=4" width="150" height="150"/>
+      <br/>
+      <strong>김혜진</strong><br/>
+      <a href="https://github.com/hyejin27">@hyejin27</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" style="width: 200px; height: 100px; padding: 10px; vertical-align: top;">
+      -
+    </td>
+    <td align="center" style="width: 200px; height: 100px; padding: 10px; vertical-align: top;">
+      새로운 프로그램을 사용하면서 낯섦이 있었지만 검색과 여러 도움을 통해 한정된 시간이었는데도 지식을 많이 얻었습니다. 큰 프로젝트가 처음인데도 불구하고 원활하게 완성할 수 있었던 건 팀원들의 도움이 있었기 때문인 거 같습니다. 또한 프로젝트 하는 동안 프론트엔드와 협력 개발에 대한 경험도 쌓을 수 있어 좋은 시간이었습니다. 
+    </td>
+  </tr>
+</table>
+</p>
