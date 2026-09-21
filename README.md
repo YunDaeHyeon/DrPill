@@ -36,7 +36,9 @@
 
 ## 💻 시연 영상
 
-[시연 영상 링크](https://drive.google.com/file/d/1ESfQIG-B5YsEkwGHWr4AoXe8QU4hWgoH/view?usp=sharing)
+<p align="center">
+  <a href="https://drive.google.com/file/d/1jL2s_DuCjwJEPm3Y-DkzjX0lqVQCDgpo/view?usp=sharing">📽️ 시연 영상 보기</a>
+</p>
 
 <p align="center">
   <img src="./result_video.gif" width="300" alt="로컬 GIF 예제">
